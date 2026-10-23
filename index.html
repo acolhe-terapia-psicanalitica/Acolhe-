@@ -22,8 +22,9 @@
       --tag-text: #705B53;
       --rose-light: #F7EAE8;
       --rose-accent: #D4A59A;
-      --rose-dark: #583B44; /* Tom ameixa escuro elegante */
+      --rose-dark: #583B44;
       --green-call: #4A6B53;
+      --green-wpp: #25D366;
       --text-main: #2D2725;
       --text-muted: #6E6561;
       --border-color: #E8DFD8;
@@ -371,6 +372,17 @@
       cursor: pointer;
     }
 
+    .btn-ficha {
+      background: var(--rose-light);
+      color: var(--rose-dark);
+      border: 1px solid var(--rose-accent);
+      padding: 0.4rem 0.75rem;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
     .crm-stats {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -399,22 +411,40 @@
     .badge-diary { background: #F3EEF8; color: #6E4984; }
     .badge-call { background: #E8F4EC; color: #2B6B3E; }
 
+    /* Modais */
     .modal-overlay {
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,0.4);
+      background: rgba(0,0,0,0.45);
       z-index: 200;
-      padding: 1.5rem;
+      padding: 1.2rem;
       align-items: center;
       justify-content: center;
     }
     .modal-card {
       background: white;
       border-radius: var(--radius);
-      padding: 1.8rem;
-      max-width: 440px;
+      padding: 1.6rem;
+      max-width: 480px;
       width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    }
+
+    .info-row {
+      background: var(--bg-subtle);
+      padding: 0.7rem 0.9rem;
+      border-radius: 10px;
+      margin-bottom: 0.6rem;
+      font-size: 0.88rem;
+    }
+    .info-row span {
+      display: block;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-bottom: 0.1rem;
     }
 
     @media (min-width: 640px) {
@@ -425,7 +455,7 @@
 </head>
 <body>
 
-  <!-- Topbar com a Logo Oficial -->
+  <!-- Topbar -->
   <header>
     <div class="nav-container">
       <div class="logo-wrapper" onclick="navigate('home')">
@@ -581,7 +611,7 @@
       </div>
     </section>
 
-    <!-- 4. FORMULÁRIO SOCIAL (TEXTOS LIMPOS E PROFISSIONAIS) -->
+    <!-- 4. FORMULÁRIO SOCIAL -->
     <section id="view-form-social" class="view-section">
       <div class="card">
         <h2 style="font-family: var(--font-serif); margin-bottom: 0.5rem;">Candidatura para Terapia Social</h2>
@@ -629,7 +659,7 @@
       </div>
     </section>
 
-    <!-- 5. FORMULÁRIO PARTICULAR (TEXTOS LIMPOS) -->
+    <!-- 5. FORMULÁRIO PARTICULAR -->
     <section id="view-form-particular" class="view-section">
       <div class="card">
         <h2 style="font-family: var(--font-serif); margin-bottom: 0.5rem;">Atendimento Particular</h2>
@@ -776,7 +806,7 @@
     </section>
   </main>
 
-  <!-- Modal Ajuda -->
+  <!-- Modal 1: Ajuda -->
   <div class="modal-overlay" id="helpModal" onclick="closeHelpModal(event)">
     <div class="modal-card" onclick="event.stopPropagation()">
       <div style="font-size: 1.8rem; margin-bottom: 0.5rem;">♡</div>
@@ -793,6 +823,20 @@
         <span style="font-size: 0.82rem; color: var(--text-muted);">Em situações de risco iminente, ligue <strong>192</strong>.</span>
       </div>
       <button class="btn-primary" onclick="closeHelpModal()">Fechar</button>
+    </div>
+  </div>
+
+  <!-- Modal 2: Ficha Completa da Candidatura (Para a Psicanalista) -->
+  <div class="modal-overlay" id="fichaModal" onclick="closeFichaModal(event)">
+    <div class="modal-card" onclick="event.stopPropagation()">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+        <h3 style="font-family: var(--font-serif); font-size: 1.3rem; color: var(--rose-dark);">Ficha de Candidatura</h3>
+        <button class="btn-secondary" onclick="closeFichaModal()" style="padding: 0.2rem 0.6rem;">✕</button>
+      </div>
+
+      <div id="ficha-conteudo">
+        <!-- Preenchido via JavaScript com todos os dados da candidata -->
+      </div>
     </div>
   </div>
 
@@ -815,6 +859,76 @@
 
     function openHelpModal() { document.getElementById('helpModal').style.display = 'flex'; }
     function closeHelpModal() { document.getElementById('helpModal').style.display = 'none'; }
+
+    function openFichaModal() { document.getElementById('fichaModal').style.display = 'flex'; }
+    function closeFichaModal() { document.getElementById('fichaModal').style.display = 'none'; }
+
+    /* Visualização da Ficha Completa no CRM */
+    function verFichaCompleta(id) {
+      const todos = [...localData.candidaturas, ...localData.espera];
+      const item = todos.find(c => c.id === id);
+      if (!item) return;
+
+      const telLimpo = (item.telefone || '').replace(/\D/g, '');
+      const linkWpp = telLimpo ? `https://wa.me/55${telLimpo}` : '#';
+      const badgeClass = item.tipo.includes('Social') ? 'badge-free' : 'badge-paid';
+      const dataFormatada = item.created_at ? new Date(item.created_at).toLocaleString('pt-BR') : 'Data não registrada';
+
+      const conteudo = `
+        <div style="margin-bottom: 1.2rem;">
+          <span class="badge ${badgeClass}" style="margin-bottom: 0.4rem;">${item.tipo}</span>
+          <h2 style="font-family: var(--font-serif); font-size: 1.4rem; color: var(--text-main); margin-top: 0.2rem;">${item.nome}</h2>
+          <small style="color: var(--text-muted);">Enviado em: ${dataFormatada}</small>
+        </div>
+
+        <div class="info-row">
+          <span>E-mail</span>
+          <strong><a href="mailto:${item.email}" style="color: var(--rose-dark); text-decoration:none;">${item.email}</a></strong>
+        </div>
+
+        <div class="info-row">
+          <span>WhatsApp / Telefone</span>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 0.2rem;">
+            <strong>${item.telefone}</strong>
+            ${telLimpo ? `<a href="${linkWpp}" target="_blank" style="background: #25D366; color:white; padding: 0.3rem 0.7rem; border-radius: 8px; text-decoration:none; font-size: 0.78rem; font-weight:600;">Abrir WhatsApp</a>` : ''}
+          </div>
+        </div>
+
+        ${item.faixa_renda ? `
+        <div class="info-row">
+          <span>Faixa de Renda Familiar</span>
+          <strong>${item.faixa_renda}</strong>
+        </div>` : ''}
+
+        ${item.modalidade ? `
+        <div class="info-row">
+          <span>Modalidade Pretendida</span>
+          <strong>${item.modalidade}</strong>
+        </div>` : ''}
+
+        <div class="info-row">
+          <span>Disponibilidade de Horário</span>
+          <strong>${item.periodo || 'Não informado'}</strong>
+        </div>
+
+        <div class="info-row" style="background: #FFF; border: 1px solid var(--border-color); padding: 0.9rem;">
+          <span>Relato da Motivação / Demanda</span>
+          <p style="color: var(--text-main); font-size: 0.88rem; white-space: pre-wrap; margin-top: 0.3rem; line-height: 1.5;">${item.motivo || 'Nenhum relato preenchido.'}</p>
+        </div>
+
+        <div style="display: flex; gap: 0.6rem; margin-top: 1.4rem;">
+          ${item.status === 'Triagem' ? `
+            <button class="btn-primary" onclick="moverParaEspera(${item.id}); closeFichaModal();">Mover para Lista de Espera</button>
+          ` : `
+            <button class="btn-primary" onclick="moverParaPaciente(${item.id}, '${item.nome.replace(/'/g, "\\'")}'); closeFichaModal();">Tornar Paciente</button>
+          `}
+          <button class="btn-secondary" onclick="closeFichaModal()">Fechar</button>
+        </div>
+      `;
+
+      document.getElementById('ficha-conteudo').innerHTML = conteudo;
+      openFichaModal();
+    }
 
     async function consultarSessaoAnalisando(event) {
       event.preventDefault();
@@ -1101,19 +1215,23 @@
       tbody.innerHTML = '';
 
       if (currentTab === 'candidaturas') {
-        thead.innerHTML = `<tr><th>Nome</th><th>Tipo</th><th>Contato</th><th>Ações</th></tr>`;
+        thead.innerHTML = `<tr><th>Candidata(o)</th><th>Tipo</th><th>Ações</th></tr>`;
         if (localData.candidaturas.length === 0) {
-          tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color: var(--text-muted); padding: 1.5rem;">Nenhuma candidatura pendente.</td></tr>`;
+          tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; color: var(--text-muted); padding: 1.5rem;">Nenhuma candidatura pendente.</td></tr>`;
           return;
         }
         localData.candidaturas.forEach(item => {
           const badgeClass = item.tipo.includes('Social') ? 'badge-free' : 'badge-paid';
           tbody.innerHTML += `
             <tr>
-              <td><strong>${item.nome}</strong></td>
+              <td><strong>${item.nome}</strong><br><small style="color:var(--text-muted);">${item.email}</small></td>
               <td><span class="badge ${badgeClass}">${item.tipo}</span></td>
-              <td>${item.email}<br><small>${item.telefone}</small></td>
-              <td><button class="btn-secondary" onclick="moverParaEspera(${item.id})">Para Espera</button></td>
+              <td>
+                <div style="display:flex; gap:0.4rem; flex-wrap:wrap;">
+                  <button class="btn-ficha" onclick="verFichaCompleta(${item.id})">🔍 Ver Ficha</button>
+                  <button class="btn-secondary" onclick="moverParaEspera(${item.id})">Para Espera</button>
+                </div>
+              </td>
             </tr>
           `;
         });
@@ -1126,9 +1244,14 @@
         localData.espera.forEach(item => {
           tbody.innerHTML += `
             <tr>
-              <td><strong>${item.nome}</strong></td>
+              <td><strong>${item.nome}</strong><br><small style="color:var(--text-muted);">${item.email}</small></td>
               <td>${item.tipo}</td>
-              <td><button class="btn-secondary" onclick="moverParaPaciente(${item.id}, '${item.nome.replace(/'/g, "\\'")}')">Tornar Paciente</button></td>
+              <td>
+                <div style="display:flex; gap:0.4rem; flex-wrap:wrap;">
+                  <button class="btn-ficha" onclick="verFichaCompleta(${item.id})">🔍 Ver Ficha</button>
+                  <button class="btn-secondary" onclick="moverParaPaciente(${item.id}, '${item.nome.replace(/'/g, "\\'")}')">Tornar Paciente</button>
+                </div>
+              </td>
             </tr>
           `;
         });
