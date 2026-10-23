@@ -22,7 +22,7 @@
       --tag-text: #705B53;
       --rose-light: #F7EAE8;
       --rose-accent: #D4A59A;
-      --rose-dark: #583B44; /* Ameixa escuro da foto */
+      --rose-dark: #583B44; /* Tom ameixa escuro da logo */
       --green-call: #4A6B53;
       --text-main: #2D2725;
       --text-muted: #6E6561;
@@ -49,6 +49,7 @@
       overflow-x: hidden;
     }
 
+    /* Topbar */
     header {
       position: sticky;
       top: 0;
@@ -71,19 +72,26 @@
     .logo-wrapper {
       display: flex;
       align-items: center;
-      gap: 0.6rem;
+      gap: 0.65rem;
       cursor: pointer;
     }
 
-    .logo-icon {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      background: var(--rose-light);
+    /* Estilo da Logo idêntica à foto */
+    .logo-box {
+      width: 36px;
+      height: 36px;
+      border-radius: 9px;
+      background: var(--rose-dark);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1rem;
+      box-shadow: 0 2px 6px rgba(88, 59, 68, 0.15);
+      flex-shrink: 0;
+    }
+
+    .logo-box svg {
+      width: 22px;
+      height: 22px;
     }
 
     .logo {
@@ -223,7 +231,6 @@
     .icon-leaf { background: #EEF4EE; color: #4F7958; }
     .icon-diary { background: #F4EEF7; color: #6E4984; }
     .icon-video { background: #E8F4EC; color: #2D6B3E; }
-    .icon-lock { background: #F6F0E6; color: #9C773C; }
 
     .feature-content h3 {
       font-size: 0.96rem;
@@ -285,7 +292,6 @@
       min-height: 54px;
       text-decoration: none;
       margin-top: 1rem;
-      box-shadow: 0 4px 12px rgba(74, 107, 83, 0.2);
     }
 
     .sub-cta-text {
@@ -367,7 +373,6 @@
       cursor: pointer;
     }
 
-    /* CRM Stats & Tabs */
     .crm-stats {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -422,14 +427,26 @@
 </head>
 <body>
 
-  <!-- Topbar -->
+  <!-- Topbar com a Logo Oficial da Referência -->
   <header>
     <div class="nav-container">
       <div class="logo-wrapper" onclick="navigate('home')">
-        <div class="logo-icon">🌿</div>
+        <!-- ÍCONE OFICIAL SVG (Brotinho no quadrado ameixa da referência) -->
+        <div class="logo-box">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Cálice/Bacia na base -->
+            <path d="M5 14C5 17.866 8.13401 21 12 21C15.866 21 19 17.866 19 14" stroke="#F7EAE8" stroke-width="1.8" stroke-linecap="round"/>
+            <!-- Haste central -->
+            <path d="M12 20V8" stroke="#F7EAE8" stroke-width="1.8" stroke-linecap="round"/>
+            <!-- Folha esquerda -->
+            <path d="M12 14C9.5 13.5 8 10 9.5 7.5C11 10 12 12 12 14Z" fill="#F7EAE8" opacity="0.9"/>
+            <!-- Folha direita -->
+            <path d="M12 14C14.5 13.5 16 10 14.5 7.5C13 10 12 12 12 14Z" fill="#F7EAE8" opacity="0.9"/>
+          </svg>
+        </div>
         <div class="logo">
           Acolhe
-          <span>terapia · escuta · presença</span>
+          <span>terapia · emoções · presença</span>
         </div>
       </div>
       <div class="header-actions">
@@ -453,7 +470,6 @@
       </p>
 
       <div class="feature-card">
-        <!-- Minha Sessão & Chamada -->
         <div class="feature-item">
           <div class="feature-icon icon-video">🎥</div>
           <div class="feature-content">
@@ -463,7 +479,6 @@
           </div>
         </div>
 
-        <!-- Terapia Social -->
         <div class="feature-item">
           <div class="feature-icon icon-heart">♡</div>
           <div class="feature-content">
@@ -473,7 +488,6 @@
           </div>
         </div>
 
-        <!-- Atendimento Individual -->
         <div class="feature-item">
           <div class="feature-icon icon-leaf">🌿</div>
           <div class="feature-content">
@@ -483,7 +497,6 @@
           </div>
         </div>
 
-        <!-- Diário -->
         <div class="feature-item">
           <div class="feature-icon icon-diary">✍️</div>
           <div class="feature-content">
@@ -509,7 +522,7 @@
       <div class="app-footer">Acolhe · cuidado no seu tempo</div>
     </section>
 
-    <!-- 2. ÁREA DO ANALISANDO: PRÓXIMA SESSÃO E VIDEOCHAMADA -->
+    <!-- 2. ÁREA DO ANALISANDO -->
     <section id="view-minha-analise" class="view-section">
       <div class="card">
         <div style="font-size: 1.8rem; margin-bottom: 0.4rem;">🎥</div>
@@ -526,10 +539,7 @@
           <button type="submit" id="btn-consultar-sessao" class="btn-primary">Ver Minha Sessão</button>
         </form>
 
-        <!-- Cartão dinâmico com a sessão -->
-        <div id="resultado-sessao" style="display: none; margin-top: 1.8rem; border-top: 1px dashed var(--border-color); padding-top: 1.4rem;">
-          <!-- Injetado via JavaScript -->
-        </div>
+        <div id="resultado-sessao" style="display: none; margin-top: 1.8rem; border-top: 1px dashed var(--border-color); padding-top: 1.4rem;"></div>
       </div>
     </section>
 
@@ -571,12 +581,9 @@
           <button type="submit" id="btn-submit-diario" class="btn-primary">Salvar no Diário Clínico</button>
         </form>
 
-        <!-- Histórico Pessoal Local no Celular do Paciente -->
         <div style="margin-top: 2rem; border-top: 1px solid var(--border-color); padding-top: 1.2rem;">
           <h3 style="font-size: 0.95rem; margin-bottom: 0.8rem; color: var(--text-main);">Minhas anotações salvas neste aparelho:</h3>
-          <div id="historico-local-diario" style="display: flex; flex-direction: column; gap: 0.8rem;">
-            <!-- Injetado dinamicamente -->
-          </div>
+          <div id="historico-local-diario" style="display: flex; flex-direction: column; gap: 0.8rem;"></div>
         </div>
       </div>
     </section>
@@ -686,7 +693,7 @@
       </div>
     </section>
 
-    <!-- 7. CRM ADMINISTRATIVO -->
+    <!-- 7. CRM -->
     <section id="view-admin" class="view-section">
       <div id="login-box" class="card" style="max-width: 420px; margin: 1.5rem auto;">
         <h2 style="font-family: var(--font-serif); margin-bottom: 0.4rem; text-align: center;">Área Restrita</h2>
@@ -732,7 +739,7 @@
           <button class="tab-btn" id="tab-btn-sessoes" onclick="switchTab('sessoes')">Sessões & Vídeo</button>
         </div>
 
-        <!-- Formulário para Agendar Sessão (Aparece na aba Sessões) -->
+        <!-- Agendador -->
         <div id="agendador-box" class="card" style="display: none; padding: 1.4rem; background: var(--bg-subtle); margin-bottom: 1.2rem;">
           <h3 style="font-size: 1rem; margin-bottom: 0.8rem;">Agendar Nova Análise</h3>
           <form onsubmit="handleAgendarSessao(event)">
@@ -757,7 +764,7 @@
               </div>
             </div>
             <div class="form-group">
-              <label>Link da Chamada de Vídeo (Google Meet ou Jitsi gratuito)</label>
+              <label>Link da Chamada de Vídeo</label>
               <input type="text" id="agendar-link" value="https://meet.jit.si/acolhe-sessao-online" required>
             </div>
             <button type="submit" id="btn-agendar" class="btn-primary" style="background: var(--green-call);">Salvar Sessão com Link de Vídeo</button>
@@ -816,9 +823,6 @@
     function openHelpModal() { document.getElementById('helpModal').style.display = 'flex'; }
     function closeHelpModal() { document.getElementById('helpModal').style.display = 'none'; }
 
-    /* ==========================================
-       ÁREA DO ANALISANDO: CONSULTA DE SESSÃO
-       ========================================== */
     async function consultarSessaoAnalisando(event) {
       event.preventDefault();
       const email = document.getElementById('input-analisando-email').value.trim();
@@ -873,9 +877,6 @@
       }
     }
 
-    /* ==========================================
-       DIÁRIO DO PACIENTE (Com memória local)
-       ========================================== */
     async function handleDiarioSubmit(event) {
       event.preventDefault();
       const btn = document.getElementById('btn-submit-diario');
@@ -900,13 +901,12 @@
         }]);
         if (error) throw error;
 
-        // Salva na memória do celular do paciente
         const historico = JSON.parse(localStorage.getItem('acolhe_diario') || '[]');
         historico.unshift(nota);
         localStorage.setItem('acolhe_diario', JSON.stringify(historico));
 
         event.target.reset();
-        document.getElementById('confirm-msg').innerText = `Obrigada, ${nota.paciente_nome}. Seu relato (${nota.tipo}) foi salvo no diário e no seu aparelho.`;
+        document.getElementById('confirm-msg').innerText = `Obrigada, ${nota.paciente_nome}. Seu relato foi salvo no diário clínico.`;
         navigate('confirmacao');
       } catch (err) {
         alert('Erro ao salvar no diário: ' + err.message);
@@ -934,7 +934,6 @@
       `).join('');
     }
 
-    /* Formulários Sociais e Particulares */
     async function handleSocialSubmit(event) {
       event.preventDefault();
       const btn = document.getElementById('btn-submit-social');
@@ -954,7 +953,7 @@
         const { error } = await db.from('candidaturas').insert([novaCandidatura]);
         if (error) throw error;
         event.target.reset();
-        document.getElementById('confirm-msg').innerText = `Obrigada, ${novaCandidatura.nome}. Candidatura social registrada com sucesso.`;
+        document.getElementById('confirm-msg').innerText = `Obrigada, ${novaCandidatura.nome}. Candidatura social registrada.`;
         navigate('confirmacao');
       } catch (err) { alert('Erro: ' + err.message); }
       finally { btn.disabled = false; }
@@ -984,7 +983,6 @@
       finally { btn.disabled = false; }
     }
 
-    /* Autenticação & CRM */
     async function handleLogin(event) {
       event.preventDefault();
       const btn = document.getElementById('btn-login');
@@ -1064,7 +1062,6 @@
       document.getElementById('stat-sessoes').innerText = localData.sessoes.length;
     }
 
-    /* Agendamento no CRM com link de vídeo */
     async function handleAgendarSessao(event) {
       event.preventDefault();
       const btn = document.getElementById('btn-agendar');
@@ -1092,7 +1089,7 @@
         }]);
         if (error) throw error;
 
-        alert(`Sessão agendada com sucesso para ${nome}!`);
+        alert(`Sessão agendada para ${nome}!`);
         event.target.reset();
         document.getElementById('agendar-link').value = 'https://meet.jit.si/acolhe-sessao-online';
         await carregarDadosBanco();
