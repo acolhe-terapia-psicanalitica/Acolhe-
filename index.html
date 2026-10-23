@@ -22,7 +22,7 @@
       --tag-text: #705B53;
       --rose-light: #F7EAE8;
       --rose-accent: #D4A59A;
-      --rose-dark: #583B44; /* Tom ameixa escuro da logo */
+      --rose-dark: #583B44; /* Tom ameixa escuro elegante */
       --green-call: #4A6B53;
       --text-main: #2D2725;
       --text-muted: #6E6561;
@@ -49,7 +49,6 @@
       overflow-x: hidden;
     }
 
-    /* Topbar */
     header {
       position: sticky;
       top: 0;
@@ -76,7 +75,6 @@
       cursor: pointer;
     }
 
-    /* Estilo da Logo idêntica à foto */
     .logo-box {
       width: 36px;
       height: 36px;
@@ -427,20 +425,15 @@
 </head>
 <body>
 
-  <!-- Topbar com a Logo Oficial da Referência -->
+  <!-- Topbar com a Logo Oficial -->
   <header>
     <div class="nav-container">
       <div class="logo-wrapper" onclick="navigate('home')">
-        <!-- ÍCONE OFICIAL SVG (Brotinho no quadrado ameixa da referência) -->
         <div class="logo-box">
           <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <!-- Cálice/Bacia na base -->
             <path d="M5 14C5 17.866 8.13401 21 12 21C15.866 21 19 17.866 19 14" stroke="#F7EAE8" stroke-width="1.8" stroke-linecap="round"/>
-            <!-- Haste central -->
             <path d="M12 20V8" stroke="#F7EAE8" stroke-width="1.8" stroke-linecap="round"/>
-            <!-- Folha esquerda -->
             <path d="M12 14C9.5 13.5 8 10 9.5 7.5C11 10 12 12 12 14Z" fill="#F7EAE8" opacity="0.9"/>
-            <!-- Folha direita -->
             <path d="M12 14C14.5 13.5 16 10 14.5 7.5C13 10 12 12 12 14Z" fill="#F7EAE8" opacity="0.9"/>
           </svg>
         </div>
@@ -588,7 +581,7 @@
       </div>
     </section>
 
-    <!-- 4. FORMULÁRIO SOCIAL -->
+    <!-- 4. FORMULÁRIO SOCIAL (TEXTOS LIMPOS E PROFISSIONAIS) -->
     <section id="view-form-social" class="view-section">
       <div class="card">
         <h2 style="font-family: var(--font-serif); margin-bottom: 0.5rem;">Candidatura para Terapia Social</h2>
@@ -598,8 +591,8 @@
 
         <form onsubmit="handleSocialSubmit(event)">
           <div class="form-group">
-            <label>Nome Completo (Fictício nos testes)</label>
-            <input type="text" name="nome" placeholder="Ex: Marina Teste" required>
+            <label>Nome Completo</label>
+            <input type="text" name="nome" placeholder="Ex: Marina Silva" required>
           </div>
           <div class="grid-2">
             <div class="form-group">
@@ -629,14 +622,14 @@
           </div>
           <div class="form-group">
             <label>Breve relato da motivação</label>
-            <textarea name="motivo" rows="3" placeholder="Texto de demonstração." required></textarea>
+            <textarea name="motivo" rows="3" placeholder="Conte brevemente o que motivou sua busca por acompanhamento analítico..." required></textarea>
           </div>
           <button type="submit" id="btn-submit-social" class="btn-primary">Enviar Candidatura Social</button>
         </form>
       </div>
     </section>
 
-    <!-- 5. FORMULÁRIO PARTICULAR -->
+    <!-- 5. FORMULÁRIO PARTICULAR (TEXTOS LIMPOS) -->
     <section id="view-form-particular" class="view-section">
       <div class="card">
         <h2 style="font-family: var(--font-serif); margin-bottom: 0.5rem;">Atendimento Particular</h2>
@@ -646,7 +639,7 @@
 
         <form onsubmit="handleParticularSubmit(event)">
           <div class="form-group">
-            <label>Nome Completo (Fictício)</label>
+            <label>Nome Completo</label>
             <input type="text" name="nome" placeholder="Ex: Carlos Mendes" required>
           </div>
           <div class="grid-2">
@@ -746,7 +739,7 @@
             <div class="grid-2">
               <div class="form-group">
                 <label>Nome do Paciente</label>
-                <input type="text" id="agendar-nome" placeholder="Ex: Marina Teste" required>
+                <input type="text" id="agendar-nome" placeholder="Ex: Marina Silva" required>
               </div>
               <div class="form-group">
                 <label>E-mail do Paciente</label>
@@ -953,7 +946,7 @@
         const { error } = await db.from('candidaturas').insert([novaCandidatura]);
         if (error) throw error;
         event.target.reset();
-        document.getElementById('confirm-msg').innerText = `Obrigada, ${novaCandidatura.nome}. Candidatura social registrada.`;
+        document.getElementById('confirm-msg').innerText = `Obrigada, ${novaCandidatura.nome}. Sua candidatura para terapia social foi enviada com sucesso.`;
         navigate('confirmacao');
       } catch (err) { alert('Erro: ' + err.message); }
       finally { btn.disabled = false; }
@@ -977,7 +970,7 @@
         const { error } = await db.from('candidaturas').insert([novaSolicitacao]);
         if (error) throw error;
         event.target.reset();
-        document.getElementById('confirm-msg').innerText = `Obrigada, ${novaSolicitacao.nome}. Solicitação particular registrada.`;
+        document.getElementById('confirm-msg').innerText = `Obrigada, ${novaSolicitacao.nome}. Sua solicitação foi registrada com sucesso.`;
         navigate('confirmacao');
       } catch (err) { alert('Erro: ' + err.message); }
       finally { btn.disabled = false; }
