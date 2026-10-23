@@ -3,31 +3,33 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Acolhe — Gestão Psicanalítica</title>
+  <title>Acolhe — Um lugar para escutar o que sente</title>
   
   <!-- Fontes Google -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 
-  <!-- Conexão com Supabase (Gratuito) -->
+  <!-- Conexão com Supabase -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
     :root {
-      --bg-main: #FAF8F5;
+      --bg-main: #FBF9F6;
       --bg-card: #FFFFFF;
-      --bg-subtle: #F4EFEB;
+      --bg-subtle: #F5EFEB;
+      --tag-bg: #EFE7E1;
+      --tag-text: #705B53;
       --rose-light: #F7EAE8;
       --rose-accent: #D4A59A;
-      --rose-dark: #A67367;
+      --rose-dark: #583B44; /* Ameixa escuro elegante da foto */
       --text-main: #2D2725;
-      --text-muted: #6B625E;
-      --border-color: #E6DED8;
+      --text-muted: #6E6561;
+      --border-color: #E8DFD8;
       --font-serif: 'Playfair Display', Georgia, serif;
       --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-      --radius: 14px;
-      --shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+      --radius: 18px;
+      --shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
     }
 
     * {
@@ -46,46 +48,78 @@
       overflow-x: hidden;
     }
 
+    /* Topbar */
     header {
       position: sticky;
       top: 0;
-      background: rgba(250, 248, 245, 0.95);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
+      background: rgba(251, 249, 246, 0.96);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border-color);
       z-index: 100;
-      padding: 1rem 1.5rem;
+      padding: 0.85rem 1.2rem;
     }
 
     .nav-container {
-      max-width: 1080px;
+      max-width: 680px;
       margin: 0 auto;
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
 
-    .logo {
-      font-family: var(--font-serif);
-      font-size: 1.4rem;
-      font-weight: 600;
-      color: var(--text-main);
-      text-decoration: none;
-      letter-spacing: -0.5px;
+    .logo-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
       cursor: pointer;
     }
 
+    .logo-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--rose-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.05rem;
+    }
+
+    .logo {
+      font-family: var(--font-serif);
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--text-main);
+      line-height: 1.1;
+    }
+
     .logo span {
-      font-size: 0.85rem;
+      font-size: 0.72rem;
       font-family: var(--font-sans);
-      font-weight: 300;
-      color: var(--rose-dark);
+      font-weight: 400;
+      color: var(--text-muted);
       display: block;
     }
 
-    nav {
+    .header-actions {
       display: flex;
-      gap: 0.5rem;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .btn-help {
+      background: #FFF1F0;
+      color: #B2433E;
+      border: 1px solid #FCD3D1;
+      padding: 0.35rem 0.7rem;
+      border-radius: 20px;
+      font-size: 0.78rem;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      cursor: pointer;
     }
 
     .nav-btn {
@@ -94,23 +128,21 @@
       color: var(--text-muted);
       font-family: var(--font-sans);
       font-size: 0.85rem;
-      font-weight: 500;
       cursor: pointer;
-      padding: 0.5rem 0.7rem;
+      padding: 0.4rem 0.6rem;
       border-radius: 8px;
-      transition: all 0.2s ease;
     }
 
-    .nav-btn:hover, .nav-btn.active {
+    .nav-btn.active {
       color: var(--rose-dark);
-      background-color: var(--rose-light);
+      font-weight: 600;
     }
 
+    /* Container Principal */
     main {
-      max-width: 1080px;
+      max-width: 680px;
       margin: 0 auto;
-      padding: 1.5rem 1rem 4rem;
-      min-height: calc(100vh - 80px);
+      padding: 1.8rem 1.2rem 4rem;
     }
 
     .view-section {
@@ -127,12 +159,147 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    h1, h2, h3 {
-      font-family: var(--font-serif);
-      font-weight: 400;
-      color: var(--text-main);
+    /* Estilo da Foto de Referência */
+    .pill-tag {
+      display: inline-block;
+      background: var(--tag-bg);
+      color: var(--tag-text);
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 0.35rem 0.8rem;
+      border-radius: 20px;
+      margin-bottom: 1.2rem;
     }
 
+    h1 {
+      font-family: var(--font-serif);
+      font-size: 2.2rem;
+      line-height: 1.2;
+      color: var(--text-main);
+      margin-bottom: 0.9rem;
+      letter-spacing: -0.5px;
+    }
+
+    .hero-subtitle {
+      color: var(--text-muted);
+      font-size: 0.98rem;
+      line-height: 1.6;
+      margin-bottom: 2rem;
+    }
+
+    /* Cartão Unificado com Lista de Serviços */
+    .feature-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 0.6rem 1.4rem;
+      margin-bottom: 1.8rem;
+    }
+
+    .feature-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      padding: 1.2rem 0;
+      border-bottom: 1px solid #F0E8E2;
+    }
+
+    .feature-item:last-child {
+      border-bottom: none;
+    }
+
+    .feature-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .icon-heart { background: #FCEEED; color: #C25E54; }
+    .icon-leaf { background: #EEF4EE; color: #4F7958; }
+    .icon-diary { background: #F4EEF7; color: #6E4984; }
+    .icon-lock { background: #F6F0E6; color: #9C773C; }
+
+    .feature-content h3 {
+      font-size: 0.96rem;
+      font-weight: 600;
+      color: var(--text-main);
+      margin-bottom: 0.2rem;
+    }
+
+    .feature-content p {
+      font-size: 0.86rem;
+      color: var(--text-muted);
+      line-height: 1.45;
+      margin-bottom: 0.5rem;
+    }
+
+    .feature-link {
+      color: var(--rose-dark);
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    /* Botão Principal */
+    .btn-main {
+      background: var(--rose-dark);
+      color: #FFFFFF;
+      border: none;
+      border-radius: 12px;
+      padding: 1rem 1.5rem;
+      font-size: 0.95rem;
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      width: 100%;
+      min-height: 52px;
+      margin-bottom: 0.8rem;
+    }
+
+    .sub-cta-text {
+      text-align: center;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-bottom: 2rem;
+    }
+
+    /* Aviso Ético de Não Monitoramento 24h */
+    .disclaimer-box {
+      background: #F8F3ED;
+      border: 1px solid #ECE0D5;
+      border-radius: 12px;
+      padding: 1rem 1.1rem;
+      font-size: 0.8rem;
+      color: #7D6B5D;
+      display: flex;
+      gap: 0.8rem;
+      line-height: 1.5;
+      margin-bottom: 2rem;
+    }
+
+    .app-footer {
+      text-align: center;
+      font-size: 0.8rem;
+      color: #A09690;
+      padding-top: 1rem;
+      border-top: 1px dashed var(--border-color);
+    }
+
+    /* Cards e Formulários */
     .card {
       background: var(--bg-card);
       border: 1px solid var(--border-color);
@@ -142,35 +309,20 @@
       margin-bottom: 1.5rem;
     }
 
-    .form-group {
-      margin-bottom: 1.3rem;
-    }
-
-    label {
-      display: block;
-      font-size: 0.88rem;
-      font-weight: 500;
-      margin-bottom: 0.4rem;
-      color: var(--text-main);
-    }
-
-    input[type="text"],
-    input[type="email"],
-    input[type="tel"],
-    input[type="password"],
-    select,
-    textarea {
+    .form-group { margin-bottom: 1.2rem; }
+    label { display: block; font-size: 0.85rem; font-weight: 500; margin-bottom: 0.4rem; color: var(--text-main); }
+    
+    input[type="text"], input[type="email"], input[type="tel"], input[type="password"], select, textarea {
       width: 100%;
       padding: 0.85rem 1rem;
       border: 1px solid var(--border-color);
-      border-radius: 8px;
+      border-radius: 10px;
       background: var(--bg-subtle);
       font-family: var(--font-sans);
       font-size: 1rem;
       color: var(--text-main);
-      appearance: none;
-      -webkit-appearance: none;
       outline: none;
+      -webkit-appearance: none;
     }
 
     input:focus, select:focus, textarea:focus {
@@ -179,140 +331,76 @@
     }
 
     .btn-primary {
-      background: var(--rose-accent);
-      color: #FFFFFF;
+      background: var(--rose-dark);
+      color: white;
       border: none;
-      border-radius: 8px;
-      padding: 0.9rem 1.6rem;
+      border-radius: 10px;
+      padding: 0.9rem;
       font-size: 0.95rem;
       font-weight: 500;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 48px;
-      text-decoration: none;
       width: 100%;
-    }
-
-    .btn-primary:hover {
-      background: var(--rose-dark);
-    }
-
-    .btn-primary:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
+      cursor: pointer;
     }
 
     .btn-secondary {
       background: var(--bg-subtle);
-      color: var(--text-main);
       border: 1px solid var(--border-color);
+      padding: 0.45rem 0.8rem;
       border-radius: 8px;
-      padding: 0.5rem 0.8rem;
       font-size: 0.82rem;
       cursor: pointer;
     }
 
+    /* CRM */
     .crm-stats {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 0.8rem;
       margin-bottom: 1.5rem;
     }
-
     .stat-card {
       background: var(--bg-card);
       border: 1px solid var(--border-color);
-      border-radius: var(--radius);
+      border-radius: 14px;
       padding: 1rem;
     }
+    .stat-card span { font-size: 0.78rem; color: var(--text-muted); }
+    .stat-card p { font-family: var(--font-serif); font-size: 1.6rem; color: var(--rose-dark); margin-top: 0.2rem; }
 
-    .stat-card span {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-    }
-
-    .stat-card p {
-      font-family: var(--font-serif);
-      font-size: 1.6rem;
-      color: var(--rose-dark);
-      margin-top: 0.2rem;
-    }
-
-    .tabs {
-      display: flex;
-      gap: 0.5rem;
-      margin-bottom: 1.2rem;
-      overflow-x: auto;
-      padding-bottom: 0.4rem;
-    }
-
-    .tab-btn {
-      padding: 0.5rem 1rem;
-      border-radius: 20px;
-      border: 1px solid var(--border-color);
-      background: var(--bg-card);
-      cursor: pointer;
-      font-size: 0.82rem;
-      white-space: nowrap;
-    }
-
-    .tab-btn.active {
-      background: var(--rose-accent);
-      color: white;
-      border-color: var(--rose-accent);
-    }
-
-    .table-container {
-      overflow-x: auto;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      text-align: left;
-      font-size: 0.88rem;
-    }
-
-    th {
-      padding: 0.7rem;
-      border-bottom: 1px solid var(--border-color);
-      font-weight: 600;
-      color: var(--text-muted);
-    }
-
-    td {
-      padding: 0.8rem 0.7rem;
-      border-bottom: 1px solid var(--border-color);
-    }
-
-    .badge {
-      display: inline-block;
-      padding: 0.2rem 0.6rem;
-      border-radius: 12px;
-      font-size: 0.75rem;
-      font-weight: 500;
-    }
-
+    .tabs { display: flex; gap: 0.5rem; margin-bottom: 1.2rem; overflow-x: auto; padding-bottom: 0.4rem; }
+    .tab-btn { padding: 0.45rem 0.9rem; border-radius: 20px; border: 1px solid var(--border-color); background: var(--bg-card); cursor: pointer; font-size: 0.82rem; white-space: nowrap; }
+    .tab-btn.active { background: var(--rose-dark); color: white; border-color: var(--rose-dark); }
+    .table-container { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.88rem; }
+    th { padding: 0.7rem; border-bottom: 1px solid var(--border-color); font-weight: 600; color: var(--text-muted); }
+    td { padding: 0.8rem 0.7rem; border-bottom: 1px solid var(--border-color); }
+    .badge { display: inline-block; padding: 0.2rem 0.5rem; border-radius: 10px; font-size: 0.75rem; font-weight: 500; }
     .badge-free { background: #EBF3ED; color: #3A694B; }
     .badge-paid { background: #F8ECE9; color: #8C5346; }
-    .badge-session { background: #F3EEF8; color: #6E4984; }
+    .badge-diary { background: #F3EEF8; color: #6E4984; }
 
-    .warning-box {
-      background: #FFF8E7;
-      border: 1px solid #F0DEB4;
-      border-radius: 8px;
-      padding: 0.9rem;
-      margin-bottom: 1.2rem;
-      font-size: 0.82rem;
-      color: #7A5B15;
+    /* Modal Ajuda */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.4);
+      z-index: 200;
+      padding: 1.5rem;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-card {
+      background: white;
+      border-radius: var(--radius);
+      padding: 1.8rem;
+      max-width: 440px;
+      width: 100%;
     }
 
     @media (min-width: 640px) {
-      .btn-primary { width: auto; }
-      .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
-      .crm-stats { grid-template-columns: repeat(4, 1fr); }
+      .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+      .crm-stats { grid-template-columns: repeat(5, 1fr); }
     }
   </style>
 </head>
@@ -321,68 +409,147 @@
   <!-- Topbar -->
   <header>
     <div class="nav-container">
-      <div class="logo" onclick="navigate('home')">
-        Acolhe
-        <span>Gestão Psicanalítica</span>
+      <div class="logo-wrapper" onclick="navigate('home')">
+        <div class="logo-icon">🌿</div>
+        <div class="logo">
+          Acolhe
+          <span>terapia · escuta · presença</span>
+        </div>
       </div>
-      <nav>
-        <button class="nav-btn active" onclick="navigate('home')">Início</button>
-        <button class="nav-btn" onclick="navigate('form-social')">Social</button>
-        <button class="nav-btn" onclick="navigate('form-particular')">Particular</button>
+      <div class="header-actions">
+        <button class="btn-help" onclick="openHelpModal()">
+          <span>♡</span> Ajuda
+        </button>
+        <button class="nav-btn" onclick="navigate('diario')">Diário</button>
         <button class="nav-btn" onclick="navigate('admin')">CRM</button>
-      </nav>
+      </div>
     </div>
   </header>
 
   <main>
-    <!-- 1. PÁGINA INICIAL -->
+    <!-- 1. PÁGINA INICIAL (REFERÊNCIA DA FOTO) -->
     <section id="view-home" class="view-section active">
-      <div class="card" style="text-align: center; padding: 3rem 1.2rem;">
-        <h1 style="font-size: 2rem; margin-bottom: 0.8rem;">O espaço da escuta e da palavra.</h1>
-        <p style="color: var(--text-muted); max-width: 600px; margin: 0 auto 1.8rem; font-size: 0.95rem;">
-          Um ambiente clínico pautado pela ética, singularidade e acolhimento dos processos do inconsciente.
-        </p>
-        <div style="display: flex; gap: 0.8rem; justify-content: center; flex-wrap: wrap;">
-          <button class="btn-primary" onclick="navigate('form-particular')">Atendimento Particular</button>
-          <button class="btn-primary" style="background: var(--bg-subtle); color: var(--text-main); border: 1px solid var(--border-color);" onclick="navigate('form-social')">Candidatura Social</button>
+      <div class="pill-tag">Um espaço seu</div>
+      <h1>Um lugar para escutar o que sente.</h1>
+      <p class="hero-subtitle">
+        Acompanhamento terapêutico psicanalítico, avaliação de terapia social e ferramentas para observar suas emoções.
+      </p>
+
+      <div class="feature-card">
+        <!-- Terapia Social -->
+        <div class="feature-item">
+          <div class="feature-icon icon-heart">♡</div>
+          <div class="feature-content">
+            <h3>Terapia social</h3>
+            <p>Inscreva-se para uma avaliação de vaga social com acompanhamento acolhedor.</p>
+            <span class="feature-link" onclick="navigate('form-social')">Candidatar-se à vaga social ➔</span>
+          </div>
+        </div>
+
+        <!-- Atendimento Individual -->
+        <div class="feature-item">
+          <div class="feature-icon icon-leaf">🌿</div>
+          <div class="feature-content">
+            <h3>Atendimento individual</h3>
+            <p>Espaço contínuo de análise individual para elaboração psíquica (online ou presencial).</p>
+            <span class="feature-link" onclick="navigate('form-particular')">Solicitar atendimento particular ➔</span>
+          </div>
+        </div>
+
+        <!-- Diário para se perceber -->
+        <div class="feature-item">
+          <div class="feature-icon icon-diary">✍️</div>
+          <div class="feature-content">
+            <h3>Um diário para se perceber</h3>
+            <p>Registre sonhos, percepções e angústias para levar à sua sessão de análise.</p>
+            <span class="feature-link" onclick="navigate('diario')">Escrever no diário clínico ➔</span>
+          </div>
+        </div>
+
+        <!-- Privacidade como cuidado -->
+        <div class="feature-item">
+          <div class="feature-icon icon-lock">🔒</div>
+          <div class="feature-content">
+            <h3>Privacidade como cuidado</h3>
+            <p>Acesso seguro, sigilo psicanalítico e área clínica restrita à profissional.</p>
+          </div>
         </div>
       </div>
 
-      <div class="grid-2">
-        <div class="card">
-          <h2>Clínica Particular</h2>
-          <p style="color: var(--text-muted); margin: 0.8rem 0 1.2rem; font-size: 0.9rem;">
-            Atendimentos regulares com frequência acordada conforme a demanda analítica. Sessões presenciais ou online.
-          </p>
-          <button class="btn-primary" onclick="navigate('form-particular')">Solicitar Contato</button>
+      <button class="btn-main" onclick="navigate('form-particular')">
+        <span>➔</span> Iniciar solicitação de atendimento
+      </button>
+      <p class="sub-cta-text">Acesso seguro com criptografia e sigilo ético profissional.</p>
+
+      <div class="disclaimer-box">
+        <span style="font-size: 1.1rem;">ℹ️</span>
+        <div>
+          Este aplicativo não é monitorado 24 horas. Em situações de sofrimento agudo, ligue para o <strong>CVV (188)</strong> ou procure o serviço de emergência mais próximo.
         </div>
-        <div class="card">
-          <h2>Compromisso Social</h2>
-          <p style="color: var(--text-muted); margin: 0.8rem 0 1.2rem; font-size: 0.9rem;">
-            Vagas destinadas a pessoas que não dispõem de recursos financeiros para o valor regular da análise.
-          </p>
-          <button class="btn-primary" onclick="navigate('form-social')">Concorrer a Vaga</button>
-        </div>
+      </div>
+
+      <div class="app-footer">
+        Acolhe · cuidado no seu tempo
       </div>
     </section>
 
-    <!-- 2. FORMULÁRIO SOCIAL -->
-    <section id="view-form-social" class="view-section">
-      <div class="card" style="max-width: 680px; margin: 0 auto;">
-        <h2>Candidatura para Atendimento Social</h2>
-        <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1.2rem;">
-          Esta modalidade possui vagas limitadas e critérios de disponibilidade de agenda e renda.
+    <!-- 2. NOVO: DIÁRIO DO PACIENTE (SONHOS E PERCEPÇÕES) -->
+    <section id="view-diario" class="view-section">
+      <div class="card">
+        <div style="font-size: 1.8rem; margin-bottom: 0.4rem;">✍️</div>
+        <h2 style="font-family: var(--font-serif); margin-bottom: 0.4rem;">Caderno de Percepções e Sonhos</h2>
+        <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 1.4rem;">
+          Anote impressões, sonhos ao acordar ou angústias do dia para serem elaborados na sua sessão.
         </p>
 
-        <form id="socialForm" onsubmit="handleSocialSubmit(event)">
+        <form onsubmit="handleDiarioSubmit(event)">
+          <div class="grid-2">
+            <div class="form-group">
+              <label>Seu Nome Completo</label>
+              <input type="text" name="nome" placeholder="Ex: Ana Silva" required>
+            </div>
+            <div class="form-group">
+              <label>Seu E-mail Cadastrado</label>
+              <input type="email" name="email" placeholder="ana@exemplo.com" required>
+            </div>
+          </div>
+
           <div class="form-group">
-            <label>Nome Completo (Use dados fictícios)</label>
-            <input type="text" name="nome" placeholder="Ex: Ana Silva" required>
+            <label>Tipo de Registro</label>
+            <select name="tipo" required>
+              <option value="🌙 Sonho">🌙 Sonho da noite</option>
+              <option value="💭 Percepção / Angústia">💭 Percepção / Angústia do dia</option>
+              <option value="✍️ Associação Livre">✍️ Associação Livre / Pensamento</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Relato Livre (Escreva sem censuras)</label>
+            <textarea name="conteudo" rows="6" placeholder="O que você sentiu, sonhou ou percebeu..." required></textarea>
+          </div>
+
+          <button type="submit" id="btn-submit-diario" class="btn-primary">Salvar no Diário Clínico</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- 3. FORMULÁRIO SOCIAL -->
+    <section id="view-form-social" class="view-section">
+      <div class="card">
+        <h2 style="font-family: var(--font-serif); margin-bottom: 0.5rem;">Candidatura para Terapia Social</h2>
+        <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 1.4rem;">
+          Destinada a pessoas que precisam de acompanhamento com valor social acordado.
+        </p>
+
+        <form onsubmit="handleSocialSubmit(event)">
+          <div class="form-group">
+            <label>Nome Completo (Fictício para teste)</label>
+            <input type="text" name="nome" placeholder="Ex: Marina Teste" required>
           </div>
           <div class="grid-2">
             <div class="form-group">
-              <label>E-mail de Contato</label>
-              <input type="email" name="email" placeholder="ana@exemplo.com" required>
+              <label>E-mail</label>
+              <input type="email" name="email" placeholder="marina@exemplo.com" required>
             </div>
             <div class="form-group">
               <label>WhatsApp / Telefone</label>
@@ -390,7 +557,7 @@
             </div>
           </div>
           <div class="form-group">
-            <label>Faixa de Renda Familiar Aproximada</label>
+            <label>Faixa de Renda Aproximada</label>
             <select name="renda" required>
               <option value="">Selecione...</option>
               <option value="Até 1 salário mínimo">Até 1 salário mínimo</option>
@@ -409,24 +576,24 @@
           </div>
           <div class="form-group">
             <label>Breve relato da motivação</label>
-            <textarea name="motivo" rows="3" placeholder="Em fase de testes, use texto de demonstração." required></textarea>
+            <textarea name="motivo" rows="3" placeholder="Em fase de testes, use dados fictícios." required></textarea>
           </div>
           <button type="submit" id="btn-submit-social" class="btn-primary">Enviar Candidatura Social</button>
         </form>
       </div>
     </section>
 
-    <!-- 3. FORMULÁRIO PARTICULAR -->
+    <!-- 4. FORMULÁRIO PARTICULAR -->
     <section id="view-form-particular" class="view-section">
-      <div class="card" style="max-width: 680px; margin: 0 auto;">
-        <h2>Solicitação de Atendimento Particular</h2>
-        <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1.2rem;">
+      <div class="card">
+        <h2 style="font-family: var(--font-serif); margin-bottom: 0.5rem;">Atendimento Particular</h2>
+        <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 1.4rem;">
           Preencha seus dados para alinhamento de horários e valores de sessão.
         </p>
 
-        <form id="particularForm" onsubmit="handleParticularSubmit(event)">
+        <form onsubmit="handleParticularSubmit(event)">
           <div class="form-group">
-            <label>Nome Completo (Use dados fictícios)</label>
+            <label>Nome Completo (Fictício)</label>
             <input type="text" name="nome" placeholder="Ex: Carlos Mendes" required>
           </div>
           <div class="grid-2">
@@ -461,23 +628,24 @@
       </div>
     </section>
 
-    <!-- 4. PÁGINA DE CONFIRMAÇÃO -->
+    <!-- 5. CONFIRMAÇÃO -->
     <section id="view-confirmacao" class="view-section">
-      <div class="card" style="max-width: 580px; margin: 2rem auto; text-align: center;">
-        <h2 style="margin-bottom: 0.8rem; color: var(--rose-dark);">Solicitação Registrada</h2>
-        <p id="confirm-msg" style="color: var(--text-muted); margin-bottom: 1.8rem; font-size: 0.95rem;">
-          Seus dados foram enviados e salvos no banco de dados com segurança.
+      <div class="card" style="text-align: center; padding: 3rem 1.5rem;">
+        <div style="font-size: 2.2rem; margin-bottom: 1rem;">🌿</div>
+        <h2 style="font-family: var(--font-serif); margin-bottom: 0.6rem; color: var(--rose-dark);">Registro Concluído</h2>
+        <p id="confirm-msg" style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 2rem;">
+          Seus dados foram gravados com proteção no banco de dados.
         </p>
         <button class="btn-primary" onclick="navigate('home')">Voltar ao Início</button>
       </div>
     </section>
 
-    <!-- 5. LOGIN DO PAINEL CRM -->
+    <!-- 6. LOGIN / CRM -->
     <section id="view-admin" class="view-section">
-      <div id="login-box" class="card" style="max-width: 420px; margin: 2rem auto;">
-        <h2 style="margin-bottom: 0.4rem; text-align: center;">Área Restrita</h2>
+      <div id="login-box" class="card" style="max-width: 420px; margin: 1.5rem auto;">
+        <h2 style="font-family: var(--font-serif); margin-bottom: 0.4rem; text-align: center;">Área Restrita</h2>
         <p style="color: var(--text-muted); font-size: 0.85rem; text-align: center; margin-bottom: 1.4rem;">
-          Acesso seguro para a psicanalista.
+          Acesso exclusivo para a psicanalista.
         </p>
 
         <form onsubmit="handleLogin(event)">
@@ -493,39 +661,29 @@
         </form>
       </div>
 
-      <!-- 6. CRM DASHBOARD -->
+      <!-- Dashboard CRM -->
       <div id="dashboard-box" style="display: none;">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.2rem; flex-wrap: wrap; gap: 0.8rem;">
           <div>
-            <h2>Painel de Gestão</h2>
+            <h2 style="font-family: var(--font-serif);">Painel Clínico</h2>
             <p style="color: var(--text-muted); font-size: 0.85rem;">Conectado ao Supabase.</p>
           </div>
           <button class="btn-secondary" onclick="handleLogout()">Sair</button>
         </div>
 
         <div class="crm-stats">
-          <div class="stat-card">
-            <span>Candidaturas</span>
-            <p id="stat-candidaturas">0</p>
-          </div>
-          <div class="stat-card">
-            <span>Espera</span>
-            <p id="stat-espera">0</p>
-          </div>
-          <div class="stat-card">
-            <span>Pacientes</span>
-            <p id="stat-pacientes">0</p>
-          </div>
-          <div class="stat-card">
-            <span>Sessões</span>
-            <p id="stat-sessoes">0</p>
-          </div>
+          <div class="stat-card"><span>Candidaturas</span><p id="stat-candidaturas">0</p></div>
+          <div class="stat-card"><span>Espera</span><p id="stat-espera">0</p></div>
+          <div class="stat-card"><span>Pacientes</span><p id="stat-pacientes">0</p></div>
+          <div class="stat-card"><span>Diários</span><p id="stat-diarios">0</p></div>
+          <div class="stat-card"><span>Sessões</span><p id="stat-sessoes">0</p></div>
         </div>
 
         <div class="tabs">
           <button class="tab-btn active" id="tab-btn-candidaturas" onclick="switchTab('candidaturas')">Candidaturas</button>
           <button class="tab-btn" id="tab-btn-espera" onclick="switchTab('espera')">Lista de Espera</button>
           <button class="tab-btn" id="tab-btn-pacientes" onclick="switchTab('pacientes')">Pacientes</button>
+          <button class="tab-btn" id="tab-btn-diarios" onclick="switchTab('diarios')">Diários & Sonhos</button>
           <button class="tab-btn" id="tab-btn-sessoes" onclick="switchTab('sessoes')">Sessões</button>
         </div>
 
@@ -541,39 +699,84 @@
     </section>
   </main>
 
+  <!-- Modal de Ajuda / CVV 188 -->
+  <div class="modal-overlay" id="helpModal" onclick="closeHelpModal(event)">
+    <div class="modal-card" onclick="event.stopPropagation()">
+      <div style="font-size: 1.8rem; margin-bottom: 0.5rem;">♡</div>
+      <h3 style="font-family: var(--font-serif); font-size: 1.3rem; margin-bottom: 0.5rem; color: #8F3B36;">Acolhimento e Apoio Imediato</h3>
+      <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 1.2rem; line-height: 1.5;">
+        Se você estiver vivenciando um momento de sofrimento intenso, angústia aguda ou crise, existem serviços públicos gratuitos 24 horas:
+      </p>
+      
+      <div style="background: var(--bg-subtle); padding: 0.8rem 1rem; border-radius: 10px; margin-bottom: 0.8rem;">
+        <strong style="color: var(--text-main); font-size: 0.9rem;">CVV (Centro de Valorização da Vida)</strong><br>
+        <span style="font-size: 0.82rem; color: var(--text-muted);">Apoio emocional gratuito e sigiloso. Ligue <strong>188</strong>.</span>
+      </div>
+
+      <div style="background: var(--bg-subtle); padding: 0.8rem 1rem; border-radius: 10px; margin-bottom: 1.4rem;">
+        <strong style="color: var(--text-main); font-size: 0.9rem;">SAMU (Emergência Médica)</strong><br>
+        <span style="font-size: 0.82rem; color: var(--text-muted);">Em situações de risco iminente, ligue <strong>192</strong>.</span>
+      </div>
+
+      <button class="btn-primary" onclick="closeHelpModal()">Fechar</button>
+    </div>
+  </div>
+
   <script>
     const SUPABASE_URL = 'https://jyqcxxzpnoabdhhktvii.supabase.co';
     const SUPABASE_KEY = 'sb_publishable_jTYkFvhedqCp00MlpgB3sA_U9MTJJnf';
-
     const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
     let currentTab = 'candidaturas';
-    let localData = { candidaturas: [], espera: [], pacientes: [], sessoes: [] };
+    let localData = { candidaturas: [], espera: [], pacientes: [], diarios: [], sessoes: [] };
 
     function navigate(viewId) {
       document.querySelectorAll('.view-section').forEach(sec => sec.classList.remove('active'));
-      document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
-
       const target = document.getElementById('view-' + viewId);
       if (target) target.classList.add('active');
-
-      const navBtn = Array.from(document.querySelectorAll('.nav-btn')).find(b => 
-        b.getAttribute('onclick') && b.getAttribute('onclick').includes(viewId)
-      );
-      if (navBtn) navBtn.classList.add('active');
-
       window.scrollTo(0, 0);
     }
 
+    function openHelpModal() { document.getElementById('helpModal').style.display = 'flex'; }
+    function closeHelpModal() { document.getElementById('helpModal').style.display = 'none'; }
+
+    /* Envio do Diário Clínico */
+    async function handleDiarioSubmit(event) {
+      event.preventDefault();
+      const btn = document.getElementById('btn-submit-diario');
+      btn.disabled = true;
+      btn.innerText = 'Salvando no Diário...';
+
+      const formData = new FormData(event.target);
+      const nota = {
+        paciente_nome: formData.get('nome'),
+        paciente_email: formData.get('email'),
+        tipo: formData.get('tipo'),
+        conteudo: formData.get('conteudo')
+      };
+
+      try {
+        const { error } = await db.from('diario_notas').insert([nota]);
+        if (error) throw error;
+        event.target.reset();
+        document.getElementById('confirm-msg').innerText = `Obrigada, ${nota.paciente_nome}. Seu relato (${nota.tipo}) foi salvo no diário clínico para sua psicanalista.`;
+        navigate('confirmacao');
+      } catch (err) {
+        alert('Erro ao salvar no diário: ' + err.message);
+      } finally {
+        btn.disabled = false;
+        btn.innerText = 'Salvar no Diário Clínico';
+      }
+    }
+
+    /* Envio Social */
     async function handleSocialSubmit(event) {
       event.preventDefault();
       const btn = document.getElementById('btn-submit-social');
       btn.disabled = true;
       btn.innerText = 'Enviando...';
 
-      const form = event.target;
-      const formData = new FormData(form);
-
+      const formData = new FormData(event.target);
       const novaCandidatura = {
         nome: formData.get('nome'),
         email: formData.get('email'),
@@ -588,28 +791,25 @@
       try {
         const { error } = await db.from('candidaturas').insert([novaCandidatura]);
         if (error) throw error;
-
-        form.reset();
-        document.getElementById('confirm-msg').innerText = 
-          `Obrigada, ${novaCandidatura.nome}. Sua candidatura social foi gravada com sucesso!`;
+        event.target.reset();
+        document.getElementById('confirm-msg').innerText = `Obrigada, ${novaCandidatura.nome}. Sua candidatura social foi registrada.`;
         navigate('confirmacao');
       } catch (err) {
-        alert('Erro ao enviar candidatura: ' + err.message);
+        alert('Erro ao enviar: ' + err.message);
       } finally {
         btn.disabled = false;
         btn.innerText = 'Enviar Candidatura Social';
       }
     }
 
+    /* Envio Particular */
     async function handleParticularSubmit(event) {
       event.preventDefault();
       const btn = document.getElementById('btn-submit-particular');
       btn.disabled = true;
       btn.innerText = 'Enviando...';
 
-      const form = event.target;
-      const formData = new FormData(form);
-
+      const formData = new FormData(event.target);
       const novaSolicitacao = {
         nome: formData.get('nome'),
         email: formData.get('email'),
@@ -623,32 +823,30 @@
       try {
         const { error } = await db.from('candidaturas').insert([novaSolicitacao]);
         if (error) throw error;
-
-        form.reset();
-        document.getElementById('confirm-msg').innerText = 
-          `Obrigada, ${novaSolicitacao.nome}. Sua solicitação particular foi registrada com sucesso!`;
+        event.target.reset();
+        document.getElementById('confirm-msg').innerText = `Obrigada, ${novaSolicitacao.nome}. Sua solicitação foi registrada.`;
         navigate('confirmacao');
       } catch (err) {
-        alert('Erro ao enviar solicitação: ' + err.message);
+        alert('Erro ao enviar: ' + err.message);
       } finally {
         btn.disabled = false;
         btn.innerText = 'Enviar Solicitação';
       }
     }
 
+    /* Autenticação */
     async function handleLogin(event) {
       event.preventDefault();
       const btn = document.getElementById('btn-login');
       btn.disabled = true;
       btn.innerText = 'Entrando...';
 
-      const email = document.getElementById('admin-email').value;
+      const email = document.getElementById('admin-email').value.trim();
       const password = document.getElementById('admin-pass').value;
 
       try {
         const { error } = await db.auth.signInWithPassword({ email, password });
         if (error) throw error;
-
         mostrarDashboard();
         await carregarDadosBanco();
       } catch (err) {
@@ -673,20 +871,26 @@
       document.getElementById('dashboard-box').style.display = 'block';
     }
 
+    /* Busca de dados no banco */
     async function carregarDadosBanco() {
       try {
+        // 1. Candidaturas
         const { data: cand, error: errCand } = await db.from('candidaturas').select('*').order('id', { ascending: false });
-        if (errCand) throw errCand;
+        if (!errCand && cand) {
+          localData.candidaturas = cand.filter(c => c.status === 'Triagem');
+          localData.espera = cand.filter(c => c.status === 'Espera');
+        }
 
-        localData.candidaturas = (cand || []).filter(c => c.status === 'Triagem');
-        localData.espera = (cand || []).filter(c => c.status === 'Espera');
-
-        const { data: pac, error: errPac } = await db.from('pacientes').select('*').order('id', { ascending: false });
-        if (errPac) throw errPac;
+        // 2. Pacientes
+        const { data: pac } = await db.from('pacientes').select('*').order('id', { ascending: false });
         localData.pacientes = pac || [];
 
-        const { data: ses, error: errSes } = await db.from('sessoes').select('*').order('id', { ascending: false });
-        if (errSes) throw errSes;
+        // 3. Diários
+        const { data: dia } = await db.from('diario_notas').select('*').order('id', { ascending: false });
+        localData.diarios = dia || [];
+
+        // 4. Sessões
+        const { data: ses } = await db.from('sessoes').select('*').order('id', { ascending: false });
         localData.sessoes = ses || [];
 
         atualizarMetricas();
@@ -708,6 +912,7 @@
       document.getElementById('stat-candidaturas').innerText = localData.candidaturas.length;
       document.getElementById('stat-espera').innerText = localData.espera.length;
       document.getElementById('stat-pacientes').innerText = localData.pacientes.length;
+      document.getElementById('stat-diarios').innerText = localData.diarios.length;
       document.getElementById('stat-sessoes').innerText = localData.sessoes.length;
     }
 
@@ -719,14 +924,7 @@
       tbody.innerHTML = '';
 
       if (currentTab === 'candidaturas') {
-        thead.innerHTML = `
-          <tr>
-            <th>Nome</th>
-            <th>Tipo</th>
-            <th>Contato</th>
-            <th>Ações</th>
-          </tr>
-        `;
+        thead.innerHTML = `<tr><th>Nome</th><th>Tipo</th><th>Contato</th><th>Ações</th></tr>`;
         if (localData.candidaturas.length === 0) {
           tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color: var(--text-muted); padding: 1.5rem;">Nenhuma candidatura pendente.</td></tr>`;
           return;
@@ -738,20 +936,12 @@
               <td><strong>${item.nome}</strong></td>
               <td><span class="badge ${badgeClass}">${item.tipo}</span></td>
               <td>${item.email}<br><small>${item.telefone}</small></td>
-              <td>
-                <button class="btn-secondary" onclick="moverParaEspera(${item.id})">Para Espera</button>
-              </td>
+              <td><button class="btn-secondary" onclick="moverParaEspera(${item.id})">Para Espera</button></td>
             </tr>
           `;
         });
       } else if (currentTab === 'espera') {
-        thead.innerHTML = `
-          <tr>
-            <th>Nome</th>
-            <th>Tipo</th>
-            <th>Ação</th>
-          </tr>
-        `;
+        thead.innerHTML = `<tr><th>Nome</th><th>Tipo</th><th>Ação</th></tr>`;
         if (localData.espera.length === 0) {
           tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; color: var(--text-muted); padding: 1.5rem;">Lista de espera vazia.</td></tr>`;
           return;
@@ -761,53 +951,42 @@
             <tr>
               <td><strong>${item.nome}</strong></td>
               <td>${item.tipo}</td>
-              <td>
-                <button class="btn-secondary" onclick="moverParaPaciente(${item.id}, '${item.nome.replace(/'/g, "\\'")}')">Tornar Paciente</button>
-              </td>
+              <td><button class="btn-secondary" onclick="moverParaPaciente(${item.id}, '${item.nome.replace(/'/g, "\\'")}')">Tornar Paciente</button></td>
             </tr>
           `;
         });
       } else if (currentTab === 'pacientes') {
-        thead.innerHTML = `
-          <tr>
-            <th>Nome</th>
-            <th>Frequência</th>
-            <th>Modalidade</th>
-          </tr>
-        `;
+        thead.innerHTML = `<tr><th>Nome</th><th>Frequência</th><th>Modalidade</th></tr>`;
         if (localData.pacientes.length === 0) {
           tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; color: var(--text-muted); padding: 1.5rem;">Nenhum paciente cadastrado.</td></tr>`;
           return;
         }
         localData.pacientes.forEach(item => {
+          tbody.innerHTML += `<tr><td><strong>${item.nome}</strong></td><td>${item.frequencia}</td><td>${item.modalidade}</td></tr>`;
+        });
+      } else if (currentTab === 'diarios') {
+        thead.innerHTML = `<tr><th>Paciente</th><th>Tipo</th><th>Relato Clínico</th></tr>`;
+        if (localData.diarios.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; color: var(--text-muted); padding: 1.5rem;">Nenhum relato no diário ainda.</td></tr>`;
+          return;
+        }
+        localData.diarios.forEach(item => {
           tbody.innerHTML += `
             <tr>
-              <td><strong>${item.nome}</strong></td>
-              <td>${item.frequencia}</td>
-              <td>${item.modalidade}</td>
+              <td><strong>${item.paciente_nome}</strong><br><small style="color:var(--text-muted);">${item.paciente_email}</small></td>
+              <td><span class="badge badge-diary">${item.tipo}</span></td>
+              <td style="max-width: 280px; white-space: pre-wrap; font-size: 0.85rem;">${item.conteudo}</td>
             </tr>
           `;
         });
       } else if (currentTab === 'sessoes') {
-        thead.innerHTML = `
-          <tr>
-            <th>Paciente</th>
-            <th>Dia / Horário</th>
-            <th>Status</th>
-          </tr>
-        `;
+        thead.innerHTML = `<tr><th>Paciente</th><th>Dia / Horário</th><th>Status</th></tr>`;
         if (localData.sessoes.length === 0) {
           tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; color: var(--text-muted); padding: 1.5rem;">Nenhuma sessão registrada.</td></tr>`;
           return;
         }
         localData.sessoes.forEach(item => {
-          tbody.innerHTML += `
-            <tr>
-              <td>${item.paciente_nome}</td>
-              <td>${item.dia_semana} às ${item.horario}</td>
-              <td><span class="badge badge-session">${item.status}</span></td>
-            </tr>
-          `;
+          tbody.innerHTML += `<tr><td>${item.paciente_nome}</td><td>${item.dia_semana} às ${item.horario}</td><td><span class="badge badge-paid">${item.status}</span></td></tr>`;
         });
       }
     }
@@ -818,26 +997,19 @@
         if (error) throw error;
         await carregarDadosBanco();
       } catch (err) {
-        alert('Erro ao mover para espera: ' + err.message);
+        alert('Erro: ' + err.message);
       }
     }
 
     async function moverParaPaciente(candidaturaId, nome) {
       try {
-        const { error: errPac } = await db.from('pacientes').insert([{
-          nome: nome,
-          candidatura_id: candidaturaId,
-          frequencia: 'Semanal',
-          modalidade: 'Online'
-        }]);
+        const { error: errPac } = await db.from('pacientes').insert([{ nome, candidatura_id: candidaturaId, frequencia: 'Semanal', modalidade: 'Online' }]);
         if (errPac) throw errPac;
-
         const { error: errCand } = await db.from('candidaturas').update({ status: 'Ativo' }).eq('id', candidaturaId);
         if (errCand) throw errCand;
-
         await carregarDadosBanco();
       } catch (err) {
-        alert('Erro ao tornar paciente: ' + err.message);
+        alert('Erro: ' + err.message);
       }
     }
 
