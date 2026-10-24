@@ -426,7 +426,7 @@
       background: white;
       border-radius: var(--radius);
       padding: 1.6rem;
-      max-width: 480px;
+      max-width: 500px;
       width: 100%;
       max-height: 90vh;
       overflow-y: auto;
@@ -806,7 +806,7 @@
     </section>
   </main>
 
-  <!-- Modal 1: Ajuda -->
+  <!-- Modal Ajuda -->
   <div class="modal-overlay" id="helpModal" onclick="closeHelpModal(event)">
     <div class="modal-card" onclick="event.stopPropagation()">
       <div style="font-size: 1.8rem; margin-bottom: 0.5rem;">♡</div>
@@ -826,17 +826,14 @@
     </div>
   </div>
 
-  <!-- Modal 2: Ficha Completa da Candidatura (Para a Psicanalista) -->
+  <!-- Modal Ficha Completa & Anotações Privadas -->
   <div class="modal-overlay" id="fichaModal" onclick="closeFichaModal(event)">
     <div class="modal-card" onclick="event.stopPropagation()">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-        <h3 style="font-family: var(--font-serif); font-size: 1.3rem; color: var(--rose-dark);">Ficha de Candidatura</h3>
+        <h3 style="font-family: var(--font-serif); font-size: 1.3rem; color: var(--rose-dark);">Ficha Clínica do Paciente</h3>
         <button class="btn-secondary" onclick="closeFichaModal()" style="padding: 0.2rem 0.6rem;">✕</button>
       </div>
-
-      <div id="ficha-conteudo">
-        <!-- Preenchido via JavaScript com todos os dados da candidata -->
-      </div>
+      <div id="ficha-conteudo"></div>
     </div>
   </div>
 
@@ -846,7 +843,7 @@
     const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
     let currentTab = 'candidaturas';
-    let localData = { candidaturas: [], espera: [], pacientes: [], diarios: [], sessoes: [] };
+    let localData = { candidaturas: [], espera: [], pacientes: [], diarios: [], sessoes: [], todasCandidaturas: [] };
 
     function navigate(viewId) {
       document.querySelectorAll('.view-section').forEach(sec => sec.classList.remove('active'));
@@ -859,14 +856,12 @@
 
     function openHelpModal() { document.getElementById('helpModal').style.display = 'flex'; }
     function closeHelpModal() { document.getElementById('helpModal').style.display = 'none'; }
-
     function openFichaModal() { document.getElementById('fichaModal').style.display = 'flex'; }
     function closeFichaModal() { document.getElementById('fichaModal').style.display = 'none'; }
 
-    /* Visualização da Ficha Completa no CRM */
+    /* Ficha Completa para Candidaturas e Espera */
     function verFichaCompleta(id) {
-      const todos = [...localData.candidaturas, ...localData.espera];
-      const item = todos.find(c => c.id === id);
+      const item = localData.todasCandidaturas.find(c => c.id === id);
       if (!item) return;
 
       const telLimpo = (item.telefone || '').replace(/\D/g, '');
@@ -875,9 +870,9 @@
       const dataFormatada = item.created_at ? new Date(item.created_at).toLocaleString('pt-BR') : 'Data não registrada';
 
       const conteudo = `
-        <div style="margin-bottom: 1.2rem;">
-          <span class="badge ${badgeClass}" style="margin-bottom: 0.4rem;">${item.tipo}</span>
-          <h2 style="font-family: var(--font-serif); font-size: 1.4rem; color: var(--text-main); margin-top: 0.2rem;">${item.nome}</h2>
+        <div style="margin-bottom: 1rem;">
+          <span class="badge ${badgeClass}">${item.tipo}</span>
+          <h2 style="font-family: var(--font-serif); font-size: 1.4rem; color: var(--text-main); margin-top: 0.3rem;">${item.nome}</h2>
           <small style="color: var(--text-muted);">Enviado em: ${dataFormatada}</small>
         </div>
 
@@ -894,33 +889,20 @@
           </div>
         </div>
 
-        ${item.faixa_renda ? `
-        <div class="info-row">
-          <span>Faixa de Renda Familiar</span>
-          <strong>${item.faixa_renda}</strong>
-        </div>` : ''}
+        ${item.faixa_renda ? `<div class="info-row"><span>Faixa de Renda</span><strong>${item.faixa_renda}</strong></div>` : ''}
+        ${item.modalidade ? `<div class="info-row"><span>Modalidade</span><strong>${item.modalidade}</strong></div>` : ''}
+        <div class="info-row"><span>Disponibilidade</span><strong>${item.periodo || 'Não informado'}</strong></div>
 
-        ${item.modalidade ? `
-        <div class="info-row">
-          <span>Modalidade Pretendida</span>
-          <strong>${item.modalidade}</strong>
-        </div>` : ''}
-
-        <div class="info-row">
-          <span>Disponibilidade de Horário</span>
-          <strong>${item.periodo || 'Não informado'}</strong>
-        </div>
-
-        <div class="info-row" style="background: #FFF; border: 1px solid var(--border-color); padding: 0.9rem;">
-          <span>Relato da Motivação / Demanda</span>
+        <div class="info-row" style="background: #FFF; border: 1px solid var(--border-color); padding: 0.8rem;">
+          <span>Relato da Motivação</span>
           <p style="color: var(--text-main); font-size: 0.88rem; white-space: pre-wrap; margin-top: 0.3rem; line-height: 1.5;">${item.motivo || 'Nenhum relato preenchido.'}</p>
         </div>
 
-        <div style="display: flex; gap: 0.6rem; margin-top: 1.4rem;">
+        <div style="display: flex; gap: 0.6rem; margin-top: 1.2rem; flex-wrap: wrap;">
           ${item.status === 'Triagem' ? `
-            <button class="btn-primary" onclick="moverParaEspera(${item.id}); closeFichaModal();">Mover para Lista de Espera</button>
+            <button class="btn-primary" style="flex:1;" onclick="moverParaEspera(${item.id}); closeFichaModal();">Mover para Lista de Espera</button>
           ` : `
-            <button class="btn-primary" onclick="moverParaPaciente(${item.id}, '${item.nome.replace(/'/g, "\\'")}'); closeFichaModal();">Tornar Paciente</button>
+            <button class="btn-primary" style="flex:1;" onclick="moverParaPaciente(${item.id}, '${item.nome.replace(/'/g, "\\'")}'); closeFichaModal();">Tornar Paciente</button>
           `}
           <button class="btn-secondary" onclick="closeFichaModal()">Fechar</button>
         </div>
@@ -928,6 +910,145 @@
 
       document.getElementById('ficha-conteudo').innerHTML = conteudo;
       openFichaModal();
+    }
+
+    /* Ficha do Paciente com FREQUÊNCIA EDITÁVEL, Anotações e Troca de Status */
+    function verFichaPaciente(pacienteId) {
+      const pac = localData.pacientes.find(p => p.id === pacienteId);
+      if (!pac) return;
+
+      const cand = localData.todasCandidaturas.find(c => c.id === pac.candidatura_id || c.nome.toLowerCase() === pac.nome.toLowerCase()) || {};
+      const telLimpo = (cand.telefone || '').replace(/\D/g, '');
+      const linkWpp = telLimpo ? `https://wa.me/55${telLimpo}` : '#';
+
+      const conteudo = `
+        <div style="margin-bottom: 1rem;">
+          <span class="badge badge-call">${pac.status || 'Ativo'}</span>
+          <h2 style="font-family: var(--font-serif); font-size: 1.4rem; color: var(--text-main); margin-top: 0.3rem;">${pac.nome}</h2>
+          <small style="color: var(--text-muted);">Início da análise: ${pac.inicio_atendimento || 'Data não registrada'}</small>
+        </div>
+
+        <!-- Contato Original -->
+        <div class="info-row">
+          <span>Contato</span>
+          <strong>${cand.email ? `<a href="mailto:${cand.email}" style="color:var(--rose-dark); text-decoration:none;">${cand.email}</a>` : 'E-mail não registrado'}</strong>
+          ${telLimpo ? `<div style="margin-top:0.3rem;"><a href="${linkWpp}" target="_blank" style="background:#25D366; color:white; padding:0.25rem 0.6rem; border-radius:6px; text-decoration:none; font-size:0.75rem; font-weight:600;">Chamar no WhatsApp</a></div>` : ''}
+        </div>
+
+        <!-- ENQUADRE CLÍNICO EDITÁVEL (FREQUÊNCIA E MODALIDADE) -->
+        <div style="background: var(--bg-subtle); padding: 0.9rem; border-radius: 12px; margin-bottom: 0.8rem; border: 1px solid var(--border-color);">
+          <span style="font-size: 0.8rem; font-weight: 600; color: var(--rose-dark); display:block; margin-bottom: 0.5rem;">⚙️ Enquadre da Análise</span>
+          
+          <div class="grid-2">
+            <div style="margin-bottom: 0.5rem;">
+              <label style="font-size: 0.75rem; color: var(--text-muted);">Frequência das Sessões</label>
+              <select id="edit-freq-${pac.id}" style="font-size: 0.85rem; padding: 0.5rem;">
+                <option value="Semanal" ${pac.frequencia === 'Semanal' ? 'selected' : ''}>Semanal (1x por semana)</option>
+                <option value="Duas vezes por semana" ${pac.frequencia === 'Duas vezes por semana' ? 'selected' : ''}>Duas vezes por semana (2x)</option>
+                <option value="Três vezes por semana" ${pac.frequencia === 'Três vezes por semana' ? 'selected' : ''}>Três vezes por semana (3x)</option>
+                <option value="Quinzenal" ${pac.frequencia === 'Quinzenal' ? 'selected' : ''}>Quinzenal</option>
+                <option value="A combinar" ${pac.frequencia === 'A combinar' ? 'selected' : ''}>A combinar / Sob demanda</option>
+              </select>
+            </div>
+
+            <div style="margin-bottom: 0.5rem;">
+              <label style="font-size: 0.75rem; color: var(--text-muted);">Modalidade</label>
+              <select id="edit-mod-${pac.id}" style="font-size: 0.85rem; padding: 0.5rem;">
+                <option value="Online" ${pac.modalidade === 'Online' ? 'selected' : ''}>Online</option>
+                <option value="Presencial" ${pac.modalidade === 'Presencial' ? 'selected' : ''}>Presencial</option>
+                <option value="Híbrido" ${pac.modalidade === 'Híbrido' ? 'selected' : ''}>Híbrido</option>
+              </select>
+            </div>
+          </div>
+
+          <button class="btn-secondary" style="width: 100%; margin-top: 0.4rem; font-weight: 600; background: #FFF;" onclick="salvarEnquadrePaciente(${pac.id})">
+            Salvar Frequência e Modalidade
+          </button>
+        </div>
+
+        ${cand.motivo ? `
+        <div class="info-row" style="background: #FFF; border: 1px solid var(--border-color); padding: 0.8rem;">
+          <span>Queixa / Motivação Inicial</span>
+          <p style="color: var(--text-muted); font-size: 0.82rem; white-space: pre-wrap; margin-top: 0.2rem;">${cand.motivo}</p>
+        </div>` : ''}
+
+        <!-- Anotações Clínicas Privadas (Só a analista acessa) -->
+        <div class="info-row" style="background: #FFF; border: 1px solid var(--rose-accent); padding: 0.8rem; margin-top: 0.8rem;">
+          <span style="color: var(--rose-dark); font-weight: 600;">🔒 Caderno Clínico da Analista (Privado)</span>
+          <textarea id="anotacoes-paciente-${pac.id}" rows="4" style="margin-top: 0.4rem; font-size: 0.88rem; background: var(--bg-subtle);" placeholder="Escreva observações clínicas, pontos de escuta, transferência ou evolução...">${pac.anotacoes || ''}</textarea>
+          <button class="btn-primary" style="margin-top: 0.5rem; font-size: 0.82rem; padding: 0.6rem;" onclick="salvarAnotacoesPaciente(${pac.id})">Salvar Anotações</button>
+        </div>
+
+        <!-- Gestão de Status e Opção de Desfazer Acidente -->
+        <div style="background: var(--bg-subtle); padding: 0.9rem; border-radius: 10px; margin-top: 1rem;">
+          <span style="font-size: 0.78rem; color: var(--text-muted); display:block; margin-bottom:0.4rem;">Status do Paciente:</span>
+          <div style="display: flex; gap: 0.4rem; flex-wrap: wrap;">
+            <button class="btn-secondary" onclick="alterarStatusPaciente(${pac.id}, 'Ativo')">Marcar Ativo</button>
+            <button class="btn-secondary" onclick="alterarStatusPaciente(${pac.id}, 'Em Pausa')">Colocar em Pausa</button>
+            <button class="btn-secondary" onclick="alterarStatusPaciente(${pac.id}, 'Encerrado')">Encerrar Análise</button>
+          </div>
+          
+          <div style="margin-top: 0.8rem; border-top: 1px dashed var(--border-color); padding-top: 0.6rem;">
+            <button class="btn-secondary" style="color: #9C443C; border-color: #E8B4B0;" onclick="desfazerPaciente(${pac.id}, ${pac.candidatura_id || 'null'})">
+              ↩️ Desfazer (Coloquei por engano)
+            </button>
+          </div>
+        </div>
+      `;
+
+      document.getElementById('ficha-conteudo').innerHTML = conteudo;
+      openFichaModal();
+    }
+
+    /* Salvar Frequência e Modalidade */
+    async function salvarEnquadrePaciente(id) {
+      const frequencia = document.getElementById(`edit-freq-${id}`).value;
+      const modalidade = document.getElementById(`edit-mod-${id}`).value;
+      try {
+        const { error } = await db.from('pacientes').update({ frequencia, modalidade }).eq('id', id);
+        if (error) throw error;
+        alert('Frequência e modalidade atualizadas com sucesso!');
+        await carregarDadosBanco();
+        verFichaPaciente(id);
+      } catch (err) { alert('Erro ao atualizar: ' + err.message); }
+    }
+
+    /* Salvar Anotações Privadas */
+    async function salvarAnotacoesPaciente(id) {
+      const texto = document.getElementById(`anotacoes-paciente-${id}`).value;
+      try {
+        const { error } = await db.from('pacientes').update({ anotacoes: texto }).eq('id', id);
+        if (error) throw error;
+        alert('Anotações clínicas salvas com segurança no banco!');
+        await carregarDadosBanco();
+      } catch (err) { alert('Erro ao salvar anotações: ' + err.message); }
+    }
+
+    /* Alterar Status */
+    async function alterarStatusPaciente(id, novoStatus) {
+      try {
+        const { error } = await db.from('pacientes').update({ status: novoStatus }).eq('id', id);
+        if (error) throw error;
+        await carregarDadosBanco();
+        verFichaPaciente(id);
+      } catch (err) { alert('Erro: ' + err.message); }
+    }
+
+    /* Desfazer Paciente */
+    async function desfazerPaciente(pacienteId, candidaturaId) {
+      if (!confirm('Deseja remover essa pessoa de Pacientes e devolvê-la para a Lista de Espera?')) return;
+      try {
+        const { error: errDel } = await db.from('pacientes').delete().eq('id', pacienteId);
+        if (errDel) throw errDel;
+
+        if (candidaturaId) {
+          await db.from('candidaturas').update({ status: 'Espera' }).eq('id', candidaturaId);
+        }
+
+        closeFichaModal();
+        await carregarDadosBanco();
+        alert('Pronto! O paciente foi removido e devolvido para a Lista de Espera.');
+      } catch (err) { alert('Erro ao desfazer: ' + err.message); }
     }
 
     async function consultarSessaoAnalisando(event) {
@@ -1128,6 +1249,7 @@
       try {
         const { data: cand } = await db.from('candidaturas').select('*').order('id', { ascending: false });
         if (cand) {
+          localData.todasCandidaturas = cand;
           localData.candidaturas = cand.filter(c => c.status === 'Triagem');
           localData.espera = cand.filter(c => c.status === 'Espera');
         }
@@ -1256,13 +1378,21 @@
           `;
         });
       } else if (currentTab === 'pacientes') {
-        thead.innerHTML = `<tr><th>Nome</th><th>Frequência</th><th>Modalidade</th></tr>`;
+        thead.innerHTML = `<tr><th>Paciente</th><th>Status</th><th>Ações</th></tr>`;
         if (localData.pacientes.length === 0) {
           tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; color: var(--text-muted); padding: 1.5rem;">Nenhum paciente cadastrado.</td></tr>`;
           return;
         }
         localData.pacientes.forEach(item => {
-          tbody.innerHTML += `<tr><td><strong>${item.nome}</strong></td><td>${item.frequencia}</td><td>${item.modalidade}</td></tr>`;
+          tbody.innerHTML += `
+            <tr>
+              <td><strong>${item.nome}</strong><br><small style="color:var(--text-muted);">${item.frequencia} · ${item.modalidade}</small></td>
+              <td><span class="badge badge-call">${item.status || 'Ativo'}</span></td>
+              <td>
+                <button class="btn-ficha" onclick="verFichaPaciente(${item.id})">🔍 Ficha & Notas</button>
+              </td>
+            </tr>
+          `;
         });
       } else if (currentTab === 'diarios') {
         thead.innerHTML = `<tr><th>Paciente</th><th>Tipo</th><th>Relato Clínico</th></tr>`;
