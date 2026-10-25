@@ -15,23 +15,24 @@
 
   <style>
     :root {
-      --bg-main: #FBF9F6;
-      --bg-card: #FFFFFF;
-      --bg-subtle: #F5EFEB;
-      --tag-bg: #EFE7E1;
-      --tag-text: #705B53;
-      --rose-light: #F7EAE8;
-      --rose-accent: #D4A59A;
-      --rose-dark: #583B44;
-      --green-call: #4A6B53;
+      /* PALETA TERROSA SOFISTICADA */
+      --bg-main: #F8F5F0;        /* Linho e areia quente */
+      --bg-card: #FFFFFF;        /* Branco puro para cartões */
+      --bg-subtle: #F1ECE3;      /* Argila suave e pergaminho */
+      --tag-bg: #EAE1D5;        /* Areia terrosa para badges */
+      --tag-text: #543E31;       /* Marrom castanho */
+      --earth-light: #F4EBE3;    /* Terracota pastel suave */
+      --earth-accent: #B2836B;   /* Argila / caramelo refinado */
+      --earth-dark: #3D2B22;     /* Marrom café nobre (botões e logo) */
+      --green-call: #4D5D4E;     /* Oliva / sálvia terroso para vídeo */
       --green-wpp: #25D366;
-      --text-main: #2D2725;
-      --text-muted: #6E6561;
-      --border-color: #E8DFD8;
+      --text-main: #271E19;      /* Marrom escuro nobre (substitui o preto) */
+      --text-muted: #6B5B52;     /* Marrom acinzentado elegante */
+      --border-color: #E2D7CC;   /* Linho refinado para divisórias */
       --font-serif: 'Playfair Display', Georgia, serif;
       --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
       --radius: 18px;
-      --shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+      --shadow: 0 6px 24px rgba(45, 30, 20, 0.04);
     }
 
     * {
@@ -53,7 +54,7 @@
     header {
       position: sticky;
       top: 0;
-      background: rgba(251, 249, 246, 0.96);
+      background: rgba(248, 245, 240, 0.96);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border-color);
@@ -80,11 +81,11 @@
       width: 36px;
       height: 36px;
       border-radius: 9px;
-      background: var(--rose-dark);
+      background: var(--earth-dark);
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 2px 6px rgba(88, 59, 68, 0.15);
+      box-shadow: 0 2px 8px rgba(61, 43, 34, 0.18);
       flex-shrink: 0;
     }
 
@@ -116,9 +117,9 @@
     }
 
     .btn-help {
-      background: #FFF1F0;
-      color: #B2433E;
-      border: 1px solid #FCD3D1;
+      background: #F8EFEA;
+      color: #8C4738;
+      border: 1px solid #EBD5CB;
       padding: 0.35rem 0.65rem;
       border-radius: 20px;
       font-size: 0.78rem;
@@ -141,7 +142,7 @@
     }
 
     .nav-btn.active {
-      color: var(--rose-dark);
+      color: var(--earth-dark);
       font-weight: 600;
     }
 
@@ -208,7 +209,7 @@
       align-items: flex-start;
       gap: 1rem;
       padding: 1.2rem 0;
-      border-bottom: 1px solid #F0E8E2;
+      border-bottom: 1px solid var(--bg-subtle);
     }
 
     .feature-item:last-child {
@@ -226,10 +227,11 @@
       margin-top: 2px;
     }
 
-    .icon-heart { background: #FCEEED; color: #C25E54; }
-    .icon-leaf { background: #EEF4EE; color: #4F7958; }
-    .icon-diary { background: #F4EEF7; color: #6E4984; }
-    .icon-video { background: #E8F4EC; color: #2D6B3E; }
+    /* Ícones em tons terrosos suaves */
+    .icon-video { background: #EEF3EF; color: #37533B; }
+    .icon-heart { background: #F8EFEA; color: #8F4C3B; }
+    .icon-leaf { background: #F2EFE8; color: #62573B; }
+    .icon-diary { background: #EFEAE4; color: #5B4438; }
 
     .feature-content h3 {
       font-size: 0.96rem;
@@ -246,7 +248,7 @@
     }
 
     .feature-link {
-      color: var(--rose-dark);
+      color: var(--earth-dark);
       font-size: 0.82rem;
       font-weight: 600;
       cursor: pointer;
@@ -256,7 +258,7 @@
     }
 
     .btn-main {
-      background: var(--rose-dark);
+      background: var(--earth-dark);
       color: #FFFFFF;
       border: none;
       border-radius: 12px;
@@ -272,6 +274,7 @@
       min-height: 52px;
       margin-bottom: 0.8rem;
       text-decoration: none;
+      box-shadow: 0 4px 14px rgba(61, 43, 34, 0.15);
     }
 
     .btn-call {
@@ -301,12 +304,12 @@
     }
 
     .disclaimer-box {
-      background: #F8F3ED;
-      border: 1px solid #ECE0D5;
+      background: #F3ECE2;
+      border: 1px solid #E5D9CB;
       border-radius: 12px;
       padding: 1rem 1.1rem;
       font-size: 0.8rem;
-      color: #7D6B5D;
+      color: #634F43;
       display: flex;
       gap: 0.8rem;
       line-height: 1.5;
@@ -316,7 +319,7 @@
     .app-footer {
       text-align: center;
       font-size: 0.8rem;
-      color: #A09690;
+      color: #8C7B70;
       padding-top: 1rem;
       border-top: 1px dashed var(--border-color);
     }
@@ -347,12 +350,12 @@
     }
 
     input:focus, select:focus, textarea:focus {
-      border-color: var(--rose-accent);
+      border-color: var(--earth-accent);
       background: #FFFFFF;
     }
 
     .btn-primary {
-      background: var(--rose-dark);
+      background: var(--earth-dark);
       color: white;
       border: none;
       border-radius: 10px;
@@ -366,6 +369,7 @@
     .btn-secondary {
       background: var(--bg-subtle);
       border: 1px solid var(--border-color);
+      color: var(--text-main);
       padding: 0.45rem 0.8rem;
       border-radius: 8px;
       font-size: 0.82rem;
@@ -373,9 +377,9 @@
     }
 
     .btn-ficha {
-      background: var(--rose-light);
-      color: var(--rose-dark);
-      border: 1px solid var(--rose-accent);
+      background: var(--earth-light);
+      color: var(--earth-dark);
+      border: 1px solid var(--earth-accent);
       padding: 0.4rem 0.75rem;
       border-radius: 8px;
       font-size: 0.8rem;
@@ -396,27 +400,26 @@
       padding: 1rem;
     }
     .stat-card span { font-size: 0.78rem; color: var(--text-muted); }
-    .stat-card p { font-family: var(--font-serif); font-size: 1.6rem; color: var(--rose-dark); margin-top: 0.2rem; }
+    .stat-card p { font-family: var(--font-serif); font-size: 1.6rem; color: var(--earth-dark); margin-top: 0.2rem; }
 
     .tabs { display: flex; gap: 0.5rem; margin-bottom: 1.2rem; overflow-x: auto; padding-bottom: 0.4rem; }
-    .tab-btn { padding: 0.45rem 0.9rem; border-radius: 20px; border: 1px solid var(--border-color); background: var(--bg-card); cursor: pointer; font-size: 0.82rem; white-space: nowrap; }
-    .tab-btn.active { background: var(--rose-dark); color: white; border-color: var(--rose-dark); }
+    .tab-btn { padding: 0.45rem 0.9rem; border-radius: 20px; border: 1px solid var(--border-color); background: var(--bg-card); color: var(--text-muted); cursor: pointer; font-size: 0.82rem; white-space: nowrap; }
+    .tab-btn.active { background: var(--earth-dark); color: white; border-color: var(--earth-dark); }
     .table-container { overflow-x: auto; }
     table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.88rem; }
     th { padding: 0.7rem; border-bottom: 1px solid var(--border-color); font-weight: 600; color: var(--text-muted); }
     td { padding: 0.8rem 0.7rem; border-bottom: 1px solid var(--border-color); }
     .badge { display: inline-block; padding: 0.2rem 0.5rem; border-radius: 10px; font-size: 0.75rem; font-weight: 500; }
-    .badge-free { background: #EBF3ED; color: #3A694B; }
-    .badge-paid { background: #F8ECE9; color: #8C5346; }
-    .badge-diary { background: #F3EEF8; color: #6E4984; }
-    .badge-call { background: #E8F4EC; color: #2B6B3E; }
+    .badge-free { background: #EBF1EB; color: #2E5434; }
+    .badge-paid { background: #F6EDE6; color: #784430; }
+    .badge-diary { background: #F1ECE6; color: #5A4336; }
+    .badge-call { background: #EDF3ED; color: #2B5231; }
 
-    /* Modais */
     .modal-overlay {
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,0.45);
+      background: rgba(30, 20, 15, 0.45);
       z-index: 200;
       padding: 1.2rem;
       align-items: center;
@@ -430,7 +433,7 @@
       width: 100%;
       max-height: 90vh;
       overflow-y: auto;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+      box-shadow: 0 10px 30px rgba(39, 30, 25, 0.15);
     }
 
     .info-row {
@@ -455,16 +458,16 @@
 </head>
 <body>
 
-  <!-- Topbar -->
+  <!-- Topbar com Identidade Terrosa Nobre -->
   <header>
     <div class="nav-container">
       <div class="logo-wrapper" onclick="navigate('home')">
         <div class="logo-box">
           <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M5 14C5 17.866 8.13401 21 12 21C15.866 21 19 17.866 19 14" stroke="#F7EAE8" stroke-width="1.8" stroke-linecap="round"/>
-            <path d="M12 20V8" stroke="#F7EAE8" stroke-width="1.8" stroke-linecap="round"/>
-            <path d="M12 14C9.5 13.5 8 10 9.5 7.5C11 10 12 12 12 14Z" fill="#F7EAE8" opacity="0.9"/>
-            <path d="M12 14C14.5 13.5 16 10 14.5 7.5C13 10 12 12 12 14Z" fill="#F7EAE8" opacity="0.9"/>
+            <path d="M5 14C5 17.866 8.13401 21 12 21C15.866 21 19 17.866 19 14" stroke="#F4EBE3" stroke-width="1.8" stroke-linecap="round"/>
+            <path d="M12 20V8" stroke="#F4EBE3" stroke-width="1.8" stroke-linecap="round"/>
+            <path d="M12 14C9.5 13.5 8 10 9.5 7.5C11 10 12 12 12 14Z" fill="#F4EBE3" opacity="0.9"/>
+            <path d="M12 14C14.5 13.5 16 10 14.5 7.5C13 10 12 12 12 14Z" fill="#F4EBE3" opacity="0.9"/>
           </svg>
         </div>
         <div class="logo">
@@ -708,7 +711,7 @@
     <section id="view-confirmacao" class="view-section">
       <div class="card" style="text-align: center; padding: 3rem 1.5rem;">
         <div style="font-size: 2.2rem; margin-bottom: 1rem;">🌿</div>
-        <h2 style="font-family: var(--font-serif); margin-bottom: 0.6rem; color: var(--rose-dark);">Registro Concluído</h2>
+        <h2 style="font-family: var(--font-serif); margin-bottom: 0.6rem; color: var(--earth-dark);">Registro Concluído</h2>
         <p id="confirm-msg" style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 2rem;">
           Seus dados foram gravados com sucesso.
         </p>
@@ -810,7 +813,7 @@
   <div class="modal-overlay" id="helpModal" onclick="closeHelpModal(event)">
     <div class="modal-card" onclick="event.stopPropagation()">
       <div style="font-size: 1.8rem; margin-bottom: 0.5rem;">♡</div>
-      <h3 style="font-family: var(--font-serif); font-size: 1.3rem; margin-bottom: 0.5rem; color: #8F3B36;">Acolhimento Imediato</h3>
+      <h3 style="font-family: var(--font-serif); font-size: 1.3rem; margin-bottom: 0.5rem; color: #8F4C3B;">Acolhimento Imediato</h3>
       <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 1.2rem; line-height: 1.5;">
         Em momentos de sofrimento agudo, angústia intensa ou crise, procure os canais gratuitos 24 horas:
       </p>
@@ -826,11 +829,11 @@
     </div>
   </div>
 
-  <!-- Modal Ficha Completa & Anotações Privadas -->
+  <!-- Modal Ficha Completa, Enquadre e Anotações -->
   <div class="modal-overlay" id="fichaModal" onclick="closeFichaModal(event)">
     <div class="modal-card" onclick="event.stopPropagation()">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-        <h3 style="font-family: var(--font-serif); font-size: 1.3rem; color: var(--rose-dark);">Ficha Clínica do Paciente</h3>
+        <h3 style="font-family: var(--font-serif); font-size: 1.3rem; color: var(--earth-dark);">Ficha Clínica do Paciente</h3>
         <button class="btn-secondary" onclick="closeFichaModal()" style="padding: 0.2rem 0.6rem;">✕</button>
       </div>
       <div id="ficha-conteudo"></div>
@@ -859,7 +862,6 @@
     function openFichaModal() { document.getElementById('fichaModal').style.display = 'flex'; }
     function closeFichaModal() { document.getElementById('fichaModal').style.display = 'none'; }
 
-    /* Ficha Completa para Candidaturas e Espera */
     function verFichaCompleta(id) {
       const item = localData.todasCandidaturas.find(c => c.id === id);
       if (!item) return;
@@ -878,7 +880,7 @@
 
         <div class="info-row">
           <span>E-mail</span>
-          <strong><a href="mailto:${item.email}" style="color: var(--rose-dark); text-decoration:none;">${item.email}</a></strong>
+          <strong><a href="mailto:${item.email}" style="color: var(--earth-dark); text-decoration:none;">${item.email}</a></strong>
         </div>
 
         <div class="info-row">
@@ -912,7 +914,6 @@
       openFichaModal();
     }
 
-    /* Ficha do Paciente com FREQUÊNCIA EDITÁVEL, Anotações e Troca de Status */
     function verFichaPaciente(pacienteId) {
       const pac = localData.pacientes.find(p => p.id === pacienteId);
       if (!pac) return;
@@ -928,16 +929,15 @@
           <small style="color: var(--text-muted);">Início da análise: ${pac.inicio_atendimento || 'Data não registrada'}</small>
         </div>
 
-        <!-- Contato Original -->
         <div class="info-row">
           <span>Contato</span>
-          <strong>${cand.email ? `<a href="mailto:${cand.email}" style="color:var(--rose-dark); text-decoration:none;">${cand.email}</a>` : 'E-mail não registrado'}</strong>
+          <strong>${cand.email ? `<a href="mailto:${cand.email}" style="color:var(--earth-dark); text-decoration:none;">${cand.email}</a>` : 'E-mail não registrado'}</strong>
           ${telLimpo ? `<div style="margin-top:0.3rem;"><a href="${linkWpp}" target="_blank" style="background:#25D366; color:white; padding:0.25rem 0.6rem; border-radius:6px; text-decoration:none; font-size:0.75rem; font-weight:600;">Chamar no WhatsApp</a></div>` : ''}
         </div>
 
-        <!-- ENQUADRE CLÍNICO EDITÁVEL (FREQUÊNCIA E MODALIDADE) -->
+        <!-- ENQUADRE CLÍNICO EDITÁVEL -->
         <div style="background: var(--bg-subtle); padding: 0.9rem; border-radius: 12px; margin-bottom: 0.8rem; border: 1px solid var(--border-color);">
-          <span style="font-size: 0.8rem; font-weight: 600; color: var(--rose-dark); display:block; margin-bottom: 0.5rem;">⚙️ Enquadre da Análise</span>
+          <span style="font-size: 0.8rem; font-weight: 600; color: var(--earth-dark); display:block; margin-bottom: 0.5rem;">⚙️ Enquadre da Análise</span>
           
           <div class="grid-2">
             <div style="margin-bottom: 0.5rem;">
@@ -972,14 +972,14 @@
           <p style="color: var(--text-muted); font-size: 0.82rem; white-space: pre-wrap; margin-top: 0.2rem;">${cand.motivo}</p>
         </div>` : ''}
 
-        <!-- Anotações Clínicas Privadas (Só a analista acessa) -->
-        <div class="info-row" style="background: #FFF; border: 1px solid var(--rose-accent); padding: 0.8rem; margin-top: 0.8rem;">
-          <span style="color: var(--rose-dark); font-weight: 600;">🔒 Caderno Clínico da Analista (Privado)</span>
+        <!-- Anotações Clínicas Privadas -->
+        <div class="info-row" style="background: #FFF; border: 1px solid var(--earth-accent); padding: 0.8rem; margin-top: 0.8rem;">
+          <span style="color: var(--earth-dark); font-weight: 600;">🔒 Caderno Clínico da Analista (Privado)</span>
           <textarea id="anotacoes-paciente-${pac.id}" rows="4" style="margin-top: 0.4rem; font-size: 0.88rem; background: var(--bg-subtle);" placeholder="Escreva observações clínicas, pontos de escuta, transferência ou evolução...">${pac.anotacoes || ''}</textarea>
           <button class="btn-primary" style="margin-top: 0.5rem; font-size: 0.82rem; padding: 0.6rem;" onclick="salvarAnotacoesPaciente(${pac.id})">Salvar Anotações</button>
         </div>
 
-        <!-- Gestão de Status e Opção de Desfazer Acidente -->
+        <!-- Gestão de Status e Desfazer -->
         <div style="background: var(--bg-subtle); padding: 0.9rem; border-radius: 10px; margin-top: 1rem;">
           <span style="font-size: 0.78rem; color: var(--text-muted); display:block; margin-bottom:0.4rem;">Status do Paciente:</span>
           <div style="display: flex; gap: 0.4rem; flex-wrap: wrap;">
@@ -989,7 +989,7 @@
           </div>
           
           <div style="margin-top: 0.8rem; border-top: 1px dashed var(--border-color); padding-top: 0.6rem;">
-            <button class="btn-secondary" style="color: #9C443C; border-color: #E8B4B0;" onclick="desfazerPaciente(${pac.id}, ${pac.candidatura_id || 'null'})">
+            <button class="btn-secondary" style="color: #8C4738; border-color: #EBD5CB;" onclick="desfazerPaciente(${pac.id}, ${pac.candidatura_id || 'null'})">
               ↩️ Desfazer (Coloquei por engano)
             </button>
           </div>
@@ -1000,7 +1000,6 @@
       openFichaModal();
     }
 
-    /* Salvar Frequência e Modalidade */
     async function salvarEnquadrePaciente(id) {
       const frequencia = document.getElementById(`edit-freq-${id}`).value;
       const modalidade = document.getElementById(`edit-mod-${id}`).value;
@@ -1013,7 +1012,6 @@
       } catch (err) { alert('Erro ao atualizar: ' + err.message); }
     }
 
-    /* Salvar Anotações Privadas */
     async function salvarAnotacoesPaciente(id) {
       const texto = document.getElementById(`anotacoes-paciente-${id}`).value;
       try {
@@ -1024,7 +1022,6 @@
       } catch (err) { alert('Erro ao salvar anotações: ' + err.message); }
     }
 
-    /* Alterar Status */
     async function alterarStatusPaciente(id, novoStatus) {
       try {
         const { error } = await db.from('pacientes').update({ status: novoStatus }).eq('id', id);
@@ -1034,7 +1031,6 @@
       } catch (err) { alert('Erro: ' + err.message); }
     }
 
-    /* Desfazer Paciente */
     async function desfazerPaciente(pacienteId, candidaturaId) {
       if (!confirm('Deseja remover essa pessoa de Pacientes e devolvê-la para a Lista de Espera?')) return;
       try {
