@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 
-  <!-- Biblioteca de Conexão Segura -->
+  <!-- Conexão com Supabase -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
@@ -436,6 +436,27 @@
       cursor: pointer;
     }
 
+    /* Linha do Tempo de Evoluções */
+    .timeline-item {
+      position: relative;
+      padding-left: 1.4rem;
+      padding-bottom: 1.2rem;
+      border-left: 2px solid var(--border-color);
+    }
+    .timeline-item:last-child {
+      border-left: 2px solid transparent;
+      padding-bottom: 0;
+    }
+    .timeline-dot {
+      position: absolute;
+      left: -6px;
+      top: 0;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--earth-accent);
+    }
+
     .modal-overlay {
       display: none;
       position: fixed;
@@ -450,7 +471,7 @@
       background: white;
       border-radius: var(--radius);
       padding: 1.6rem;
-      max-width: 500px;
+      max-width: 520px;
       width: 100%;
       max-height: 90vh;
       overflow-y: auto;
@@ -740,7 +761,7 @@
       </div>
     </section>
 
-    <!-- 7. CRM ADMINISTRATIVO (SEM NOMES DE FERRAMENTAS EXTERNAS) -->
+    <!-- 7. CRM -->
     <section id="view-admin" class="view-section">
       <div id="login-box" class="card" style="max-width: 420px; margin: 1.5rem auto;">
         <h2 style="font-family: var(--font-serif); margin-bottom: 0.4rem; text-align: center;">Área Restrita</h2>
@@ -770,7 +791,6 @@
           <button class="btn-secondary" onclick="handleLogout()">Sair</button>
         </div>
 
-        <!-- Indicadores -->
         <div class="crm-stats">
           <div class="stat-card"><span>Candidaturas</span><p id="stat-candidaturas">0</p></div>
           <div class="stat-card"><span>Pacientes Ativos</span><p id="stat-pacientes">0</p></div>
@@ -863,7 +883,7 @@
     </div>
   </div>
 
-  <!-- Modal Ficha Completa -->
+  <!-- Modal Ficha Completa, Prontuário por Sessão e Valores -->
   <div class="modal-overlay" id="fichaModal" onclick="closeFichaModal(event)">
     <div class="modal-card" onclick="event.stopPropagation()">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
@@ -948,13 +968,23 @@
       openFichaModal();
     }
 
-    function verFichaPaciente(pacienteId) {
+    /* Ficha do Paciente com PRONTUÁRIO POR SESSÃO (LINHA DO TEMPO) */
+    async function verFichaPaciente(pacienteId) {
       const pac = localData.pacientes.find(p => p.id === pacienteId);
       if (!pac) return;
 
       const cand = localData.todasCandidaturas.find(c => c.id === pac.candidatura_id || c.nome.toLowerCase() === pac.nome.toLowerCase()) || {};
       const telLimpo = (cand.telefone || '').replace(/\D/g, '');
       const linkWpp = telLimpo ? `https://wa.me/55${telLimpo}` : '#';
+
+      // Busca as evoluções clínicas deste paciente no banco
+      const { data: evolucoes } = await db.from('evolucoes_paciente')
+        .select('*')
+        .eq('paciente_id', pacienteId)
+        .order('data_sessao', { ascending: false });
+
+      const listaEvolucoes = evolucoes || [];
+      const proximoNumeroSessao = listaEvolucoes.length + 1;
 
       const conteudo = `
         <div style="margin-bottom: 1rem;">
@@ -1014,17 +1044,57 @@
           </button>
         </div>
 
-        ${cand.motivo ? `
-        <div class="info-row" style="background: #FFF; border: 1px solid var(--border-color); padding: 0.8rem;">
-          <span>Queixa / Motivação Inicial</span>
-          <p style="color: var(--text-muted); font-size: 0.82rem; white-space: pre-wrap; margin-top: 0.2rem;">${cand.motivo}</p>
-        </div>` : ''}
+        <!-- PRONTUÁRIO: EVOLUÇÕES POR SESSÃO (LINHA DO TEMPO) -->
+        <div style="background: #FFF; border: 1.5px solid var(--earth-accent); padding: 1rem; border-radius: 12px; margin-top: 1rem;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 0.6rem;">
+            <span style="color: var(--earth-dark); font-weight: 600; font-size:0.95rem;">📜 Prontuário & Linha do Tempo</span>
+            <span class="badge badge-paid">${listaEvolucoes.length} sessões registradas</span>
+          </div>
+          <p style="font-size:0.78rem; color:var(--text-muted); margin-bottom: 1rem;">Registro confidencial individual de cada sessão da análise.</p>
 
-        <!-- Anotações Clínicas Privadas -->
-        <div class="info-row" style="background: #FFF; border: 1px solid var(--earth-accent); padding: 0.8rem; margin-top: 0.8rem;">
-          <span style="color: var(--earth-dark); font-weight: 600;">🔒 Caderno Clínico da Analista (Privado)</span>
-          <textarea id="anotacoes-paciente-${pac.id}" rows="4" style="margin-top: 0.4rem; font-size: 0.88rem; background: var(--bg-subtle);" placeholder="Escreva observações clínicas, pontos de escuta, transferência ou evolução...">${pac.anotacoes || ''}</textarea>
-          <button class="btn-primary" style="margin-top: 0.5rem; font-size: 0.82rem; padding: 0.6rem;" onclick="salvarAnotacoesPaciente(${pac.id})">Salvar Anotações</button>
+          <!-- Formulário para nova evolução -->
+          <div style="background: var(--bg-subtle); padding: 0.8rem; border-radius: 10px; margin-bottom: 1.2rem;">
+            <strong style="font-size:0.82rem; color:var(--earth-dark); display:block; margin-bottom:0.4rem;">+ Nova Evolução de Sessão</strong>
+            <div class="grid-2">
+              <div style="margin-bottom:0.4rem;">
+                <label style="font-size:0.75rem;">Sessão Nº</label>
+                <input type="number" id="evol-num-${pac.id}" value="${proximoNumeroSessao}" style="padding:0.4rem; font-size:0.85rem; background:#FFF;">
+              </div>
+              <div style="margin-bottom:0.4rem;">
+                <label style="font-size:0.75rem;">Data da Análise</label>
+                <input type="date" id="evol-data-${pac.id}" value="${new Date().toISOString().split('T')[0]}" style="padding:0.4rem; font-size:0.85rem; background:#FFF;">
+              </div>
+            </div>
+            <div style="margin-bottom:0.4rem;">
+              <label style="font-size:0.75rem;">Tema / Foco Central</label>
+              <input type="text" id="evol-titulo-${pac.id}" placeholder="Ex: Análise de sonho / Resistência / Questão edípica" style="padding:0.4rem; font-size:0.85rem; background:#FFF;">
+            </div>
+            <div style="margin-bottom:0.5rem;">
+              <label style="font-size:0.75rem;">Registro Clínico e Observações</label>
+              <textarea id="evol-conteudo-${pac.id}" rows="3" placeholder="Pontos de escuta, atos falhos, associações livres e manejo analítico..." style="padding:0.4rem; font-size:0.85rem; background:#FFF;"></textarea>
+            </div>
+            <button class="btn-primary" style="font-size:0.82rem; padding:0.5rem;" onclick="salvarEvolucaoSessao(${pac.id})">Salvar Registro da Sessão</button>
+          </div>
+
+          <!-- Histórico das Sessões (Linha do Tempo) -->
+          <div style="max-height: 260px; overflow-y: auto; padding-right: 0.3rem;">
+            ${listaEvolucoes.length === 0 ? `<p style="font-size:0.82rem; color:var(--text-muted); text-align:center; padding:1rem;">Nenhuma sessão registrada no prontuário ainda.</p>` : ''}
+            
+            ${listaEvolucoes.map(ev => `
+              <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                  <strong style="font-size:0.85rem; color:var(--earth-dark);">Sessão ${ev.numero_sessao || ''}</strong>
+                  <div style="display:flex; gap:0.4rem; align-items:center;">
+                    <span style="font-size:0.75rem; color:var(--text-muted);">🗓️ ${ev.data_sessao}</span>
+                    <button onclick="excluirEvolucao(${ev.id}, ${pac.id})" style="background:none; border:none; color:#8C4738; cursor:pointer; font-size:0.75rem;">✕</button>
+                  </div>
+                </div>
+                ${ev.titulo ? `<div style="font-size:0.8rem; font-weight:600; color:var(--earth-accent); margin:0.15rem 0;">${ev.titulo}</div>` : ''}
+                <p style="font-size:0.82rem; color:var(--text-main); white-space:pre-wrap; margin-top:0.2rem; line-height:1.45;">${ev.conteudo}</p>
+              </div>
+            `).join('')}
+          </div>
         </div>
 
         <!-- Gestão de Status e Desfazer -->
@@ -1048,6 +1118,47 @@
       openFichaModal();
     }
 
+    /* Salvar Nova Evolução no Prontuário */
+    async function salvarEvolucaoSessao(pacienteId) {
+      const num = parseInt(document.getElementById(`evol-num-${pacienteId}`).value) || null;
+      const data = document.getElementById(`evol-data-${pacienteId}`).value;
+      const titulo = document.getElementById(`evol-titulo-${pacienteId}`).value.trim();
+      const conteudo = document.getElementById(`evol-conteudo-${pacienteId}`).value.trim();
+
+      if (!conteudo) {
+        alert('Por favor, escreva as anotações clínicas da sessão.');
+        return;
+      }
+
+      try {
+        const { error } = await db.from('evolucoes_paciente').insert([{
+          paciente_id: pacienteId,
+          numero_sessao: num,
+          data_sessao: data,
+          titulo: titulo,
+          conteudo: conteudo
+        }]);
+
+        if (error) throw error;
+        alert('Evolução clínica registrada com sucesso no prontuário!');
+        verFichaPaciente(pacienteId); // Recarrega a ficha com a linha do tempo atualizada
+      } catch (err) {
+        alert('Erro ao salvar evolução: ' + err.message);
+      }
+    }
+
+    /* Excluir Registro de Evolução */
+    async function excluirEvolucao(evolucaoId, pacienteId) {
+      if (!confirm('Deseja excluir esta anotação de sessão do prontuário?')) return;
+      try {
+        const { error } = await db.from('evolucoes_paciente').delete().eq('id', evolucaoId);
+        if (error) throw error;
+        verFichaPaciente(pacienteId);
+      } catch (err) {
+        alert('Erro ao excluir: ' + err.message);
+      }
+    }
+
     async function salvarEnquadrePaciente(id) {
       const frequencia = document.getElementById(`edit-freq-${id}`).value;
       const modalidade = document.getElementById(`edit-mod-${id}`).value;
@@ -1067,16 +1178,6 @@
         await carregarDadosBanco();
         verFichaPaciente(id);
       } catch (err) { alert('Erro ao atualizar: ' + err.message); }
-    }
-
-    async function salvarAnotacoesPaciente(id) {
-      const texto = document.getElementById(`anotacoes-paciente-${id}`).value;
-      try {
-        const { error } = await db.from('pacientes').update({ anotacoes: texto }).eq('id', id);
-        if (error) throw error;
-        alert('Anotações salvas com segurança!');
-        await carregarDadosBanco();
-      } catch (err) { alert('Erro ao salvar anotações: ' + err.message); }
     }
 
     async function alterarStatusPaciente(id, novoStatus) {
@@ -1474,7 +1575,7 @@
               <td><strong>${item.nome}</strong><br><small style="color:var(--text-muted);">${item.frequencia || 'Semanal'}</small></td>
               <td><span style="font-weight:600; color:var(--earth-dark);">${valorFormatado}</span></td>
               <td>
-                <button class="btn-ficha" onclick="verFichaPaciente(${item.id})">🔍 Ficha & Valores</button>
+                <button class="btn-ficha" onclick="verFichaPaciente(${item.id})">🔍 Prontuário & Ficha</button>
               </td>
             </tr>
           `;
