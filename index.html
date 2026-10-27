@@ -3,36 +3,33 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Acolhe — Um lugar para escutar o que sente</title>
+  <title>Acolhe — Gestão e Clínica Psicanalítica</title>
   
-  <!-- Fontes Google -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <!-- Tipografia Ranade (Indian Type Foundry / Fontshare) -->
+  <link href="https://api.fontshare.com/v2/css?f[]=ranade@300,400,500,600,700&display=swap" rel="stylesheet">
 
-  <!-- Conexão com Supabase -->
+  <!-- Conexão Segura com Supabase -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
     :root {
-      /* PALETA TERROSA SOFISTICADA */
-      --bg-main: #F8F5F0;        /* Linho e areia quente */
-      --bg-card: #FFFFFF;        /* Branco puro para cartões */
-      --bg-subtle: #F1ECE3;      /* Argila suave e pergaminho */
-      --tag-bg: #EAE1D5;        /* Areia terrosa para badges */
-      --tag-text: #543E31;       /* Marrom castanho */
-      --earth-light: #F4EBE3;    /* Terracota pastel suave */
-      --earth-accent: #B2836B;   /* Argila / caramelo refinado */
-      --earth-dark: #3D2B22;     /* Marrom café nobre */
-      --green-call: #4D5D4E;     /* Oliva / sálvia terroso para vídeo */
-      --green-wpp: #25D366;
-      --text-main: #271E19;      /* Marrom escuro nobre */
-      --text-muted: #6B5B52;     /* Marrom acinzentado elegante */
-      --border-color: #E2D7CC;   /* Linho refinado */
-      --font-serif: 'Playfair Display', Georgia, serif;
-      --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-      --radius: 18px;
-      --shadow: 0 6px 24px rgba(45, 30, 20, 0.04);
+      /* PALETA TERROSA EDITORIAL */
+      --bg-main: #FBF9F5;        /* Linho nobre e gesso quente */
+      --bg-card: #FFFFFF;        /* Superfícies limpas */
+      --bg-subtle: #F3EFE9;      /* Argila clara / areia fina */
+      --tag-bg: #ECE5DC;        /* Areia suave para pequenas etiquetas */
+      --tag-text: #4E3C32;       /* Castanho profundo */
+      --earth-light: #F4EBE3;    /* Terracota pastel */
+      --earth-accent: #A8765B;   /* Argila refinada */
+      --earth-dark: #2A1F1A;     /* Café espresso / ébano quente */
+      --green-call: #3B5240;     /* Oliva profundo para atendimentos */
+      --green-wpp: #2A7E46;      /* Verde botânico sóbrio para mensagens */
+      --text-main: #211B17;      /* Tipografia primária (marrom quase preto) */
+      --text-muted: #6E635A;     /* Texto de apoio refinado */
+      --border-color: #E6DED4;   /* Linho suave para divisórias */
+      --font-family: 'Ranade', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --radius: 14px;
+      --shadow: 0 8px 30px rgba(33, 27, 23, 0.04);
     }
 
     * {
@@ -45,25 +42,26 @@
     body {
       background-color: var(--bg-main);
       color: var(--text-main);
-      font-family: var(--font-sans);
+      font-family: var(--font-family);
       line-height: 1.6;
-      font-size: 16px;
+      font-size: 15px;
+      letter-spacing: -0.01em;
       overflow-x: hidden;
     }
 
     header {
       position: sticky;
       top: 0;
-      background: rgba(248, 245, 240, 0.96);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+      background: rgba(251, 249, 245, 0.94);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
       border-bottom: 1px solid var(--border-color);
       z-index: 100;
-      padding: 0.85rem 1.2rem;
+      padding: 0.9rem 1.4rem;
     }
 
     .nav-container {
-      max-width: 680px;
+      max-width: 720px;
       margin: 0 auto;
       display: flex;
       justify-content: space-between;
@@ -73,72 +71,75 @@
     .logo-wrapper {
       display: flex;
       align-items: center;
-      gap: 0.65rem;
+      gap: 0.75rem;
       cursor: pointer;
     }
 
     .logo-box {
-      width: 36px;
-      height: 36px;
-      border-radius: 9px;
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
       background: var(--earth-dark);
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 2px 8px rgba(61, 43, 34, 0.18);
       flex-shrink: 0;
     }
 
     .logo-box svg {
-      width: 22px;
-      height: 22px;
+      width: 18px;
+      height: 18px;
     }
 
     .logo {
-      font-family: var(--font-serif);
-      font-size: 1.25rem;
+      font-family: var(--font-family);
+      font-size: 1.2rem;
       font-weight: 600;
       color: var(--text-main);
       line-height: 1.1;
+      letter-spacing: -0.02em;
     }
 
     .logo span {
-      font-size: 0.72rem;
-      font-family: var(--font-sans);
+      font-size: 0.7rem;
       font-weight: 400;
       color: var(--text-muted);
       display: block;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin-top: 1px;
     }
 
     .header-actions {
       display: flex;
       align-items: center;
-      gap: 0.3rem;
+      gap: 0.25rem;
     }
 
     .btn-help {
-      background: #F8EFEA;
-      color: #8C4738;
-      border: 1px solid #EBD5CB;
-      padding: 0.35rem 0.65rem;
+      background: var(--bg-subtle);
+      color: var(--earth-dark);
+      border: 1px solid var(--border-color);
+      padding: 0.35rem 0.75rem;
       border-radius: 20px;
-      font-size: 0.78rem;
+      font-size: 0.76rem;
       font-weight: 500;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.2rem;
+      font-family: var(--font-family);
       cursor: pointer;
+      transition: all 0.2s ease;
     }
 
     .nav-btn {
       background: none;
       border: none;
       color: var(--text-muted);
-      font-family: var(--font-sans);
+      font-family: var(--font-family);
       font-size: 0.82rem;
+      font-weight: 500;
       cursor: pointer;
-      padding: 0.4rem 0.5rem;
-      border-radius: 8px;
+      padding: 0.4rem 0.55rem;
+      border-radius: 6px;
+      transition: color 0.2s ease;
     }
 
     .nav-btn.active {
@@ -147,14 +148,14 @@
     }
 
     main {
-      max-width: 680px;
+      max-width: 720px;
       margin: 0 auto;
-      padding: 1.8rem 1.2rem 4rem;
+      padding: 2.2rem 1.4rem 4.5rem;
     }
 
     .view-section {
       display: none;
-      animation: fadeIn 0.3s ease;
+      animation: fadeIn 0.25s ease-out;
     }
 
     .view-section.active {
@@ -162,7 +163,7 @@
     }
 
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(6px); }
+      from { opacity: 0; transform: translateY(4px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
@@ -170,29 +171,32 @@
       display: inline-block;
       background: var(--tag-bg);
       color: var(--tag-text);
-      font-size: 0.72rem;
+      font-size: 0.7rem;
       font-weight: 600;
-      letter-spacing: 1px;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
-      padding: 0.35rem 0.8rem;
+      padding: 0.3rem 0.75rem;
       border-radius: 20px;
       margin-bottom: 1.2rem;
     }
 
     h1 {
-      font-family: var(--font-serif);
-      font-size: 2.2rem;
-      line-height: 1.2;
+      font-family: var(--font-family);
+      font-size: 2.35rem;
+      font-weight: 600;
+      line-height: 1.16;
       color: var(--text-main);
-      margin-bottom: 0.9rem;
-      letter-spacing: -0.5px;
+      margin-bottom: 1rem;
+      letter-spacing: -0.035em;
     }
 
     .hero-subtitle {
       color: var(--text-muted);
-      font-size: 0.98rem;
+      font-size: 1rem;
       line-height: 1.6;
-      margin-bottom: 2rem;
+      margin-bottom: 2.4rem;
+      font-weight: 400;
+      max-width: 580px;
     }
 
     .feature-card {
@@ -200,49 +204,47 @@
       border: 1px solid var(--border-color);
       border-radius: var(--radius);
       box-shadow: var(--shadow);
-      padding: 0.6rem 1.4rem;
-      margin-bottom: 1.8rem;
+      padding: 0.4rem 1.4rem;
+      margin-bottom: 2rem;
     }
 
     .feature-item {
       display: flex;
       align-items: flex-start;
-      gap: 1rem;
-      padding: 1.2rem 0;
-      border-bottom: 1px solid var(--bg-subtle);
+      gap: 1.1rem;
+      padding: 1.25rem 0;
+      border-bottom: 1px solid var(--border-color);
     }
 
     .feature-item:last-child {
       border-bottom: none;
     }
 
-    .feature-icon {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
+    .feature-icon-wrapper {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      background: var(--bg-subtle);
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
+      color: var(--earth-dark);
       margin-top: 2px;
     }
 
-    .icon-video { background: #EEF3EF; color: #37533B; }
-    .icon-heart { background: #F8EFEA; color: #8F4C3B; }
-    .icon-leaf { background: #F2EFE8; color: #62573B; }
-    .icon-diary { background: #EFEAE4; color: #5B4438; }
-
     .feature-content h3 {
-      font-size: 0.96rem;
+      font-size: 0.98rem;
       font-weight: 600;
       color: var(--text-main);
-      margin-bottom: 0.2rem;
+      margin-bottom: 0.25rem;
+      letter-spacing: -0.015em;
     }
 
     .feature-content p {
       font-size: 0.86rem;
       color: var(--text-muted);
-      line-height: 1.45;
+      line-height: 1.5;
       margin-bottom: 0.5rem;
     }
 
@@ -253,44 +255,58 @@
       cursor: pointer;
       display: inline-flex;
       align-items: center;
-      gap: 0.3rem;
+      gap: 0.4rem;
+      text-decoration: none;
+    }
+
+    .feature-link svg {
+      width: 14px;
+      height: 14px;
+      transition: transform 0.15s ease;
+    }
+
+    .feature-link:hover svg {
+      transform: translateX(3px);
     }
 
     .btn-main {
       background: var(--earth-dark);
       color: #FFFFFF;
       border: none;
-      border-radius: 12px;
-      padding: 1rem 1.5rem;
-      font-size: 0.95rem;
+      border-radius: 10px;
+      padding: 0.95rem 1.6rem;
+      font-size: 0.92rem;
       font-weight: 500;
+      font-family: var(--font-family);
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 0.5rem;
       width: 100%;
-      min-height: 52px;
+      min-height: 50px;
       margin-bottom: 0.8rem;
       text-decoration: none;
-      box-shadow: 0 4px 14px rgba(61, 43, 34, 0.15);
+      box-shadow: 0 4px 14px rgba(33, 27, 23, 0.12);
+      letter-spacing: -0.01em;
     }
 
     .btn-call {
       background: var(--green-call);
       color: #FFFFFF;
       border: none;
-      border-radius: 12px;
-      padding: 1rem 1.5rem;
-      font-size: 1rem;
-      font-weight: 600;
+      border-radius: 10px;
+      padding: 0.95rem 1.5rem;
+      font-size: 0.95rem;
+      font-weight: 500;
+      font-family: var(--font-family);
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 0.6rem;
       width: 100%;
-      min-height: 54px;
+      min-height: 50px;
       text-decoration: none;
       margin-top: 1rem;
     }
@@ -303,24 +319,24 @@
     }
 
     .disclaimer-box {
-      background: #F3ECE2;
-      border: 1px solid #E5D9CB;
-      border-radius: 12px;
-      padding: 1rem 1.1rem;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 0.9rem 1.1rem;
       font-size: 0.8rem;
-      color: #634F43;
-      display: flex;
-      gap: 0.8rem;
-      line-height: 1.5;
+      color: var(--text-muted);
+      line-height: 1.55;
       margin-bottom: 2rem;
     }
 
     .app-footer {
       text-align: center;
-      font-size: 0.8rem;
-      color: #8C7B70;
-      padding-top: 1rem;
-      border-top: 1px dashed var(--border-color);
+      font-size: 0.78rem;
+      color: #8C8075;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border-color);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
     }
 
     .card {
@@ -332,20 +348,21 @@
       margin-bottom: 1.5rem;
     }
 
-    .form-group { margin-bottom: 1.2rem; }
-    label { display: block; font-size: 0.85rem; font-weight: 500; margin-bottom: 0.4rem; color: var(--text-main); }
+    .form-group { margin-bottom: 1.25rem; }
+    label { display: block; font-size: 0.82rem; font-weight: 500; margin-bottom: 0.4rem; color: var(--text-main); }
     
     input[type="text"], input[type="email"], input[type="tel"], input[type="password"], input[type="date"], input[type="time"], input[type="number"], select, textarea {
       width: 100%;
-      padding: 0.85rem 1rem;
+      padding: 0.8rem 0.95rem;
       border: 1px solid var(--border-color);
-      border-radius: 10px;
+      border-radius: 8px;
       background: var(--bg-subtle);
-      font-family: var(--font-sans);
+      font-family: var(--font-family);
       font-size: 1rem;
       color: var(--text-main);
       outline: none;
       -webkit-appearance: none;
+      transition: border-color 0.2s ease, background 0.2s ease;
     }
 
     input:focus, select:focus, textarea:focus {
@@ -357,32 +374,53 @@
       background: var(--earth-dark);
       color: white;
       border: none;
-      border-radius: 10px;
-      padding: 0.9rem;
-      font-size: 0.95rem;
+      border-radius: 8px;
+      padding: 0.85rem;
+      font-size: 0.9rem;
       font-weight: 500;
+      font-family: var(--font-family);
       width: 100%;
       cursor: pointer;
+      transition: opacity 0.2s ease;
     }
 
     .btn-secondary {
       background: var(--bg-subtle);
       border: 1px solid var(--border-color);
       color: var(--text-main);
-      padding: 0.45rem 0.8rem;
-      border-radius: 8px;
-      font-size: 0.82rem;
+      font-family: var(--font-family);
+      padding: 0.42rem 0.75rem;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 500;
       cursor: pointer;
     }
 
     .btn-ficha {
-      background: var(--earth-light);
+      background: var(--bg-subtle);
       color: var(--earth-dark);
-      border: 1px solid var(--earth-accent);
+      border: 1px solid var(--border-color);
       padding: 0.4rem 0.75rem;
-      border-radius: 8px;
-      font-size: 0.8rem;
-      font-weight: 600;
+      border-radius: 6px;
+      font-size: 0.78rem;
+      font-weight: 500;
+      font-family: var(--font-family);
+      cursor: pointer;
+    }
+
+    .btn-lembrete-wpp {
+      background: var(--bg-subtle);
+      color: var(--green-wpp);
+      border: 1px solid #C4DFC8;
+      padding: 0.35rem 0.65rem;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      font-family: var(--font-family);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      text-decoration: none;
       cursor: pointer;
     }
 
@@ -395,64 +433,82 @@
     .stat-card {
       background: var(--bg-card);
       border: 1px solid var(--border-color);
-      border-radius: 14px;
-      padding: 1rem;
+      border-radius: var(--radius);
+      padding: 1rem 1.1rem;
     }
-    .stat-card span { font-size: 0.78rem; color: var(--text-muted); }
-    .stat-card p { font-family: var(--font-serif); font-size: 1.5rem; color: var(--earth-dark); margin-top: 0.2rem; }
+    .stat-card span { font-size: 0.75rem; color: var(--text-muted); letter-spacing: 0.04em; text-transform: uppercase; font-weight: 500; }
+    .stat-card p { font-family: var(--font-family); font-size: 1.45rem; font-weight: 600; color: var(--earth-dark); margin-top: 0.2rem; letter-spacing: -0.02em; }
 
-    .tabs { display: flex; gap: 0.5rem; margin-bottom: 1.2rem; overflow-x: auto; padding-bottom: 0.4rem; }
-    .tab-btn { padding: 0.45rem 0.9rem; border-radius: 20px; border: 1px solid var(--border-color); background: var(--bg-card); color: var(--text-muted); cursor: pointer; font-size: 0.82rem; white-space: nowrap; }
+    .tabs { display: flex; gap: 0.4rem; margin-bottom: 1.2rem; overflow-x: auto; padding-bottom: 0.4rem; }
+    .tab-btn { padding: 0.42rem 0.85rem; border-radius: 20px; border: 1px solid var(--border-color); background: var(--bg-card); color: var(--text-muted); font-family: var(--font-family); cursor: pointer; font-size: 0.78rem; font-weight: 500; white-space: nowrap; }
     .tab-btn.active { background: var(--earth-dark); color: white; border-color: var(--earth-dark); }
     .table-container { overflow-x: auto; }
-    table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.88rem; }
-    th { padding: 0.7rem; border-bottom: 1px solid var(--border-color); font-weight: 600; color: var(--text-muted); }
-    td { padding: 0.8rem 0.7rem; border-bottom: 1px solid var(--border-color); }
-    .badge { display: inline-block; padding: 0.2rem 0.5rem; border-radius: 10px; font-size: 0.75rem; font-weight: 500; }
-    .badge-free { background: #EBF1EB; color: #2E5434; }
-    .badge-paid { background: #F6EDE6; color: #784430; }
-    .badge-diary { background: #F1ECE6; color: #5A4336; }
-    .badge-call { background: #EDF3ED; color: #2B5231; }
+    table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.85rem; }
+    th { padding: 0.75rem 0.6rem; border-bottom: 1px solid var(--border-color); font-weight: 600; color: var(--text-muted); font-size: 0.75rem; letter-spacing: 0.03em; text-transform: uppercase; }
+    td { padding: 0.85rem 0.6rem; border-bottom: 1px solid var(--border-color); }
+    
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.2rem 0.55rem;
+      border-radius: 4px;
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+    }
+    .badge-free { background: #E9EFE9; color: #2B5433; }
+    .badge-paid { background: #F4ECE7; color: #734533; }
+    .badge-diary { background: var(--bg-subtle); color: var(--text-main); border: 1px solid var(--border-color); }
+    .badge-call { background: #EAF0EC; color: #2D5837; }
 
     .badge-pago {
-      background: #EBF5EE;
-      color: #2D6B3E;
-      border: 1px solid #CDE6D3;
-      padding: 0.25rem 0.6rem;
-      border-radius: 12px;
-      font-size: 0.76rem;
-      font-weight: 600;
+      background: #EBF4ED;
+      color: #245831;
+      border: 1px solid #CCE2D2;
+      padding: 0.25rem 0.55rem;
+      border-radius: 6px;
+      font-size: 0.74rem;
+      font-weight: 500;
+      font-family: var(--font-family);
       cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
     }
 
     .badge-pendente {
-      background: #FFF6E6;
-      color: #945B0A;
-      border: 1px solid #FFE2B3;
-      padding: 0.25rem 0.6rem;
-      border-radius: 12px;
-      font-size: 0.76rem;
-      font-weight: 600;
+      background: #FAF3E6;
+      color: #8C5B17;
+      border: 1px solid #F0DEB8;
+      padding: 0.25rem 0.55rem;
+      border-radius: 6px;
+      font-size: 0.74rem;
+      font-weight: 500;
+      font-family: var(--font-family);
       cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
     }
 
-    /* Linha do Tempo de Evoluções */
+    /* Linha do Tempo Editorial de Evoluções */
     .timeline-item {
       position: relative;
-      padding-left: 1.4rem;
-      padding-bottom: 1.2rem;
-      border-left: 2px solid var(--border-color);
+      padding-left: 1.25rem;
+      padding-bottom: 1.25rem;
+      border-left: 1.5px solid var(--border-color);
     }
     .timeline-item:last-child {
-      border-left: 2px solid transparent;
+      border-left: 1.5px solid transparent;
       padding-bottom: 0;
     }
     .timeline-dot {
       position: absolute;
-      left: -6px;
-      top: 0;
-      width: 10px;
-      height: 10px;
+      left: -4.5px;
+      top: 2px;
+      width: 8px;
+      height: 8px;
       border-radius: 50%;
       background: var(--earth-accent);
     }
@@ -461,7 +517,7 @@
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(30, 20, 15, 0.45);
+      background: rgba(25, 20, 16, 0.45);
       z-index: 200;
       padding: 1.2rem;
       align-items: center;
@@ -475,21 +531,23 @@
       width: 100%;
       max-height: 90vh;
       overflow-y: auto;
-      box-shadow: 0 10px 30px rgba(39, 30, 25, 0.15);
+      box-shadow: 0 16px 40px rgba(33, 27, 23, 0.16);
     }
 
     .info-row {
       background: var(--bg-subtle);
       padding: 0.7rem 0.9rem;
-      border-radius: 10px;
-      margin-bottom: 0.6rem;
-      font-size: 0.88rem;
+      border-radius: 8px;
+      margin-bottom: 0.55rem;
+      font-size: 0.85rem;
     }
     .info-row span {
       display: block;
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       color: var(--text-muted);
-      margin-bottom: 0.1rem;
+      margin-bottom: 0.15rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
     }
 
     @media (min-width: 640px) {
@@ -500,27 +558,24 @@
 </head>
 <body>
 
-  <!-- Topbar -->
+  <!-- Topbar Minimalista e Editorial -->
   <header>
     <div class="nav-container">
       <div class="logo-wrapper" onclick="navigate('home')">
         <div class="logo-box">
-          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M5 14C5 17.866 8.13401 21 12 21C15.866 21 19 17.866 19 14" stroke="#F4EBE3" stroke-width="1.8" stroke-linecap="round"/>
-            <path d="M12 20V8" stroke="#F4EBE3" stroke-width="1.8" stroke-linecap="round"/>
-            <path d="M12 14C9.5 13.5 8 10 9.5 7.5C11 10 12 12 12 14Z" fill="#F4EBE3" opacity="0.9"/>
-            <path d="M12 14C14.5 13.5 16 10 14.5 7.5C13 10 12 12 12 14Z" fill="#F4EBE3" opacity="0.9"/>
+          <svg viewBox="0 0 24 24" fill="none" stroke="#F4EBE3" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 21a9 9 0 0 0 9-9c0-4.97-4.03-9-9-9s-9 4.03-9 9a9 9 0 0 0 9 9z"/>
+            <path d="M12 7v10"/>
+            <path d="M8 12c0-2.2 1.8-4 4-4s4 1.8 4 4"/>
           </svg>
         </div>
         <div class="logo">
           Acolhe
-          <span>terapia · emoções · presença</span>
+          <span>Escuta e Presença</span>
         </div>
       </div>
       <div class="header-actions">
-        <button class="btn-help" onclick="openHelpModal()">
-          <span>♡</span> Ajuda
-        </button>
+        <button class="btn-help" onclick="openHelpModal()">Apoio Imediato</button>
         <button class="nav-btn" onclick="navigate('minha-analise')">Sessão</button>
         <button class="nav-btn" onclick="navigate('diario')">Diário</button>
         <button class="nav-btn" onclick="navigate('admin')">CRM</button>
@@ -531,127 +586,161 @@
   <main>
     <!-- 1. HOME -->
     <section id="view-home" class="view-section active">
-      <div class="pill-tag">Um espaço seu</div>
+      <div class="pill-tag">Clínica e Singularidade</div>
       <h1>Um lugar para escutar o que sente.</h1>
       <p class="hero-subtitle">
-        Acompanhamento terapêutico psicanalítico, avaliação de terapia social e ferramentas para observar suas emoções.
+        Acompanhamento terapêutico psicanalítico, avaliação de vaga social e ferramentas dedicadas à observação subjetiva.
       </p>
 
       <div class="feature-card">
+        <!-- Minha Sessão -->
         <div class="feature-item">
-          <div class="feature-icon icon-video">🎥</div>
+          <div class="feature-icon-wrapper">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+              <line x1="8" y1="21" x2="16" y2="21"/>
+              <line x1="12" y1="17" x2="12" y2="21"/>
+            </svg>
+          </div>
           <div class="feature-content">
             <h3>Minha próxima análise</h3>
-            <p>Consulte a data da sua sessão e acesse a sala de videochamada online com um clique.</p>
-            <span class="feature-link" onclick="navigate('minha-analise')">Acessar minha sessão ➔</span>
+            <p>Consulte a data do seu agendamento e acerte sua entrada na sala de vídeo com um clique.</p>
+            <span class="feature-link" onclick="navigate('minha-analise')">
+              Acessar sessão 
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </span>
           </div>
         </div>
 
+        <!-- Terapia Social -->
         <div class="feature-item">
-          <div class="feature-icon icon-heart">♡</div>
+          <div class="feature-icon-wrapper">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+              <circle cx="9" cy="7" r="4"/>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+            </svg>
+          </div>
           <div class="feature-content">
             <h3>Terapia social</h3>
-            <p>Inscreva-se para uma avaliação de vaga social com acompanhamento acolhedor.</p>
-            <span class="feature-link" onclick="navigate('form-social')">Candidatar-se à vaga social ➔</span>
+            <p>Inscrição para triagem de vagas voltadas ao atendimento com valor social acordado.</p>
+            <span class="feature-link" onclick="navigate('form-social')">
+              Candidatura social 
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </span>
           </div>
         </div>
 
+        <!-- Atendimento Individual -->
         <div class="feature-item">
-          <div class="feature-icon icon-leaf">🌿</div>
+          <div class="feature-icon-wrapper">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+              <circle cx="12" cy="7" r="4"/>
+            </svg>
+          </div>
           <div class="feature-content">
             <h3>Atendimento individual</h3>
-            <p>Espaço contínuo de análise para elaboração psíquica (online ou presencial).</p>
-            <span class="feature-link" onclick="navigate('form-particular')">Solicitar atendimento ➔</span>
+            <p>Espaço de análise pessoal para acolhimento de angústias, sintomas e processos subjetivos.</p>
+            <span class="feature-link" onclick="navigate('form-particular')">
+              Solicitar análise 
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </span>
           </div>
         </div>
 
+        <!-- Diário -->
         <div class="feature-item">
-          <div class="feature-icon icon-diary">✍️</div>
+          <div class="feature-icon-wrapper">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+              <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+            </svg>
+          </div>
           <div class="feature-content">
-            <h3>Um diário para se perceber</h3>
-            <p>Registre sonhos, percepções e angústias para levar à sua sessão de análise.</p>
-            <span class="feature-link" onclick="navigate('diario')">Escrever no diário clínico ➔</span>
+            <h3>Caderno de percepções</h3>
+            <p>Registro confidencial de sonhos, impressões e atos falhos para elaboração em sessão.</p>
+            <span class="feature-link" onclick="navigate('diario')">
+              Abrir diário 
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </span>
           </div>
         </div>
       </div>
 
       <button class="btn-main" onclick="navigate('form-particular')">
-        <span>➔</span> Iniciar solicitação de atendimento
+        Solicitar atendimento inicial
       </button>
-      <p class="sub-cta-text">Acesso seguro com criptografia e sigilo ético profissional.</p>
+      <p class="sub-cta-text">Ambiente protegido pelo sigilo ético e criptografia de ponta a ponta.</p>
 
       <div class="disclaimer-box">
-        <span style="font-size: 1.1rem;">ℹ️</span>
-        <div>
-          Este aplicativo não é monitorado 24 horas. Em situações de sofrimento agudo, ligue para o <strong>CVV (188)</strong> ou procure o serviço de emergência mais próximo.
-        </div>
+        Este espaço não é monitorado 24 horas. Em situações de angústia aguda ou sofrimento grave, ligue gratuitamente para o <strong>CVV (188)</strong> ou procure a unidade de saúde mais próxima.
       </div>
 
-      <div class="app-footer">Acolhe · cuidado no seu tempo</div>
+      <div class="app-footer">Acolhe — Cuidado e Tempo Singular</div>
     </section>
 
     <!-- 2. ÁREA DO ANALISANDO -->
     <section id="view-minha-analise" class="view-section">
       <div class="card">
-        <div style="font-size: 1.8rem; margin-bottom: 0.4rem;">🎥</div>
-        <h2 style="font-family: var(--font-serif); margin-bottom: 0.4rem;">Área do Analisando</h2>
-        <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 1.4rem;">
-          Digite seu e-mail cadastrado para visualizar sua próxima sessão agendada e acessar a sala de vídeo.
+        <h2 style="font-size: 1.35rem; font-weight: 600; margin-bottom: 0.35rem; letter-spacing: -0.02em;">Área do Analisando</h2>
+        <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 1.5rem;">
+          Digite o e-mail informado no cadastro para consultar seu próximo horário e acessar a sala de atendimento.
         </p>
 
         <form onsubmit="consultarSessaoAnalisando(event)">
           <div class="form-group">
-            <label>Seu E-mail Cadastrado</label>
+            <label>E-mail Cadastrado</label>
             <input type="email" id="input-analisando-email" placeholder="seu-email@exemplo.com" required>
           </div>
-          <button type="submit" id="btn-consultar-sessao" class="btn-primary">Ver Minha Sessão</button>
+          <button type="submit" id="btn-consultar-sessao" class="btn-primary">Consultar Horário</button>
         </form>
 
-        <div id="resultado-sessao" style="display: none; margin-top: 1.8rem; border-top: 1px dashed var(--border-color); padding-top: 1.4rem;"></div>
+        <div id="resultado-sessao" style="display: none; margin-top: 1.8rem; border-top: 1px solid var(--border-color); padding-top: 1.4rem;"></div>
       </div>
     </section>
 
     <!-- 3. DIÁRIO DO PACIENTE -->
     <section id="view-diario" class="view-section">
       <div class="card">
-        <div style="font-size: 1.8rem; margin-bottom: 0.4rem;">✍️</div>
-        <h2 style="font-family: var(--font-serif); margin-bottom: 0.4rem;">Caderno de Percepções e Sonhos</h2>
-        <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 1.4rem;">
-          Anote impressões ou sonhos para serem elaborados na sua próxima análise.
+        <h2 style="font-size: 1.35rem; font-weight: 600; margin-bottom: 0.35rem; letter-spacing: -0.02em;">Caderno de Percepções e Sonhos</h2>
+        <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 1.5rem;">
+          Anote impressões da rotina ou sonhos ao despertar para serem trazidos à sessão.
         </p>
 
         <form onsubmit="handleDiarioSubmit(event)">
           <div class="grid-2">
             <div class="form-group">
-              <label>Seu Nome Completo</label>
+              <label>Nome Completo</label>
               <input type="text" name="nome" id="diario-nome" placeholder="Ex: Ana Silva" required>
             </div>
             <div class="form-group">
-              <label>Seu E-mail</label>
+              <label>E-mail</label>
               <input type="email" name="email" id="diario-email" placeholder="ana@exemplo.com" required>
             </div>
           </div>
 
           <div class="form-group">
-            <label>Tipo de Registro</label>
+            <label>Natureza do Registro</label>
             <select name="tipo" required>
-              <option value="🌙 Sonho">🌙 Sonho da noite</option>
-              <option value="💭 Percepção / Angústia">💭 Percepção / Angústia do dia</option>
-              <option value="✍️ Associação Livre">✍️ Associação Livre / Pensamento</option>
+              <option value="Sonho">Sonho noturno</option>
+              <option value="Percepção / Angústia">Percepção subjetiva / Angústia</option>
+              <option value="Associação Livre">Associação livre / Pensamento espontâneo</option>
             </select>
           </div>
 
           <div class="form-group">
             <label>Relato Livre</label>
-            <textarea name="conteudo" rows="5" placeholder="O que você sentiu, sonhou ou percebeu..." required></textarea>
+            <textarea name="conteudo" rows="5" placeholder="Escreva com liberdade sobre o que sentiu, sonhou ou observou..." required></textarea>
           </div>
 
           <button type="submit" id="btn-submit-diario" class="btn-primary">Salvar no Diário Clínico</button>
         </form>
 
-        <div style="margin-top: 2rem; border-top: 1px solid var(--border-color); padding-top: 1.2rem;">
-          <h3 style="font-size: 0.95rem; margin-bottom: 0.8rem; color: var(--text-main);">Minhas anotações salvas neste aparelho:</h3>
-          <div id="historico-local-diario" style="display: flex; flex-direction: column; gap: 0.8rem;"></div>
+        <div style="margin-top: 2rem; border-top: 1px solid var(--border-color); padding-top: 1.4rem;">
+          <h3 style="font-size: 0.9rem; font-weight: 600; margin-bottom: 0.8rem; color: var(--text-main);">Anotações recentes gravadas neste aparelho:</h3>
+          <div id="historico-local-diario" style="display: flex; flex-direction: column; gap: 0.75rem;"></div>
         </div>
       </div>
     </section>
@@ -659,9 +748,9 @@
     <!-- 4. FORMULÁRIO SOCIAL -->
     <section id="view-form-social" class="view-section">
       <div class="card">
-        <h2 style="font-family: var(--font-serif); margin-bottom: 0.5rem;">Candidatura para Terapia Social</h2>
-        <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 1.4rem;">
-          Vagas destinadas a atendimento com valor social acordado.
+        <h2 style="font-size: 1.35rem; font-weight: 600; margin-bottom: 0.35rem; letter-spacing: -0.02em;">Candidatura para Atendimento Social</h2>
+        <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 1.5rem;">
+          Vagas reservadas ao compromisso clínico com valor social acordado.
         </p>
 
         <form onsubmit="handleSocialSubmit(event)">
@@ -675,12 +764,12 @@
               <input type="email" name="email" placeholder="marina@exemplo.com" required>
             </div>
             <div class="form-group">
-              <label>WhatsApp / Telefone</label>
+              <label>Telefone / WhatsApp</label>
               <input type="tel" name="telefone" placeholder="(11) 99999-0000" required>
             </div>
           </div>
           <div class="form-group">
-            <label>Faixa de Renda Aproximada</label>
+            <label>Faixa de Renda Familiar Aproximada</label>
             <select name="renda" required>
               <option value="Até 1 salário mínimo">Até 1 salário mínimo</option>
               <option value="1 a 2 salários mínimos">1 a 2 salários mínimos</option>
@@ -688,7 +777,7 @@
             </select>
           </div>
           <div class="form-group">
-            <label>Disponibilidade de Horário</label>
+            <label>Disponibilidade de Período</label>
             <select name="horario" required>
               <option value="Manhã">Manhã</option>
               <option value="Tarde">Tarde</option>
@@ -697,9 +786,9 @@
           </div>
           <div class="form-group">
             <label>Breve relato da motivação</label>
-            <textarea name="motivo" rows="3" placeholder="Conte brevemente o que motivou sua busca por acompanhamento analítico..." required></textarea>
+            <textarea name="motivo" rows="3" placeholder="Compartilhe brevemente o que motivou sua procura por acompanhamento analítico..." required></textarea>
           </div>
-          <button type="submit" id="btn-submit-social" class="btn-primary">Enviar Candidatura Social</button>
+          <button type="submit" id="btn-submit-social" class="btn-primary">Enviar Candidatura</button>
         </form>
       </div>
     </section>
@@ -707,9 +796,9 @@
     <!-- 5. FORMULÁRIO PARTICULAR -->
     <section id="view-form-particular" class="view-section">
       <div class="card">
-        <h2 style="font-family: var(--font-serif); margin-bottom: 0.5rem;">Atendimento Particular</h2>
-        <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 1.4rem;">
-          Preencha seus dados para alinhamento de horários e valores de sessão.
+        <h2 style="font-size: 1.35rem; font-weight: 600; margin-bottom: 0.35rem; letter-spacing: -0.02em;">Solicitação de Atendimento Individual</h2>
+        <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 1.5rem;">
+          Preencha suas informações para alinhamento de agenda e honorários analíticos.
         </p>
 
         <form onsubmit="handleParticularSubmit(event)">
@@ -723,7 +812,7 @@
               <input type="email" name="email" placeholder="carlos@exemplo.com" required>
             </div>
             <div class="form-group">
-              <label>WhatsApp / Telefone</label>
+              <label>Telefone / WhatsApp</label>
               <input type="tel" name="telefone" placeholder="(11) 98888-0000" required>
             </div>
           </div>
@@ -736,7 +825,7 @@
               </select>
             </div>
             <div class="form-group">
-              <label>Melhor Período</label>
+              <label>Período de Preferência</label>
               <select name="horario" required>
                 <option value="Manhã">Manhã</option>
                 <option value="Tarde">Tarde</option>
@@ -751,21 +840,20 @@
 
     <!-- 6. CONFIRMAÇÃO -->
     <section id="view-confirmacao" class="view-section">
-      <div class="card" style="text-align: center; padding: 3rem 1.5rem;">
-        <div style="font-size: 2.2rem; margin-bottom: 1rem;">🌿</div>
-        <h2 style="font-family: var(--font-serif); margin-bottom: 0.6rem; color: var(--earth-dark);">Registro Concluído</h2>
-        <p id="confirm-msg" style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 2rem;">
-          Seus dados foram gravados com sucesso.
+      <div class="card" style="text-align: center; padding: 3.5rem 1.5rem;">
+        <h2 style="font-size: 1.4rem; font-weight: 600; margin-bottom: 0.5rem; color: var(--earth-dark);">Registro Concluído</h2>
+        <p id="confirm-msg" style="color: var(--text-muted); font-size: 0.92rem; margin-bottom: 2rem; max-width: 440px; margin-left: auto; margin-right: auto;">
+          Suas informações foram salvas com segurança no ambiente clínico.
         </p>
-        <button class="btn-primary" onclick="navigate('home')">Voltar ao Início</button>
+        <button class="btn-primary" style="max-width: 220px; margin: 0 auto;" onclick="navigate('home')">Voltar ao Início</button>
       </div>
     </section>
 
-    <!-- 7. CRM -->
+    <!-- 7. CRM ADMINISTRATIVO -->
     <section id="view-admin" class="view-section">
-      <div id="login-box" class="card" style="max-width: 420px; margin: 1.5rem auto;">
-        <h2 style="font-family: var(--font-serif); margin-bottom: 0.4rem; text-align: center;">Área Restrita</h2>
-        <p style="color: var(--text-muted); font-size: 0.85rem; text-align: center; margin-bottom: 1.4rem;">
+      <div id="login-box" class="card" style="max-width: 400px; margin: 2rem auto;">
+        <h2 style="font-size: 1.3rem; font-weight: 600; margin-bottom: 0.35rem; text-align: center;">Área Restrita</h2>
+        <p style="color: var(--text-muted); font-size: 0.82rem; text-align: center; margin-bottom: 1.5rem;">
           Acesso exclusivo para a psicanalista.
         </p>
 
@@ -783,32 +871,33 @@
       </div>
 
       <div id="dashboard-box" style="display: none;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.2rem; flex-wrap: wrap; gap: 0.8rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.4rem; flex-wrap: wrap; gap: 0.8rem;">
           <div>
-            <h2 style="font-family: var(--font-serif);">Painel Clínico & Financeiro</h2>
-            <p style="color: var(--text-muted); font-size: 0.85rem;">Ambiente seguro e confidencial.</p>
+            <h2 style="font-size: 1.3rem; font-weight: 600; letter-spacing: -0.02em;">Painel Clínico</h2>
+            <p style="color: var(--text-muted); font-size: 0.8rem;">Ambiente reservado e confidencial.</p>
           </div>
-          <button class="btn-secondary" onclick="handleLogout()">Sair</button>
+          <button class="btn-secondary" onclick="handleLogout()">Encerrar Sessão</button>
         </div>
 
+        <!-- Indicadores -->
         <div class="crm-stats">
           <div class="stat-card"><span>Candidaturas</span><p id="stat-candidaturas">0</p></div>
           <div class="stat-card"><span>Pacientes Ativos</span><p id="stat-pacientes">0</p></div>
           <div class="stat-card"><span>A Receber</span><p id="stat-a-receber" style="font-size: 1.25rem;">R$ 0 | 0 €</p></div>
-          <div class="stat-card"><span>Recebido</span><p id="stat-recebido" style="font-size: 1.25rem; color: #2E5434;">R$ 0 | 0 €</p></div>
+          <div class="stat-card"><span>Recebido</span><p id="stat-recebido" style="font-size: 1.25rem; color: #2B5433;">R$ 0 | 0 €</p></div>
         </div>
 
         <div class="tabs">
           <button class="tab-btn active" id="tab-btn-candidaturas" onclick="switchTab('candidaturas')">Candidaturas</button>
           <button class="tab-btn" id="tab-btn-espera" onclick="switchTab('espera')">Lista de Espera</button>
           <button class="tab-btn" id="tab-btn-pacientes" onclick="switchTab('pacientes')">Pacientes</button>
-          <button class="tab-btn" id="tab-btn-sessoes" onclick="switchTab('sessoes')">Sessões & Cobrança</button>
-          <button class="tab-btn" id="tab-btn-diarios" onclick="switchTab('diarios')">Diários & Sonhos</button>
+          <button class="tab-btn" id="tab-btn-sessoes" onclick="switchTab('sessoes')">Sessões e Honorários</button>
+          <button class="tab-btn" id="tab-btn-diarios" onclick="switchTab('diarios')">Diários</button>
         </div>
 
         <!-- Agendador -->
-        <div id="agendador-box" class="card" style="display: none; padding: 1.4rem; background: var(--bg-subtle); margin-bottom: 1.2rem;">
-          <h3 style="font-size: 1rem; margin-bottom: 0.8rem;">Agendar Análise & Cobrança</h3>
+        <div id="agendador-box" class="card" style="display: none; padding: 1.3rem; background: var(--bg-subtle); margin-bottom: 1.2rem;">
+          <h3 style="font-size: 0.95rem; font-weight: 600; margin-bottom: 0.8rem;">Agendar Análise</h3>
           <form onsubmit="handleAgendarSessao(event)">
             <div class="grid-2">
               <div class="form-group">
@@ -822,7 +911,7 @@
             </div>
             <div class="grid-2">
               <div class="form-group">
-                <label>Data da Sessão</label>
+                <label>Data</label>
                 <input type="date" id="agendar-data" required>
               </div>
               <div class="form-group">
@@ -832,8 +921,8 @@
             </div>
             <div class="grid-2">
               <div class="form-group">
-                <label>Valor desta Sessão</label>
-                <input type="number" step="0.01" id="agendar-valor" placeholder="Ex: 180.00 ou 50.00" required>
+                <label>Honorário da Sessão</label>
+                <input type="number" step="0.01" id="agendar-valor" placeholder="Ex: 180.00" required>
               </div>
               <div class="form-group">
                 <label>Moeda</label>
@@ -844,10 +933,10 @@
               </div>
             </div>
             <div class="form-group">
-              <label>Link da Chamada de Vídeo</label>
+              <label>Link da Sala Virtual</label>
               <input type="text" id="agendar-link" value="https://meet.jit.si/acolhe-sessao-online" required>
             </div>
-            <button type="submit" id="btn-agendar" class="btn-primary" style="background: var(--green-call);">Salvar Sessão e Agendamento</button>
+            <button type="submit" id="btn-agendar" class="btn-primary" style="background: var(--green-call);">Salvar Agendamento</button>
           </form>
         </div>
 
@@ -863,32 +952,31 @@
     </section>
   </main>
 
-  <!-- Modal Ajuda -->
+  <!-- Modal Apoio Imediato -->
   <div class="modal-overlay" id="helpModal" onclick="closeHelpModal(event)">
     <div class="modal-card" onclick="event.stopPropagation()">
-      <div style="font-size: 1.8rem; margin-bottom: 0.5rem;">♡</div>
-      <h3 style="font-family: var(--font-serif); font-size: 1.3rem; margin-bottom: 0.5rem; color: #8F4C3B;">Acolhimento Imediato</h3>
-      <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 1.2rem; line-height: 1.5;">
-        Em momentos de sofrimento agudo, angústia intensa ou crise, procure os canais gratuitos 24 horas:
+      <h3 style="font-size: 1.15rem; font-weight: 600; margin-bottom: 0.5rem; color: var(--earth-dark);">Apoio e Acolhimento Imediato</h3>
+      <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1.2rem; line-height: 1.5;">
+        Em momentos de sofrimento agudo, angústia intensa ou crise, procure os serviços públicos gratuitos disponíveis 24 horas:
       </p>
-      <div style="background: var(--bg-subtle); padding: 0.8rem 1rem; border-radius: 10px; margin-bottom: 0.8rem;">
-        <strong style="color: var(--text-main); font-size: 0.9rem;">CVV (Centro de Valorização da Vida)</strong><br>
-        <span style="font-size: 0.82rem; color: var(--text-muted);">Apoio emocional confidencial. Ligue <strong>188</strong>.</span>
+      <div style="background: var(--bg-subtle); padding: 0.8rem 1rem; border-radius: 8px; margin-bottom: 0.8rem;">
+        <strong style="color: var(--text-main); font-size: 0.88rem; display:block;">CVV — Centro de Valorização da Vida</strong>
+        <span style="font-size: 0.8rem; color: var(--text-muted);">Atendimento confidencial e gratuito. Ligue <strong>188</strong>.</span>
       </div>
-      <div style="background: var(--bg-subtle); padding: 0.8rem 1rem; border-radius: 10px; margin-bottom: 1.4rem;">
-        <strong style="color: var(--text-main); font-size: 0.9rem;">SAMU (Urgência Médica)</strong><br>
-        <span style="font-size: 0.82rem; color: var(--text-muted);">Em situações de risco iminente, ligue <strong>192</strong>.</span>
+      <div style="background: var(--bg-subtle); padding: 0.8rem 1rem; border-radius: 8px; margin-bottom: 1.4rem;">
+        <strong style="color: var(--text-main); font-size: 0.88rem; display:block;">SAMU — Urgência Médica</strong>
+        <span style="font-size: 0.8rem; color: var(--text-muted);">Para situações de risco imediato, ligue <strong>192</strong>.</span>
       </div>
       <button class="btn-primary" onclick="closeHelpModal()">Fechar</button>
     </div>
   </div>
 
-  <!-- Modal Ficha Completa, Prontuário por Sessão e Valores -->
+  <!-- Modal Ficha Clínica e Prontuário -->
   <div class="modal-overlay" id="fichaModal" onclick="closeFichaModal(event)">
     <div class="modal-card" onclick="event.stopPropagation()">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-        <h3 style="font-family: var(--font-serif); font-size: 1.3rem; color: var(--earth-dark);">Ficha Clínica do Paciente</h3>
-        <button class="btn-secondary" onclick="closeFichaModal()" style="padding: 0.2rem 0.6rem;">✕</button>
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.2rem;">
+        <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--earth-dark);">Ficha Clínica do Paciente</h3>
+        <button class="btn-secondary" onclick="closeFichaModal()" style="padding: 0.2rem 0.6rem;">Fechar</button>
       </div>
       <div id="ficha-conteudo"></div>
     </div>
@@ -923,12 +1011,12 @@
       const telLimpo = (item.telefone || '').replace(/\D/g, '');
       const linkWpp = telLimpo ? `https://wa.me/55${telLimpo}` : '#';
       const badgeClass = item.tipo.includes('Social') ? 'badge-free' : 'badge-paid';
-      const dataFormatada = item.created_at ? new Date(item.created_at).toLocaleString('pt-BR') : 'Data não registrada';
+      const dataFormatada = item.created_at ? new Date(item.created_at).toLocaleDateString('pt-BR') : 'Data não registrada';
 
       const conteudo = `
         <div style="margin-bottom: 1rem;">
           <span class="badge ${badgeClass}">${item.tipo}</span>
-          <h2 style="font-family: var(--font-serif); font-size: 1.4rem; color: var(--text-main); margin-top: 0.3rem;">${item.nome}</h2>
+          <h2 style="font-size: 1.3rem; font-weight:600; color: var(--text-main); margin-top: 0.4rem;">${item.nome}</h2>
           <small style="color: var(--text-muted);">Enviado em: ${dataFormatada}</small>
         </div>
 
@@ -938,10 +1026,10 @@
         </div>
 
         <div class="info-row">
-          <span>WhatsApp / Telefone</span>
+          <span>Telefone / WhatsApp</span>
           <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 0.2rem;">
             <strong>${item.telefone}</strong>
-            ${telLimpo ? `<a href="${linkWpp}" target="_blank" style="background: #25D366; color:white; padding: 0.3rem 0.7rem; border-radius: 8px; text-decoration:none; font-size: 0.78rem; font-weight:600;">Abrir WhatsApp</a>` : ''}
+            ${telLimpo ? `<a href="${linkWpp}" target="_blank" style="color: var(--green-wpp); font-weight:600; text-decoration:none; font-size:0.8rem;">Abrir WhatsApp</a>` : ''}
           </div>
         </div>
 
@@ -949,16 +1037,16 @@
         ${item.modalidade ? `<div class="info-row"><span>Modalidade</span><strong>${item.modalidade}</strong></div>` : ''}
         <div class="info-row"><span>Disponibilidade</span><strong>${item.periodo || 'Não informado'}</strong></div>
 
-        <div class="info-row" style="background: #FFF; border: 1px solid var(--border-color); padding: 0.8rem;">
+        <div class="info-row" style="background: #FFF; border: 1px solid var(--border-color); padding: 0.85rem;">
           <span>Relato da Motivação</span>
-          <p style="color: var(--text-main); font-size: 0.88rem; white-space: pre-wrap; margin-top: 0.3rem; line-height: 1.5;">${item.motivo || 'Nenhum relato preenchido.'}</p>
+          <p style="color: var(--text-main); font-size: 0.86rem; white-space: pre-wrap; margin-top: 0.35rem; line-height: 1.55;">${item.motivo || 'Nenhum relato preenchido.'}</p>
         </div>
 
-        <div style="display: flex; gap: 0.6rem; margin-top: 1.2rem; flex-wrap: wrap;">
+        <div style="display: flex; gap: 0.6rem; margin-top: 1.3rem; flex-wrap: wrap;">
           ${item.status === 'Triagem' ? `
             <button class="btn-primary" style="flex:1;" onclick="moverParaEspera(${item.id}); closeFichaModal();">Mover para Lista de Espera</button>
           ` : `
-            <button class="btn-primary" style="flex:1;" onclick="moverParaPaciente(${item.id}, '${item.nome.replace(/'/g, "\\'")}'); closeFichaModal();">Tornar Paciente</button>
+            <button class="btn-primary" style="flex:1;" onclick="moverParaPaciente(${item.id}, '${item.nome.replace(/'/g, "\\'")}'); closeFichaModal();">Adicionar a Pacientes</button>
           `}
           <button class="btn-secondary" onclick="closeFichaModal()">Fechar</button>
         </div>
@@ -968,7 +1056,6 @@
       openFichaModal();
     }
 
-    /* Ficha do Paciente com PRONTUÁRIO POR SESSÃO (LINHA DO TEMPO) */
     async function verFichaPaciente(pacienteId) {
       const pac = localData.pacientes.find(p => p.id === pacienteId);
       if (!pac) return;
@@ -977,7 +1064,6 @@
       const telLimpo = (cand.telefone || '').replace(/\D/g, '');
       const linkWpp = telLimpo ? `https://wa.me/55${telLimpo}` : '#';
 
-      // Busca as evoluções clínicas deste paciente no banco
       const { data: evolucoes } = await db.from('evolucoes_paciente')
         .select('*')
         .eq('paciente_id', pacienteId)
@@ -989,19 +1075,19 @@
       const conteudo = `
         <div style="margin-bottom: 1rem;">
           <span class="badge badge-call">${pac.status || 'Ativo'}</span>
-          <h2 style="font-family: var(--font-serif); font-size: 1.4rem; color: var(--text-main); margin-top: 0.3rem;">${pac.nome}</h2>
+          <h2 style="font-size: 1.3rem; font-weight:600; color: var(--text-main); margin-top: 0.4rem;">${pac.nome}</h2>
           <small style="color: var(--text-muted);">Início da análise: ${pac.inicio_atendimento || 'Data não registrada'}</small>
         </div>
 
         <div class="info-row">
           <span>Contato</span>
           <strong>${cand.email ? `<a href="mailto:${cand.email}" style="color:var(--earth-dark); text-decoration:none;">${cand.email}</a>` : 'E-mail não registrado'}</strong>
-          ${telLimpo ? `<div style="margin-top:0.3rem;"><a href="${linkWpp}" target="_blank" style="background:#25D366; color:white; padding:0.25rem 0.6rem; border-radius:6px; text-decoration:none; font-size:0.75rem; font-weight:600;">Chamar no WhatsApp</a></div>` : ''}
+          ${telLimpo ? `<div style="margin-top:0.3rem;"><a href="${linkWpp}" target="_blank" style="color:var(--green-wpp); font-weight:600; text-decoration:none; font-size:0.8rem;">Abrir WhatsApp</a></div>` : ''}
         </div>
 
         <!-- ENQUADRE E VALORES -->
-        <div style="background: var(--bg-subtle); padding: 0.9rem; border-radius: 12px; margin-bottom: 0.8rem; border: 1px solid var(--border-color);">
-          <span style="font-size: 0.8rem; font-weight: 600; color: var(--earth-dark); display:block; margin-bottom: 0.5rem;">⚙️ Enquadre e Honorários Personalizados</span>
+        <div style="background: var(--bg-subtle); padding: 0.95rem; border-radius: 8px; margin-bottom: 0.8rem; border: 1px solid var(--border-color);">
+          <span style="font-size: 0.78rem; font-weight: 600; color: var(--earth-dark); display:block; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.04em;">Enquadre e Honorários</span>
           
           <div class="grid-2">
             <div style="margin-bottom: 0.5rem;">
@@ -1011,7 +1097,7 @@
                 <option value="Duas vezes por semana" ${pac.frequencia === 'Duas vezes por semana' ? 'selected' : ''}>Duas vezes por semana (2x)</option>
                 <option value="Três vezes por semana" ${pac.frequencia === 'Três vezes por semana' ? 'selected' : ''}>Três vezes por semana (3x)</option>
                 <option value="Quinzenal" ${pac.frequencia === 'Quinzenal' ? 'selected' : ''}>Quinzenal</option>
-                <option value="A combinar" ${pac.frequencia === 'A combinar' ? 'selected' : ''}>A combinar / Sob demanda</option>
+                <option value="A combinar" ${pac.frequencia === 'A combinar' ? 'selected' : ''}>A combinar</option>
               </select>
             </div>
 
@@ -1039,76 +1125,74 @@
             </div>
           </div>
 
-          <button class="btn-secondary" style="width: 100%; margin-top: 0.8rem; font-weight: 600; background: #FFF;" onclick="salvarEnquadrePaciente(${pac.id})">
-            Salvar Enquadre e Valores
+          <button class="btn-secondary" style="width: 100%; margin-top: 0.7rem; font-weight: 500; background: #FFF;" onclick="salvarEnquadrePaciente(${pac.id})">
+            Atualizar Enquadre
           </button>
         </div>
 
-        <!-- PRONTUÁRIO: EVOLUÇÕES POR SESSÃO (LINHA DO TEMPO) -->
-        <div style="background: #FFF; border: 1.5px solid var(--earth-accent); padding: 1rem; border-radius: 12px; margin-top: 1rem;">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 0.6rem;">
-            <span style="color: var(--earth-dark); font-weight: 600; font-size:0.95rem;">📜 Prontuário & Linha do Tempo</span>
-            <span class="badge badge-paid">${listaEvolucoes.length} sessões registradas</span>
+        <!-- PRONTUÁRIO: EVOLUÇÕES POR SESSÃO -->
+        <div style="background: #FFF; border: 1px solid var(--earth-accent); padding: 1.1rem; border-radius: 8px; margin-top: 1rem;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 0.4rem;">
+            <span style="color: var(--earth-dark); font-weight: 600; font-size:0.92rem;">Prontuário e Linha do Tempo</span>
+            <span class="badge badge-paid">${listaEvolucoes.length} sessões</span>
           </div>
-          <p style="font-size:0.78rem; color:var(--text-muted); margin-bottom: 1rem;">Registro confidencial individual de cada sessão da análise.</p>
+          <p style="font-size:0.78rem; color:var(--text-muted); margin-bottom: 1.1rem;">Histórico estritamente reservado da análise.</p>
 
-          <!-- Formulário para nova evolução -->
-          <div style="background: var(--bg-subtle); padding: 0.8rem; border-radius: 10px; margin-bottom: 1.2rem;">
-            <strong style="font-size:0.82rem; color:var(--earth-dark); display:block; margin-bottom:0.4rem;">+ Nova Evolução de Sessão</strong>
+          <div style="background: var(--bg-subtle); padding: 0.85rem; border-radius: 6px; margin-bottom: 1.2rem;">
+            <strong style="font-size:0.8rem; color:var(--earth-dark); display:block; margin-bottom:0.4rem;">+ Nova Entrada de Sessão</strong>
             <div class="grid-2">
               <div style="margin-bottom:0.4rem;">
-                <label style="font-size:0.75rem;">Sessão Nº</label>
+                <label style="font-size:0.74rem;">Sessão Nº</label>
                 <input type="number" id="evol-num-${pac.id}" value="${proximoNumeroSessao}" style="padding:0.4rem; font-size:0.85rem; background:#FFF;">
               </div>
               <div style="margin-bottom:0.4rem;">
-                <label style="font-size:0.75rem;">Data da Análise</label>
+                <label style="font-size:0.74rem;">Data da Análise</label>
                 <input type="date" id="evol-data-${pac.id}" value="${new Date().toISOString().split('T')[0]}" style="padding:0.4rem; font-size:0.85rem; background:#FFF;">
               </div>
             </div>
             <div style="margin-bottom:0.4rem;">
-              <label style="font-size:0.75rem;">Tema / Foco Central</label>
-              <input type="text" id="evol-titulo-${pac.id}" placeholder="Ex: Análise de sonho / Resistência / Questão edípica" style="padding:0.4rem; font-size:0.85rem; background:#FFF;">
+              <label style="font-size:0.74rem;">Tema / Foco de Escuta</label>
+              <input type="text" id="evol-titulo-${pac.id}" placeholder="Ex: Elaboração transferencial / Sonho relatado" style="padding:0.4rem; font-size:0.85rem; background:#FFF;">
             </div>
             <div style="margin-bottom:0.5rem;">
-              <label style="font-size:0.75rem;">Registro Clínico e Observações</label>
-              <textarea id="evol-conteudo-${pac.id}" rows="3" placeholder="Pontos de escuta, atos falhos, associações livres e manejo analítico..." style="padding:0.4rem; font-size:0.85rem; background:#FFF;"></textarea>
+              <label style="font-size:0.74rem;">Registro Clínico</label>
+              <textarea id="evol-conteudo-${pac.id}" rows="3" placeholder="Anotações de escuta, atos falhos, associações..." style="padding:0.4rem; font-size:0.85rem; background:#FFF;"></textarea>
             </div>
-            <button class="btn-primary" style="font-size:0.82rem; padding:0.5rem;" onclick="salvarEvolucaoSessao(${pac.id})">Salvar Registro da Sessão</button>
+            <button class="btn-primary" style="font-size:0.82rem; padding:0.55rem;" onclick="salvarEvolucaoSessao(${pac.id})">Salvar Entrada de Sessão</button>
           </div>
 
-          <!-- Histórico das Sessões (Linha do Tempo) -->
           <div style="max-height: 260px; overflow-y: auto; padding-right: 0.3rem;">
-            ${listaEvolucoes.length === 0 ? `<p style="font-size:0.82rem; color:var(--text-muted); text-align:center; padding:1rem;">Nenhuma sessão registrada no prontuário ainda.</p>` : ''}
+            ${listaEvolucoes.length === 0 ? `<p style="font-size:0.8rem; color:var(--text-muted); text-align:center; padding:1rem;">Nenhum registro clínico no prontuário ainda.</p>` : ''}
             
             ${listaEvolucoes.map(ev => `
               <div class="timeline-item">
                 <div class="timeline-dot"></div>
                 <div style="display:flex; justify-content:space-between; align-items:flex-start;">
                   <strong style="font-size:0.85rem; color:var(--earth-dark);">Sessão ${ev.numero_sessao || ''}</strong>
-                  <div style="display:flex; gap:0.4rem; align-items:center;">
-                    <span style="font-size:0.75rem; color:var(--text-muted);">🗓️ ${ev.data_sessao}</span>
-                    <button onclick="excluirEvolucao(${ev.id}, ${pac.id})" style="background:none; border:none; color:#8C4738; cursor:pointer; font-size:0.75rem;">✕</button>
+                  <div style="display:flex; gap:0.5rem; align-items:center;">
+                    <span style="font-size:0.74rem; color:var(--text-muted);">${ev.data_sessao}</span>
+                    <button onclick="excluirEvolucao(${ev.id}, ${pac.id})" style="background:none; border:none; color:#9E5448; cursor:pointer; font-size:0.75rem;">Excluir</button>
                   </div>
                 </div>
                 ${ev.titulo ? `<div style="font-size:0.8rem; font-weight:600; color:var(--earth-accent); margin:0.15rem 0;">${ev.titulo}</div>` : ''}
-                <p style="font-size:0.82rem; color:var(--text-main); white-space:pre-wrap; margin-top:0.2rem; line-height:1.45;">${ev.conteudo}</p>
+                <p style="font-size:0.82rem; color:var(--text-main); white-space:pre-wrap; margin-top:0.2rem; line-height:1.5;">${ev.conteudo}</p>
               </div>
             `).join('')}
           </div>
         </div>
 
         <!-- Gestão de Status e Desfazer -->
-        <div style="background: var(--bg-subtle); padding: 0.9rem; border-radius: 10px; margin-top: 1rem;">
-          <span style="font-size: 0.78rem; color: var(--text-muted); display:block; margin-bottom:0.4rem;">Status do Paciente:</span>
+        <div style="background: var(--bg-subtle); padding: 0.9rem; border-radius: 8px; margin-top: 1rem;">
+          <span style="font-size: 0.75rem; color: var(--text-muted); display:block; margin-bottom:0.4rem; text-transform:uppercase;">Status do Paciente</span>
           <div style="display: flex; gap: 0.4rem; flex-wrap: wrap;">
-            <button class="btn-secondary" onclick="alterarStatusPaciente(${pac.id}, 'Ativo')">Marcar Ativo</button>
-            <button class="btn-secondary" onclick="alterarStatusPaciente(${pac.id}, 'Em Pausa')">Colocar em Pausa</button>
-            <button class="btn-secondary" onclick="alterarStatusPaciente(${pac.id}, 'Encerrado')">Encerrar Análise</button>
+            <button class="btn-secondary" onclick="alterarStatusPaciente(${pac.id}, 'Ativo')">Ativo</button>
+            <button class="btn-secondary" onclick="alterarStatusPaciente(${pac.id}, 'Em Pausa')">Em Pausa</button>
+            <button class="btn-secondary" onclick="alterarStatusPaciente(${pac.id}, 'Encerrado')">Encerrado</button>
           </div>
           
-          <div style="margin-top: 0.8rem; border-top: 1px dashed var(--border-color); padding-top: 0.6rem;">
-            <button class="btn-secondary" style="color: #8C4738; border-color: #EBD5CB;" onclick="desfazerPaciente(${pac.id}, ${pac.candidatura_id || 'null'})">
-              ↩️ Desfazer (Coloquei por engano)
+          <div style="margin-top: 0.8rem; border-top: 1px solid var(--border-color); padding-top: 0.6rem;">
+            <button class="btn-secondary" style="color: #9E5448; border-color: #E6C8C2;" onclick="desfazerPaciente(${pac.id}, ${pac.candidatura_id || 'null'})">
+              Desfazer (Devolver para Lista de Espera)
             </button>
           </div>
         </div>
@@ -1118,7 +1202,6 @@
       openFichaModal();
     }
 
-    /* Salvar Nova Evolução no Prontuário */
     async function salvarEvolucaoSessao(pacienteId) {
       const num = parseInt(document.getElementById(`evol-num-${pacienteId}`).value) || null;
       const data = document.getElementById(`evol-data-${pacienteId}`).value;
@@ -1140,16 +1223,15 @@
         }]);
 
         if (error) throw error;
-        alert('Evolução clínica registrada com sucesso no prontuário!');
-        verFichaPaciente(pacienteId); // Recarrega a ficha com a linha do tempo atualizada
+        alert('Entrada clínica salva no prontuário.');
+        verFichaPaciente(pacienteId);
       } catch (err) {
         alert('Erro ao salvar evolução: ' + err.message);
       }
     }
 
-    /* Excluir Registro de Evolução */
     async function excluirEvolucao(evolucaoId, pacienteId) {
-      if (!confirm('Deseja excluir esta anotação de sessão do prontuário?')) return;
+      if (!confirm('Deseja excluir esta entrada do prontuário?')) return;
       try {
         const { error } = await db.from('evolucoes_paciente').delete().eq('id', evolucaoId);
         if (error) throw error;
@@ -1174,7 +1256,7 @@
         }).eq('id', id);
 
         if (error) throw error;
-        alert('Enquadre e valor salvos com sucesso!');
+        alert('Enquadre atualizado.');
         await carregarDadosBanco();
         verFichaPaciente(id);
       } catch (err) { alert('Erro ao atualizar: ' + err.message); }
@@ -1201,7 +1283,7 @@
 
         closeFichaModal();
         await carregarDadosBanco();
-        alert('O paciente foi removido e devolvido para a Lista de Espera.');
+        alert('O registro foi devolvido para a Lista de Espera.');
       } catch (err) { alert('Erro ao desfazer: ' + err.message); }
     }
 
@@ -1214,6 +1296,33 @@
       } catch (err) { alert('Erro ao atualizar pagamento: ' + err.message); }
     }
 
+    function enviarLembreteWhatsApp(sessaoId) {
+      const sessao = localData.sessoes.find(s => s.id === sessaoId);
+      if (!sessao) return;
+
+      const cand = localData.todasCandidaturas.find(c => 
+        c.email === sessao.paciente_email || 
+        c.nome.toLowerCase() === sessao.paciente_nome.toLowerCase()
+      );
+
+      let tel = cand && cand.telefone ? cand.telefone.replace(/\D/g, '') : '';
+      
+      if (!tel) {
+        tel = prompt(`Digite o WhatsApp de ${sessao.paciente_nome} com DDD (apenas números):`);
+        if (!tel) return;
+        tel = tel.replace(/\D/g, '');
+      }
+
+      const dataFormatada = sessao.data_sessao || sessao.dia_semana;
+      const horario = sessao.horario;
+      const linkSala = sessao.link_video;
+
+      const mensagem = `Olá, ${sessao.paciente_nome}.\n\nConfirmando nossa sessão de análise agendada para ${dataFormatada} às ${horario}.\n\nLink de acesso da sala virtual:\n${linkSala}\n\nAté breve.`;
+
+      const urlWhatsApp = `https://wa.me/55${tel}?text=${encodeURIComponent(mensagem)}`;
+      window.open(urlWhatsApp, '_blank');
+    }
+
     async function consultarSessaoAnalisando(event) {
       event.preventDefault();
       const email = document.getElementById('input-analisando-email').value.trim();
@@ -1221,7 +1330,7 @@
       const box = document.getElementById('resultado-sessao');
       
       btn.disabled = true;
-      btn.innerText = 'Buscando sua análise...';
+      btn.innerText = 'Buscando horário...';
       box.style.display = 'none';
 
       try {
@@ -1235,9 +1344,9 @@
         box.style.display = 'block';
         if (!data || data.length === 0) {
           box.innerHTML = `
-            <p style="color: var(--text-muted); font-size: 0.9rem; text-align: center;">
+            <p style="color: var(--text-muted); font-size: 0.88rem; text-align: center;">
               Nenhuma sessão agendada no momento para o e-mail <strong>${email}</strong>.<br>
-              Entre em contato com sua psicanalista para alinhamento de horários.
+              Entre em contato para alinhamento de horários.
             </p>
           `;
           return;
@@ -1245,18 +1354,18 @@
 
         const prox = data[0];
         box.innerHTML = `
-          <div style="background: var(--bg-subtle); padding: 1.4rem; border-radius: 14px; text-align: center;">
-            <span class="badge badge-call" style="margin-bottom: 0.6rem;">Sessão Confirmada</span>
-            <h3 style="font-family: var(--font-serif); font-size: 1.3rem; margin-bottom: 0.3rem;">Olá, ${prox.paciente_nome}</h3>
-            <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.2rem;">
-              Sua próxima análise está marcada para:<br>
-              <strong style="color: var(--text-main); font-size: 1.05rem;">🗓️ ${prox.data_sessao || prox.dia_semana} às ${prox.horario}</strong>
+          <div style="background: var(--bg-subtle); padding: 1.4rem; border-radius: 10px; text-align: center;">
+            <span class="badge badge-call" style="margin-bottom: 0.5rem;">Sessão Confirmada</span>
+            <h3 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 0.2rem;">${prox.paciente_nome}</h3>
+            <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 1.2rem;">
+              Próximo atendimento agendado para:<br>
+              <strong style="color: var(--text-main); font-size: 1rem;">${prox.data_sessao || prox.dia_semana} às ${prox.horario}</strong>
             </p>
             <a href="${prox.link_video}" target="_blank" class="btn-call">
-              <span>🎥</span> Entrar na Sala de Vídeo
+              Acessar sala de atendimento
             </a>
-            <small style="display: block; color: var(--text-muted); margin-top: 0.8rem; font-size: 0.78rem;">
-              A sala é individual e confidencial. Toque no botão acima no horário da sua sessão.
+            <small style="display: block; color: var(--text-muted); margin-top: 0.7rem; font-size: 0.76rem;">
+              Sala individual e confidencial. Conecte-se no horário estipulado.
             </small>
           </div>
         `;
@@ -1264,7 +1373,7 @@
         alert('Erro ao consultar: ' + err.message);
       } finally {
         btn.disabled = false;
-        btn.innerText = 'Ver Minha Sessão';
+        btn.innerText = 'Consultar Horário';
       }
     }
 
@@ -1272,7 +1381,7 @@
       event.preventDefault();
       const btn = document.getElementById('btn-submit-diario');
       btn.disabled = true;
-      btn.innerText = 'Salvando no Diário...';
+      btn.innerText = 'Gravando...';
 
       const formData = new FormData(event.target);
       const nota = {
@@ -1297,7 +1406,7 @@
         localStorage.setItem('acolhe_diario', JSON.stringify(historico));
 
         event.target.reset();
-        document.getElementById('confirm-msg').innerText = `Obrigada, ${nota.paciente_nome}. Seu relato foi salvo no diário clínico.`;
+        document.getElementById('confirm-msg').innerText = `Seu registro (${nota.tipo}) foi salvo no diário clínico.`;
         navigate('confirmacao');
       } catch (err) {
         alert('Erro ao salvar no diário: ' + err.message);
@@ -1311,16 +1420,16 @@
       const box = document.getElementById('historico-local-diario');
       const historico = JSON.parse(localStorage.getItem('acolhe_diario') || '[]');
       if (historico.length === 0) {
-        box.innerHTML = `<p style="font-size: 0.82rem; color: var(--text-muted);">Nenhum relato salvo neste aparelho ainda.</p>`;
+        box.innerHTML = `<p style="font-size: 0.8rem; color: var(--text-muted);">Nenhum relato salvo neste aparelho ainda.</p>`;
         return;
       }
       box.innerHTML = historico.map(h => `
-        <div style="background: var(--bg-subtle); padding: 0.8rem 1rem; border-radius: 10px; font-size: 0.85rem;">
-          <div style="display: flex; justify-content: space-between; margin-bottom: 0.3rem;">
+        <div style="background: var(--bg-subtle); padding: 0.85rem 1rem; border-radius: 8px; font-size: 0.85rem;">
+          <div style="display: flex; justify-content: space-between; margin-bottom: 0.25rem;">
             <strong>${h.tipo}</strong>
-            <span style="color: var(--text-muted); font-size: 0.78rem;">${h.data}</span>
+            <span style="color: var(--text-muted); font-size: 0.75rem;">${h.data}</span>
           </div>
-          <p style="color: var(--text-muted); white-space: pre-wrap; font-size: 0.82rem;">${h.conteudo}</p>
+          <p style="color: var(--text-muted); white-space: pre-wrap; font-size: 0.82rem; line-height:1.5;">${h.conteudo}</p>
         </div>
       `).join('');
     }
@@ -1344,7 +1453,7 @@
         const { error } = await db.from('candidaturas').insert([novaCandidatura]);
         if (error) throw error;
         event.target.reset();
-        document.getElementById('confirm-msg').innerText = `Obrigada, ${novaCandidatura.nome}. Sua candidatura para terapia social foi enviada com sucesso.`;
+        document.getElementById('confirm-msg').innerText = `Sua candidatura para atendimento social foi enviada.`;
         navigate('confirmacao');
       } catch (err) { alert('Erro: ' + err.message); }
       finally { btn.disabled = false; }
@@ -1368,7 +1477,7 @@
         const { error } = await db.from('candidaturas').insert([novaSolicitacao]);
         if (error) throw error;
         event.target.reset();
-        document.getElementById('confirm-msg').innerText = `Obrigada, ${novaSolicitacao.nome}. Sua solicitação foi registrada com sucesso.`;
+        document.getElementById('confirm-msg').innerText = `Sua solicitação de atendimento foi registrada.`;
         navigate('confirmacao');
       } catch (err) { alert('Erro: ' + err.message); }
       finally { btn.disabled = false; }
@@ -1389,7 +1498,7 @@
         mostrarDashboard();
         await carregarDadosBanco();
       } catch (err) {
-        alert('Falha no login: ' + err.message);
+        alert('Falha na autenticação: ' + err.message);
       } finally {
         btn.disabled = false;
         btn.innerText = 'Entrar no Painel';
@@ -1502,7 +1611,7 @@
         }]);
         if (error) throw error;
 
-        alert(`Sessão agendada para ${nome}!`);
+        alert(`Sessão agendada para ${nome}.`);
         event.target.reset();
         document.getElementById('agendar-link').value = 'https://meet.jit.si/acolhe-sessao-online';
         await carregarDadosBanco();
@@ -1521,7 +1630,7 @@
       tbody.innerHTML = '';
 
       if (currentTab === 'candidaturas') {
-        thead.innerHTML = `<tr><th>Candidata(o)</th><th>Tipo</th><th>Ações</th></tr>`;
+        thead.innerHTML = `<tr><th>Candidata(o)</th><th>Modalidade</th><th>Ações</th></tr>`;
         if (localData.candidaturas.length === 0) {
           tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; color: var(--text-muted); padding: 1.5rem;">Nenhuma candidatura pendente.</td></tr>`;
           return;
@@ -1534,8 +1643,8 @@
               <td><span class="badge ${badgeClass}">${item.tipo}</span></td>
               <td>
                 <div style="display:flex; gap:0.4rem; flex-wrap:wrap;">
-                  <button class="btn-ficha" onclick="verFichaCompleta(${item.id})">🔍 Ver Ficha</button>
-                  <button class="btn-secondary" onclick="moverParaEspera(${item.id})">Para Espera</button>
+                  <button class="btn-ficha" onclick="verFichaCompleta(${item.id})">Ficha Clínica</button>
+                  <button class="btn-secondary" onclick="moverParaEspera(${item.id})">Espera</button>
                 </div>
               </td>
             </tr>
@@ -1554,7 +1663,7 @@
               <td>${item.tipo}</td>
               <td>
                 <div style="display:flex; gap:0.4rem; flex-wrap:wrap;">
-                  <button class="btn-ficha" onclick="verFichaCompleta(${item.id})">🔍 Ver Ficha</button>
+                  <button class="btn-ficha" onclick="verFichaCompleta(${item.id})">Ficha Clínica</button>
                   <button class="btn-secondary" onclick="moverParaPaciente(${item.id}, '${item.nome.replace(/'/g, "\\'")}')">Tornar Paciente</button>
                 </div>
               </td>
@@ -1575,13 +1684,13 @@
               <td><strong>${item.nome}</strong><br><small style="color:var(--text-muted);">${item.frequencia || 'Semanal'}</small></td>
               <td><span style="font-weight:600; color:var(--earth-dark);">${valorFormatado}</span></td>
               <td>
-                <button class="btn-ficha" onclick="verFichaPaciente(${item.id})">🔍 Prontuário & Ficha</button>
+                <button class="btn-ficha" onclick="verFichaPaciente(${item.id})">Prontuário e Ficha</button>
               </td>
             </tr>
           `;
         });
       } else if (currentTab === 'diarios') {
-        thead.innerHTML = `<tr><th>Paciente</th><th>Tipo</th><th>Relato Clínico</th></tr>`;
+        thead.innerHTML = `<tr><th>Paciente</th><th>Classificação</th><th>Relato</th></tr>`;
         if (localData.diarios.length === 0) {
           tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; color: var(--text-muted); padding: 1.5rem;">Nenhum relato no diário ainda.</td></tr>`;
           return;
@@ -1591,12 +1700,12 @@
             <tr>
               <td><strong>${item.paciente_nome}</strong><br><small style="color:var(--text-muted);">${item.paciente_email}</small></td>
               <td><span class="badge badge-diary">${item.tipo}</span></td>
-              <td style="max-width: 280px; white-space: pre-wrap; font-size: 0.85rem;">${item.conteudo}</td>
+              <td style="max-width: 280px; white-space: pre-wrap; font-size: 0.82rem; line-height:1.5;">${item.conteudo}</td>
             </tr>
           `;
         });
       } else if (currentTab === 'sessoes') {
-        thead.innerHTML = `<tr><th>Paciente</th><th>Data / Hora</th><th>Cobrança</th><th>Ação</th></tr>`;
+        thead.innerHTML = `<tr><th>Paciente</th><th>Data e Horário</th><th>Cobrança</th><th>Ações</th></tr>`;
         if (localData.sessoes.length === 0) {
           tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color: var(--text-muted); padding: 1.5rem;">Nenhuma sessão agendada.</td></tr>`;
           return;
@@ -1606,18 +1715,21 @@
           const valorTexto = item.valor_cobrado ? `${simbolo} ${parseFloat(item.valor_cobrado).toFixed(2)}` : '-';
           const isPago = item.status_pagamento === 'Pago';
           const badgePagamento = isPago 
-            ? `<button class="badge-pago" onclick="alternarPagamentoSessao(${item.id}, 'Pago')">✓ Pago (${valorTexto})</button>`
-            : `<button class="badge-pendente" onclick="alternarPagamentoSessao(${item.id}, 'Pendente')">○ Pendente (${valorTexto})</button>`;
+            ? `<button class="badge-pago" onclick="alternarPagamentoSessao(${item.id}, 'Pago')"><span style="font-size:8px;">●</span> Pago (${valorTexto})</button>`
+            : `<button class="badge-pendente" onclick="alternarPagamentoSessao(${item.id}, 'Pendente')"><span style="font-size:8px;">○</span> Pendente (${valorTexto})</button>`;
 
           tbody.innerHTML += `
             <tr>
               <td><strong>${item.paciente_nome}</strong></td>
-              <td>🗓️ ${item.data_sessao || item.dia_semana}<br>⏰ ${item.horario}</td>
+              <td>${item.data_sessao || item.dia_semana}<br><small style="color:var(--text-muted);">${item.horario}</small></td>
               <td>${badgePagamento}</td>
               <td>
-                <div style="display:flex; gap:0.3rem;">
-                  <a href="${item.link_video}" target="_blank" class="badge badge-call" style="text-decoration:none;">🎥 Vídeo</a>
-                  <button class="btn-secondary" style="padding:0.2rem 0.5rem;" onclick="excluirSessao(${item.id})">✕</button>
+                <div style="display:flex; gap:0.35rem; align-items:center;">
+                  <button class="btn-lembrete-wpp" onclick="enviarLembreteWhatsApp(${item.id})">
+                    Lembrete
+                  </button>
+                  <a href="${item.link_video}" target="_blank" class="badge badge-call" style="text-decoration:none;">Sala Virtual</a>
+                  <button class="btn-secondary" style="padding:0.25rem 0.5rem;" onclick="excluirSessao(${item.id})">Remover</button>
                 </div>
               </td>
             </tr>
