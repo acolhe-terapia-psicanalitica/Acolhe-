@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 
-  <!-- Conexão com Supabase -->
+  <!-- Biblioteca de Conexão Segura -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
@@ -23,12 +23,12 @@
       --tag-text: #543E31;       /* Marrom castanho */
       --earth-light: #F4EBE3;    /* Terracota pastel suave */
       --earth-accent: #B2836B;   /* Argila / caramelo refinado */
-      --earth-dark: #3D2B22;     /* Marrom café nobre (botões e logo) */
+      --earth-dark: #3D2B22;     /* Marrom café nobre */
       --green-call: #4D5D4E;     /* Oliva / sálvia terroso para vídeo */
       --green-wpp: #25D366;
-      --text-main: #271E19;      /* Marrom escuro nobre (substitui o preto) */
+      --text-main: #271E19;      /* Marrom escuro nobre */
       --text-muted: #6B5B52;     /* Marrom acinzentado elegante */
-      --border-color: #E2D7CC;   /* Linho refinado para divisórias */
+      --border-color: #E2D7CC;   /* Linho refinado */
       --font-serif: 'Playfair Display', Georgia, serif;
       --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
       --radius: 18px;
@@ -227,7 +227,6 @@
       margin-top: 2px;
     }
 
-    /* Ícones em tons terrosos suaves */
     .icon-video { background: #EEF3EF; color: #37533B; }
     .icon-heart { background: #F8EFEA; color: #8F4C3B; }
     .icon-leaf { background: #F2EFE8; color: #62573B; }
@@ -336,7 +335,7 @@
     .form-group { margin-bottom: 1.2rem; }
     label { display: block; font-size: 0.85rem; font-weight: 500; margin-bottom: 0.4rem; color: var(--text-main); }
     
-    input[type="text"], input[type="email"], input[type="tel"], input[type="password"], input[type="date"], input[type="time"], select, textarea {
+    input[type="text"], input[type="email"], input[type="tel"], input[type="password"], input[type="date"], input[type="time"], input[type="number"], select, textarea {
       width: 100%;
       padding: 0.85rem 1rem;
       border: 1px solid var(--border-color);
@@ -400,7 +399,7 @@
       padding: 1rem;
     }
     .stat-card span { font-size: 0.78rem; color: var(--text-muted); }
-    .stat-card p { font-family: var(--font-serif); font-size: 1.6rem; color: var(--earth-dark); margin-top: 0.2rem; }
+    .stat-card p { font-family: var(--font-serif); font-size: 1.5rem; color: var(--earth-dark); margin-top: 0.2rem; }
 
     .tabs { display: flex; gap: 0.5rem; margin-bottom: 1.2rem; overflow-x: auto; padding-bottom: 0.4rem; }
     .tab-btn { padding: 0.45rem 0.9rem; border-radius: 20px; border: 1px solid var(--border-color); background: var(--bg-card); color: var(--text-muted); cursor: pointer; font-size: 0.82rem; white-space: nowrap; }
@@ -414,6 +413,28 @@
     .badge-paid { background: #F6EDE6; color: #784430; }
     .badge-diary { background: #F1ECE6; color: #5A4336; }
     .badge-call { background: #EDF3ED; color: #2B5231; }
+
+    .badge-pago {
+      background: #EBF5EE;
+      color: #2D6B3E;
+      border: 1px solid #CDE6D3;
+      padding: 0.25rem 0.6rem;
+      border-radius: 12px;
+      font-size: 0.76rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .badge-pendente {
+      background: #FFF6E6;
+      color: #945B0A;
+      border: 1px solid #FFE2B3;
+      padding: 0.25rem 0.6rem;
+      border-radius: 12px;
+      font-size: 0.76rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
 
     .modal-overlay {
       display: none;
@@ -452,13 +473,13 @@
 
     @media (min-width: 640px) {
       .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
-      .crm-stats { grid-template-columns: repeat(5, 1fr); }
+      .crm-stats { grid-template-columns: repeat(4, 1fr); }
     }
   </style>
 </head>
 <body>
 
-  <!-- Topbar com Identidade Terrosa Nobre -->
+  <!-- Topbar -->
   <header>
     <div class="nav-container">
       <div class="logo-wrapper" onclick="navigate('home')">
@@ -719,7 +740,7 @@
       </div>
     </section>
 
-    <!-- 7. CRM -->
+    <!-- 7. CRM ADMINISTRATIVO (SEM NOMES DE FERRAMENTAS EXTERNAS) -->
     <section id="view-admin" class="view-section">
       <div id="login-box" class="card" style="max-width: 420px; margin: 1.5rem auto;">
         <h2 style="font-family: var(--font-serif); margin-bottom: 0.4rem; text-align: center;">Área Restrita</h2>
@@ -733,8 +754,8 @@
             <input type="email" id="admin-email" placeholder="seu-email@exemplo.com" required>
           </div>
           <div class="form-group">
-            <label>Senha</label>
-            <input type="password" id="admin-pass" placeholder="Sua senha do Supabase" required>
+            <label>Senha de Acesso</label>
+            <input type="password" id="admin-pass" placeholder="Digite sua senha de acesso" required>
           </div>
           <button type="submit" id="btn-login" class="btn-primary">Entrar no Painel</button>
         </form>
@@ -743,31 +764,31 @@
       <div id="dashboard-box" style="display: none;">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.2rem; flex-wrap: wrap; gap: 0.8rem;">
           <div>
-            <h2 style="font-family: var(--font-serif);">Painel Clínico</h2>
-            <p style="color: var(--text-muted); font-size: 0.85rem;">Conectado ao Supabase.</p>
+            <h2 style="font-family: var(--font-serif);">Painel Clínico & Financeiro</h2>
+            <p style="color: var(--text-muted); font-size: 0.85rem;">Ambiente seguro e confidencial.</p>
           </div>
           <button class="btn-secondary" onclick="handleLogout()">Sair</button>
         </div>
 
+        <!-- Indicadores -->
         <div class="crm-stats">
           <div class="stat-card"><span>Candidaturas</span><p id="stat-candidaturas">0</p></div>
-          <div class="stat-card"><span>Espera</span><p id="stat-espera">0</p></div>
-          <div class="stat-card"><span>Pacientes</span><p id="stat-pacientes">0</p></div>
-          <div class="stat-card"><span>Diários</span><p id="stat-diarios">0</p></div>
-          <div class="stat-card"><span>Sessões</span><p id="stat-sessoes">0</p></div>
+          <div class="stat-card"><span>Pacientes Ativos</span><p id="stat-pacientes">0</p></div>
+          <div class="stat-card"><span>A Receber</span><p id="stat-a-receber" style="font-size: 1.25rem;">R$ 0 | 0 €</p></div>
+          <div class="stat-card"><span>Recebido</span><p id="stat-recebido" style="font-size: 1.25rem; color: #2E5434;">R$ 0 | 0 €</p></div>
         </div>
 
         <div class="tabs">
           <button class="tab-btn active" id="tab-btn-candidaturas" onclick="switchTab('candidaturas')">Candidaturas</button>
           <button class="tab-btn" id="tab-btn-espera" onclick="switchTab('espera')">Lista de Espera</button>
           <button class="tab-btn" id="tab-btn-pacientes" onclick="switchTab('pacientes')">Pacientes</button>
+          <button class="tab-btn" id="tab-btn-sessoes" onclick="switchTab('sessoes')">Sessões & Cobrança</button>
           <button class="tab-btn" id="tab-btn-diarios" onclick="switchTab('diarios')">Diários & Sonhos</button>
-          <button class="tab-btn" id="tab-btn-sessoes" onclick="switchTab('sessoes')">Sessões & Vídeo</button>
         </div>
 
         <!-- Agendador -->
         <div id="agendador-box" class="card" style="display: none; padding: 1.4rem; background: var(--bg-subtle); margin-bottom: 1.2rem;">
-          <h3 style="font-size: 1rem; margin-bottom: 0.8rem;">Agendar Nova Análise</h3>
+          <h3 style="font-size: 1rem; margin-bottom: 0.8rem;">Agendar Análise & Cobrança</h3>
           <form onsubmit="handleAgendarSessao(event)">
             <div class="grid-2">
               <div class="form-group">
@@ -789,11 +810,24 @@
                 <input type="time" id="agendar-horario" required>
               </div>
             </div>
+            <div class="grid-2">
+              <div class="form-group">
+                <label>Valor desta Sessão</label>
+                <input type="number" step="0.01" id="agendar-valor" placeholder="Ex: 180.00 ou 50.00" required>
+              </div>
+              <div class="form-group">
+                <label>Moeda</label>
+                <select id="agendar-moeda">
+                  <option value="BRL">Reais (R$)</option>
+                  <option value="EUR">Euros (€)</option>
+                </select>
+              </div>
+            </div>
             <div class="form-group">
               <label>Link da Chamada de Vídeo</label>
               <input type="text" id="agendar-link" value="https://meet.jit.si/acolhe-sessao-online" required>
             </div>
-            <button type="submit" id="btn-agendar" class="btn-primary" style="background: var(--green-call);">Salvar Sessão com Link de Vídeo</button>
+            <button type="submit" id="btn-agendar" class="btn-primary" style="background: var(--green-call);">Salvar Sessão e Agendamento</button>
           </form>
         </div>
 
@@ -829,7 +863,7 @@
     </div>
   </div>
 
-  <!-- Modal Ficha Completa, Enquadre e Anotações -->
+  <!-- Modal Ficha Completa -->
   <div class="modal-overlay" id="fichaModal" onclick="closeFichaModal(event)">
     <div class="modal-card" onclick="event.stopPropagation()">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
@@ -935,9 +969,9 @@
           ${telLimpo ? `<div style="margin-top:0.3rem;"><a href="${linkWpp}" target="_blank" style="background:#25D366; color:white; padding:0.25rem 0.6rem; border-radius:6px; text-decoration:none; font-size:0.75rem; font-weight:600;">Chamar no WhatsApp</a></div>` : ''}
         </div>
 
-        <!-- ENQUADRE CLÍNICO EDITÁVEL -->
+        <!-- ENQUADRE E VALORES -->
         <div style="background: var(--bg-subtle); padding: 0.9rem; border-radius: 12px; margin-bottom: 0.8rem; border: 1px solid var(--border-color);">
-          <span style="font-size: 0.8rem; font-weight: 600; color: var(--earth-dark); display:block; margin-bottom: 0.5rem;">⚙️ Enquadre da Análise</span>
+          <span style="font-size: 0.8rem; font-weight: 600; color: var(--earth-dark); display:block; margin-bottom: 0.5rem;">⚙️ Enquadre e Honorários Personalizados</span>
           
           <div class="grid-2">
             <div style="margin-bottom: 0.5rem;">
@@ -961,8 +995,22 @@
             </div>
           </div>
 
-          <button class="btn-secondary" style="width: 100%; margin-top: 0.4rem; font-weight: 600; background: #FFF;" onclick="salvarEnquadrePaciente(${pac.id})">
-            Salvar Frequência e Modalidade
+          <div class="grid-2" style="margin-top: 0.3rem;">
+            <div>
+              <label style="font-size: 0.75rem; color: var(--text-muted);">Valor por Sessão</label>
+              <input type="number" step="0.01" id="edit-valor-${pac.id}" value="${pac.valor_sessao || 0}" style="font-size: 0.88rem; padding: 0.5rem; background:#FFF;" placeholder="Ex: 180.00">
+            </div>
+            <div>
+              <label style="font-size: 0.75rem; color: var(--text-muted);">Moeda</label>
+              <select id="edit-moeda-${pac.id}" style="font-size: 0.85rem; padding: 0.5rem; background:#FFF;">
+                <option value="BRL" ${(pac.moeda || 'BRL') === 'BRL' ? 'selected' : ''}>Reais (R$)</option>
+                <option value="EUR" ${pac.moeda === 'EUR' ? 'selected' : ''}>Euros (€)</option>
+              </select>
+            </div>
+          </div>
+
+          <button class="btn-secondary" style="width: 100%; margin-top: 0.8rem; font-weight: 600; background: #FFF;" onclick="salvarEnquadrePaciente(${pac.id})">
+            Salvar Enquadre e Valores
           </button>
         </div>
 
@@ -1003,10 +1051,19 @@
     async function salvarEnquadrePaciente(id) {
       const frequencia = document.getElementById(`edit-freq-${id}`).value;
       const modalidade = document.getElementById(`edit-mod-${id}`).value;
+      const valor = parseFloat(document.getElementById(`edit-valor-${id}`).value) || 0;
+      const moeda = document.getElementById(`edit-moeda-${id}`).value;
+
       try {
-        const { error } = await db.from('pacientes').update({ frequencia, modalidade }).eq('id', id);
+        const { error } = await db.from('pacientes').update({
+          frequencia,
+          modalidade,
+          valor_sessao: valor,
+          moeda: moeda
+        }).eq('id', id);
+
         if (error) throw error;
-        alert('Frequência e modalidade atualizadas com sucesso!');
+        alert('Enquadre e valor salvos com sucesso!');
         await carregarDadosBanco();
         verFichaPaciente(id);
       } catch (err) { alert('Erro ao atualizar: ' + err.message); }
@@ -1017,7 +1074,7 @@
       try {
         const { error } = await db.from('pacientes').update({ anotacoes: texto }).eq('id', id);
         if (error) throw error;
-        alert('Anotações clínicas salvas com segurança no banco!');
+        alert('Anotações salvas com segurança!');
         await carregarDadosBanco();
       } catch (err) { alert('Erro ao salvar anotações: ' + err.message); }
     }
@@ -1043,8 +1100,17 @@
 
         closeFichaModal();
         await carregarDadosBanco();
-        alert('Pronto! O paciente foi removido e devolvido para a Lista de Espera.');
+        alert('O paciente foi removido e devolvido para a Lista de Espera.');
       } catch (err) { alert('Erro ao desfazer: ' + err.message); }
+    }
+
+    async function alternarPagamentoSessao(sessaoId, statusAtual) {
+      const novoStatus = statusAtual === 'Pago' ? 'Pendente' : 'Pago';
+      try {
+        const { error } = await db.from('sessoes').update({ status_pagamento: novoStatus }).eq('id', sessaoId);
+        if (error) throw error;
+        await carregarDadosBanco();
+      } catch (err) { alert('Erro ao atualizar pagamento: ' + err.message); }
     }
 
     async function consultarSessaoAnalisando(event) {
@@ -1089,7 +1155,7 @@
               <span>🎥</span> Entrar na Sala de Vídeo
             </a>
             <small style="display: block; color: var(--text-muted); margin-top: 0.8rem; font-size: 0.78rem;">
-              A sala é individual e criptografada. Toque no botão acima no horário da sua sessão.
+              A sala é individual e confidencial. Toque no botão acima no horário da sua sessão.
             </small>
           </div>
         `;
@@ -1281,10 +1347,26 @@
 
     function atualizarMetricas() {
       document.getElementById('stat-candidaturas').innerText = localData.candidaturas.length;
-      document.getElementById('stat-espera').innerText = localData.espera.length;
       document.getElementById('stat-pacientes').innerText = localData.pacientes.length;
-      document.getElementById('stat-diarios').innerText = localData.diarios.length;
-      document.getElementById('stat-sessoes').innerText = localData.sessoes.length;
+
+      let aReceberBRL = 0, aReceberEUR = 0;
+      let recebidoBRL = 0, recebidoEUR = 0;
+
+      localData.sessoes.forEach(s => {
+        const val = parseFloat(s.valor_cobrado) || 0;
+        const moeda = s.moeda || 'BRL';
+
+        if (s.status_pagamento === 'Pago') {
+          if (moeda === 'EUR') recebidoEUR += val;
+          else recebidoBRL += val;
+        } else {
+          if (moeda === 'EUR') aReceberEUR += val;
+          else aReceberBRL += val;
+        }
+      });
+
+      document.getElementById('stat-a-receber').innerText = `R$ ${aReceberBRL.toFixed(0)} | ${aReceberEUR.toFixed(0)} €`;
+      document.getElementById('stat-recebido').innerText = `R$ ${recebidoBRL.toFixed(0)} | ${recebidoEUR.toFixed(0)} €`;
     }
 
     async function handleAgendarSessao(event) {
@@ -1296,6 +1378,8 @@
       const email = document.getElementById('agendar-email').value.trim();
       const data = document.getElementById('agendar-data').value;
       const horario = document.getElementById('agendar-horario').value;
+      const valor = parseFloat(document.getElementById('agendar-valor').value) || 0;
+      const moeda = document.getElementById('agendar-moeda').value;
       let link = document.getElementById('agendar-link').value.trim();
 
       if (!link) {
@@ -1309,6 +1393,9 @@
           data_sessao: data,
           dia_semana: data,
           horario: horario,
+          valor_cobrado: valor,
+          moeda: moeda,
+          status_pagamento: 'Pendente',
           link_video: link,
           status: 'Confirmada'
         }]);
@@ -1374,18 +1461,20 @@
           `;
         });
       } else if (currentTab === 'pacientes') {
-        thead.innerHTML = `<tr><th>Paciente</th><th>Status</th><th>Ações</th></tr>`;
+        thead.innerHTML = `<tr><th>Paciente</th><th>Honorários</th><th>Ações</th></tr>`;
         if (localData.pacientes.length === 0) {
           tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; color: var(--text-muted); padding: 1.5rem;">Nenhum paciente cadastrado.</td></tr>`;
           return;
         }
         localData.pacientes.forEach(item => {
+          const simbolo = item.moeda === 'EUR' ? '€' : 'R$';
+          const valorFormatado = item.valor_sessao ? `${simbolo} ${parseFloat(item.valor_sessao).toFixed(2)}` : 'A definir';
           tbody.innerHTML += `
             <tr>
-              <td><strong>${item.nome}</strong><br><small style="color:var(--text-muted);">${item.frequencia} · ${item.modalidade}</small></td>
-              <td><span class="badge badge-call">${item.status || 'Ativo'}</span></td>
+              <td><strong>${item.nome}</strong><br><small style="color:var(--text-muted);">${item.frequencia || 'Semanal'}</small></td>
+              <td><span style="font-weight:600; color:var(--earth-dark);">${valorFormatado}</span></td>
               <td>
-                <button class="btn-ficha" onclick="verFichaPaciente(${item.id})">🔍 Ficha & Notas</button>
+                <button class="btn-ficha" onclick="verFichaPaciente(${item.id})">🔍 Ficha & Valores</button>
               </td>
             </tr>
           `;
@@ -1406,18 +1495,30 @@
           `;
         });
       } else if (currentTab === 'sessoes') {
-        thead.innerHTML = `<tr><th>Paciente</th><th>Data / Hora</th><th>Chamada de Vídeo</th><th>Ação</th></tr>`;
+        thead.innerHTML = `<tr><th>Paciente</th><th>Data / Hora</th><th>Cobrança</th><th>Ação</th></tr>`;
         if (localData.sessoes.length === 0) {
           tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color: var(--text-muted); padding: 1.5rem;">Nenhuma sessão agendada.</td></tr>`;
           return;
         }
         localData.sessoes.forEach(item => {
+          const simbolo = item.moeda === 'EUR' ? '€' : 'R$';
+          const valorTexto = item.valor_cobrado ? `${simbolo} ${parseFloat(item.valor_cobrado).toFixed(2)}` : '-';
+          const isPago = item.status_pagamento === 'Pago';
+          const badgePagamento = isPago 
+            ? `<button class="badge-pago" onclick="alternarPagamentoSessao(${item.id}, 'Pago')">✓ Pago (${valorTexto})</button>`
+            : `<button class="badge-pendente" onclick="alternarPagamentoSessao(${item.id}, 'Pendente')">○ Pendente (${valorTexto})</button>`;
+
           tbody.innerHTML += `
             <tr>
-              <td><strong>${item.paciente_nome}</strong><br><small>${item.paciente_email || ''}</small></td>
+              <td><strong>${item.paciente_nome}</strong></td>
               <td>🗓️ ${item.data_sessao || item.dia_semana}<br>⏰ ${item.horario}</td>
-              <td><a href="${item.link_video}" target="_blank" class="badge badge-call" style="text-decoration:none;">🎥 Abrir Sala</a></td>
-              <td><button class="btn-secondary" onclick="excluirSessao(${item.id})">Remover</button></td>
+              <td>${badgePagamento}</td>
+              <td>
+                <div style="display:flex; gap:0.3rem;">
+                  <a href="${item.link_video}" target="_blank" class="badge badge-call" style="text-decoration:none;">🎥 Vídeo</a>
+                  <button class="btn-secondary" style="padding:0.2rem 0.5rem;" onclick="excluirSessao(${item.id})">✕</button>
+                </div>
+              </td>
             </tr>
           `;
         });
@@ -1434,7 +1535,7 @@
 
     async function moverParaPaciente(candidaturaId, nome) {
       try {
-        const { error: errPac } = await db.from('pacientes').insert([{ nome, candidatura_id: candidaturaId, frequencia: 'Semanal', modalidade: 'Online' }]);
+        const { error: errPac } = await db.from('pacientes').insert([{ nome, candidatura_id: candidaturaId, frequencia: 'Semanal', modalidade: 'Online', valor_sessao: 0, moeda: 'BRL' }]);
         if (errPac) throw errPac;
         const { error: errCand } = await db.from('candidaturas').update({ status: 'Ativo' }).eq('id', candidaturaId);
         if (errCand) throw errCand;
